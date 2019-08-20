@@ -25,6 +25,18 @@ public class UserRelease {
     public UserRelease() {
     }
 
+    public UserRelease(String title, String nickName, String phone, Integer serviceProvince, Integer serviceCity, Integer serviceArea, String serverDetail, Date appointTime, String demand) {
+        this.title = title;
+        this.nickName = nickName;
+        this.phone = phone;
+        this.serviceProvince = serviceProvince;
+        this.serviceCity = serviceCity;
+        this.serviceArea = serviceArea;
+        this.serverDetail = serverDetail;
+        this.appointTime = appointTime;
+        this.demand = demand;
+    }
+
     @Override
     public String toString() {
         return "UserRelease{" +

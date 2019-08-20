@@ -12,7 +12,6 @@
 	<script type="text/javascript" src="/_api/js/jquery-3.4.1.min.js"></script>
 	<script type="text/javascript" src="/_api/js/swiper.min.js"></script>
 
-	<script type="text/javascript" src="/_api/js/common/area2.js"></script><!--引入三级 省市县js-->
 
 </head>
 
@@ -32,34 +31,34 @@
 				<input type="tel" name="mobile" id="mobile" class="input_txt" placeholder="请输入您的手机号" value="">
 			</li>
 			<li><label>服务地址：</label>
-				<div style="float:left; padding-left:80px; width:100%;"><select name="placeProvince" id="placeProvince" class="select2">
-					<option value="">选择省</option>
+				<div style="float:left; padding-left:80px; width:100%;"><select name="placeProvince" id="placeProvince" class="select2"  onchange="chooseProvince(this)">
+					<option value="-1">选择省</option>
 
 				</select>
-					<select name="placeCity" id="placeCity" class="select2">
-						<option value="">选择市</option>
+					<select name="placeCity" id="placeCity" class="select2" onChange="chooseCity(this)">
+						<option value="-1">选择市</option>
 
 					</select>
 					<select name="placeArea" id="placeArea" class="select2">
-						<option value="">选择区县</option>
+						<option value="-1">选择区县</option>
 
 					</select>
 				</div>
 			</li>
 			<li><label>详细地址：</label><input type="text" name="address2" id="address2" class="input_txt" value="" placeholder="输入详细住址(不含省市区县)"></li>
 			<li><label>预约时间：</label>
-				<div style="float:left; padding-left:80px; width:100%;"><select name="province2" id="province2" class="select2">
-					<option value="2019">年</option>
+				<div style="float:left; padding-left:80px; width:100%;"><select name="YYYY" id="province2" class="select2" onchange="YYYYMM(this.value)">
+				<!--	<option value="2019">年</option>-->
 				</select>
-					<select name="city2" id="city2" class="select2">
-						<option value="8">月</option>
+					<select name="MM" id="city2" class="select2" onchange="MMDD(this.value)">
+					<!--	<option value="08">月</option>-->
 					</select>
-					<select name="area2" id="area2" class="select2">
-						<option value="21">日</option>
+					<select name="DD" id="area2" class="select2">
+						<!--<option value="21">日</option>-->
 					</select>
 				</div>
 			</li>
-			<li style="border:0"><textarea name="textarea" id="textarea" class="area_txt" value="" placeholder="备注您的需求(30字内)"></textarea></li>
+			<li style="border:0"><textarea name="textarea" id="textarea" class="area_txt" value="" placeholder="备注您的需求(30字内)" sstyle="height: 100px;width: 800px;resize: none;"></textarea></li>
 			<li style="border:0; text-align: right;">0/30</li>
 			<li><input type="button" name="btn_bd_mobile" id="btn_bd_mobile" class="btn_sbt br3" value="立即发布"></li>
 		</ul>
@@ -71,6 +70,8 @@
 </body>
 
 
+<script type="text/javascript" src="/_api/js/common/area2.js"></script><!--引入三级 省市县js-->
+<script type="text/javascript" src="/_api/js/common/year.js"></script><!--引入三级 年月日js-->
 <script type="text/javascript">
 
 	$("#btn_bd_mobile").click(function () {
@@ -83,14 +84,36 @@
 		var serverDetail = $("#address2").val();  // 详细地址
 		var appointTime = $("#province2").val()+"-"+$("#city2").val()+"-"+$("#area2").val();
 		var demand = $("#textarea").val();
-		alert("title : "+ title +" == nickName:  "+ nickName+"serviceProvince :"+ serviceProvince+"serviceCity : "+serviceCity+"serviceArea : "+serviceArea+"==appointTime :"+appointTime+"== demand："+demand)
-		$.getJSON("/_api/zsf/insUserRelease",{"title":title,"nickName":nickName,"phone":phone,"serviceProvince":serviceProvince,"serviceCity":serviceCity,"serviceArea":serviceArea,"appointTime":appointTime,"demand":demand},function (data) {
-			if(data == true){
-				alert("发布成功！")
-			}else{
-				alert("发布失败！")
-			}
-		})
+		var   d=new   Date(Date.parse(appointTime .replace(/-/g,"/")));
+		var   curDate=new   Date();
+		var reg =   /^1[3456789]\d{9}$/
+		if(!reg.test(phone)){
+			alert("手机格式不正确，请重新填写！")
+			return false;
+		} else if(d <=curDate){
+			alert("预约时间必须在今日之后！");
+			return false;
+		}else {
+			$.getJSON("/_api/zsf/insUserRelease", {
+				"title": title,
+				"nickName": nickName,
+				"phone": phone,
+				"serviceProvince": serviceProvince,
+				"serviceCity": serviceCity,
+				"serviceArea": serviceArea,
+				"serverDetail": serverDetail,
+				"appointTime": appointTime,
+				"demand": demand
+			}, function (data) {
+				if (data == true) {
+					alert("发布成功！")
+				} else {
+					alert("发布失败！")
+				}
+			})
+			return  true;
+		}
 	})
+
 </script>
 </html>

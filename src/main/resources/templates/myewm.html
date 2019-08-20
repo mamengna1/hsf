@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>我的二维码</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <link rel="stylesheet" href="/_api/css/CSS.css?0" type="text/css"/>
+    <link rel="stylesheet" href="/_api/css/swiper.min.css" type="text/css"/>
+    <link rel="stylesheet" href="/_api/css/iconfont.css">
+    <script type="text/javascript" src="/_api/js/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="/_api/js/swiper.min.js"></script>
+    <script type="text/javascript">
+        // 二维码
+        $(function () {
+            var url = "/_api/getEWM";
+            $.get(url, function (ewm) {
+                $("img").attr("src", ewm.message + ".jpg");
+            });
+        });
+    </script>
+</head>
+
+
+<body>
+
+
+<div class="myewm">
+    <span><img width="150px" height="150px" src="images/headimg.jpg"></span>
+    <p>&nbsp;</p>
+    <p>功能需求：</p>
+    <p>
+        1、用户B扫用户A二维码关注公众号，形成用户关系链。B关注后，公众号下发消息模板【新会员加入通知】，A用户同样接收到【新会员加入通知】，两种通知内容不一样，A收到的是内容是提醒有新的下级会员加入，B接收到的是欢迎类信息提醒</p>
+    <p>2、通过二级关系链的绑定，增加业务逻辑需求。本次测试需求是：当用户B支付后，A用户获得支付金额50%的积分增加到A用户的积分账户，数据库做积分变动记录，公众号消息模板通知到A用户积分变动提醒</p>
+</div>
+
+
+</body>
+</html>

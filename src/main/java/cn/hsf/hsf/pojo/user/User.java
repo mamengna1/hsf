@@ -55,6 +55,11 @@ public class User {
         this.detailId = detailId;
     }
 
+    public User(String openId, Double balanceScore) {
+        this.openId = openId;
+        this.balanceScore = balanceScore;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -78,6 +83,7 @@ public class User {
                 ", createDate=" + createDate +
                 ", lastLoginTime=" + lastLoginTime +
                 ", detailId=" + detailId +
+                ", userDetail=" + userDetail +
                 '}';
     }
 

@@ -161,17 +161,14 @@
                 <p>当前可服务区域：</p>
             </li>
             <li style="height:45px;">
-                <select name="workProvince" id="workProvince" class="select1">
-                    <option value="">选择省</option>
-                    <option value="1">浙江省</option>
+                <select name="placeProvince" id="placeProvince" class="select1" onchange="chooseProvince(this)">
+                        <option value="-1">选择省</option>
                 </select>
-                <select name="workCity" id="workCity" class="select1">
-                    <option value="">选择市</option>
-                    <option value="2">宁波市</option>
+                <select  name="placeCity" id="placeCity" class="select1" onChange="chooseCity(this)">
+                        <option value="-1">选择市</option>
                 </select>
-                <select name="workArea" id="workArea" class="select1">
-                    <option value="">所有区县</option>
-                    <option value="3">鄞州区</option>
+                <select  name="placeArea" id="placeArea" class="select1">
+                        <option value="-1">所有区县</option>
                 </select>
             </li>
             <li>

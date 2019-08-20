@@ -20,6 +20,7 @@ public class RegisterController {
 
     @RequestMapping("/insUserDetail")
     public String insUserDetail(UserDetail userDetail, String phone, HttpSession session) {
+        System.out.println("师傅信息" + userDetail);
         userDetailService.insUserDetail(userDetail);
         userService.updUser(new User((String) session.getAttribute("openId"), phone, userDetail.getId()));
         return "/_api/index";

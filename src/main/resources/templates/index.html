@@ -24,7 +24,7 @@
 	<body style="background:#f5f5f5">
 		<section class="user">
 			<div class="user_info">
-				<p class="user_img"><A href=""><img src="[[${user.headPic}]]" class="br50"></A></p>
+				<p class="user_img"><A href=""><img th:src="${user.headPic}" class="br50"></A></p>
 				<p class="user_p1">
 					<script language="javaScript">
 						now = new Date(), hour = now.getHours()
@@ -52,10 +52,11 @@
 						[[${user.id}]]</span></p>
 				<p class="user_p3">会员身份：
 					<em style="padding-left:8px; padding-right:8px; background:#e7141b; color:#fff;border-radius:15px; line-height:23px; display:inline-block;">[[${user.detailId == 0 ? '普通用户' : '师傅'}]]</em>&nbsp;&nbsp; &nbsp;&nbsp;
-
-					<label th:if="${user.detailId ne 0}">
-						<input type="checkbox" name="checkbox" /><i>已停止接单</i>
+					<label th:if="${user.detailId ne 0 && user.userDetail.lineStatus == 1}">
 						<input type="checkbox" name="checkbox" /><i>正在接单中</i>
+					</label>
+					<label th:if="${user.detailId ne 0 && user.userDetail.lineStatus == 0}">
+						<input type="checkbox" name="checkbox" /><i>已停止接单</i>
 					</label>
 				</p>
 				<p class="more_act"><a href="/myewm"><i class="fa fa-qrcode" style="color:#666;"></i> </a>　<a href="my_info.html"><i
@@ -76,7 +77,7 @@
 				<li><a href="/_api/zsf/goZsfView"><em><i class="iconfont icon-people"></i></em>
 						<p>找师傅</p>
 					</a></li>
-				<li><a href="bindingphone.html"><em><i class="iconfont icon-mobilephone"></i></em>
+				<li><a href="/_api/goBindPhone"><em><i class="iconfont icon-mobilephone"></i></em>
 						<p>手机绑定</p>
 					</a></li>
 				<li><a href="my_gift_order.html"><em><i class="iconfont icon-coordinates"></i></em>
@@ -85,10 +86,10 @@
 				<li><a href="zhuce.html"><em><i class="iconfont icon-setup"></i></em>
 						<p>修改资料</p>
 					</a></li>
-				<li><a href="myewm.html"><em><i class="iconfont icon-qrcode"></i></em>
+				<li><a href="/_api/goMyEWN"><em><i class="iconfont icon-qrcode"></i></em>
 						<p>推广海报</p>
 					</a></li>
-				<li><a href="yongjin.html"><em><i class="iconfont icon-redpacket_fill"></i></em>
+				<li><a href="/_api/goYongJin"><em><i class="iconfont icon-redpacket_fill"></i></em>
 						<p>推广佣金</p>
 					</a></li>
 				<li><a href="my_consume_ewm.html"><em><i class="iconfont icon-message"></i></em>

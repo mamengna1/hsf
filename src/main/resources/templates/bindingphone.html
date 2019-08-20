@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>手机绑定</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <link rel="stylesheet" href="/_api/css/CSS.css?0" type="text/css"/>
+    <link rel="stylesheet" href="/_api/css/swiper.min.css" type="text/css"/>
+    <link rel="stylesheet" href="/_api/css/iconfont.css">
+    <script type="text/javascript" src="/_api/js/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="/_api/js/swiper.min.js"></script>
+    <script type="text/javascript" src="/_api/js/common/util.js"></script>
+
+</head>
+
+<body>
+<script>
+    $(function () {
+        var phone = '<%=session.getAttribute("phone")%>';
+        if (phone == "null") {
+            $("#editPhone").hide();
+        } else {
+            $("#myform").hide();
+        }
+    });
+
+</script>
+<form action="" method="post" name="myform" id="myform">
+    <div class="frm_passport">
+        <ul>
+            <li style="color:#ff0000; font-size:16px; border:0; height:50px; line-height:50px;">手机号码输入错误(提示信息显示处)</li>
+            <li><label>手机号：</label>
+                <input type="tel" name="phone" id="phone" class="input_txt" placeholder="请输入绑定的手机号" value="">
+                <input type="button" class="btn_getyzm br3 active" id="btn_getcode" value="获取验证码"
+                       onclick="sendMessage()" data-type="1">
+            </li>
+            <li><label>验证码：</label><input type="tel" name="yzm" id="yzm" class="input_txt" value=""
+                                          placeholder="请填写手机验证码"
+                                          maxlength="6"></li>
+            <li><input type="button" name="btn_bd_mobile" id="btn_bd_mobile" onclick="bind()" class="btn_sbt br3"
+                       value="绑定"></li>
+        </ul>
+    </div>
+</form>
+
+<div class="phoneOK" id="editPhone">
+    <p><i class="iconfont icon-mobilephone"></i>[[${session.phone}]]</p>
+    <p><input type="button" name="btn_bd_mobile" onclick="bindPhone()" id="btn_bd_mobile" class="btn_sbt br3"
+              value="更换手机绑定"></p>
+</div>
+
+<script>
+    function bindPhone() {
+        $("#editPhone").hide();
+        $("#myform").show();
+    }
+    function bind() {
+        var message = $("#yzm").val();
+        var phone = $("#mobile").val();
+
+        if (bindCount < 3) {
+            if (message == code) {
+                alert("手机号:" + phone);
+                $.getJSON("/_api/editUser", {"phone": phone}, function (data) {
+                    bindCount = 0;
+                    location.href = "index.html";
+                });
+            } else {
+                bindCount++;
+                $("#temp").html("验证码不正确");
+            }
+        } else {
+            alert("多次输入不正确请重新获取");
+        }
+
+    }
+</script>
+
+</body>
+</html>

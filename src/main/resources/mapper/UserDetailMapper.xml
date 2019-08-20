@@ -8,7 +8,7 @@
 
     <!--    UserDetail selById(Integer id); -->
     <select id="selById" resultType="cn.hsf.hsf.pojo.user.UserDetail">
-        SELECT `id`, `name`, `card`, `placeProvince`, `placeCity`, `placeArea`, `address`, `cardOne`, `cardTwo`, `skills`, `workProvince`, `workCity`, `workArea`, `status`
+        SELECT `id`, `name`, `card`, `placeProvince`, `placeCity`, `placeArea`, `address`, `cardOne`, `cardTwo`, `skills`, `workProvince`, `workCity`, `workArea`, `status`, `lineStatus`
         FROM `tb_user_detail`
         WHERE id = #{id}
     </select>

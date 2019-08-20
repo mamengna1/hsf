@@ -14,7 +14,7 @@
 
     <!--  User selUserByOpenId(String openId); -->
     <select id="selUserByOpenId" resultMap="selUserDetail">
-        SELECT *
+        SELECT `id`, `nickName`, `openId`, `sex`, `headPic`, `country`, `province`, `city`, `phone`, `isSub`, `memberType`, `sourceType`, `totalMoney`, `balanceMoney`, `totalScore`, `balanceScore`, `userParent`, `createDate`, `lastLoginTime`, `detailId`
         FROM `tb_user`
         WHERE openId = #{openId}
     </select>
@@ -57,6 +57,9 @@
             <if test="totalScore != null and totalScore != ''">
                 totalScore = totalScore + #{totalScore},
                 balanceScore = balanceScore + #{totalScore},
+            </if>
+            <if test="balanceScore != null and balanceScore !=''">
+                balanceScore = balanceScore - #{balanceScore},
             </if>
             <if test="userParent != null and userParent != ''">
                 userParent = #{userParent},

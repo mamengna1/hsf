@@ -1,7 +1,9 @@
 package cn.hsf.hsf.controller;
 
+import cn.hsf.hsf.commons.ImageURL;
 import cn.hsf.hsf.commons.WxConstants;
 import cn.hsf.hsf.mapper.app.AppMapper;
+import cn.hsf.hsf.pojo.Result;
 import cn.hsf.hsf.pojo.app.App;
 import cn.hsf.hsf.pojo.user.User;
 import cn.hsf.hsf.service.event.EventService;
@@ -44,7 +46,8 @@ public class CommonController {
     }
 
     /**
-     *  获取用户信息
+     * 获取用户信息
+     *
      * @param req
      * @param resp
      */
@@ -76,23 +79,28 @@ public class CommonController {
                     (String) res.get("province"), (String) res.get("city"));
             userService.insUser(user);
         } else {
-            user = new User((String) res.get("nickname"), openid, (Integer) res.get("sex"), (String) res.get("headimgurl"), (String) res.get("country"),
-                    (String) res.get("province"), (String) res.get("city"));
-            user.setHeadPic(null);
-            userService.updUser(user);
+            // userService.updUser(user);
         }
 
         try {
             req.getSession().setAttribute("openId", openid);
             req.getSession().setAttribute("timestacp", System.currentTimeMillis());
-            // req.getSession().setAttribute("uid", uid);
+            req.getSession().setAttribute("uid", user.getId());
             resp.sendRedirect("/_api/goIndex");
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
     @RequestMapping("/retOpenId")
     public void retOpenId() {
         Send.get("https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx8bf85bd98eaddb86&redirect_uri=http://java.86blue.cn/_api/getUserInfo&response_type=code&scope=snsapi_base&state=1#wechat_redirect");
+    }
+
+    @ResponseBody
+    @RequestMapping("/getEWM")
+    public Result getEWM(HttpSession session) {
+        System.out.println("进来了");
+        return new Result(ImageURL.GET_USER_EWM_URL + session.getAttribute("uid"));
     }
 }

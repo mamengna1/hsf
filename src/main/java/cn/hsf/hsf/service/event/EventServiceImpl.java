@@ -97,21 +97,20 @@ public class EventServiceImpl implements EventService {
             System.out.println("EVENT_KEY : " + EventKey);
             EventKey = EventKey.equals("null") ? null : EventKey;
         }
-        User param = new User((String) params.get("nickname"), (String) params.get("openid"), (Integer) params.get("sex"), (String) params.get("headimgurl"), (String) params.get("country"),
-                (String) params.get("province"), (String) params.get("city"));
-        System.out.println("PARAM " + param);
         // 第一次关注
         if (user == null) {
-            userMapper.insUser(param);
-            System.out.println("添加完成 ： " + param);
+            user = new User((String) params.get("nickname"), (String) params.get("openid"), (Integer) params.get("sex"), (String) params.get("headimgurl"), (String) params.get("country"),
+                    (String) params.get("province"), (String) params.get("city"));
+            userMapper.insUser(user);
+            System.out.println("添加完成 ： " + user);
 
-            String ticket = wxService.getQrCodeTicket(param.getOpenId());
-            ImageUtil.uploadImage(WxConstants.GET_EWM_URL + ticket, param.getId() + "");
+            String ticket = wxService.getQrCodeTicket(user.getOpenId());
+            System.out.println("生成二维码的名字 ： " + user.getId());
+            ImageUtil.uploadImage(WxConstants.GET_EWM_URL + ticket, user.getId() + "");
             // 赠送卡卷
-
         } else {
             if (user.getDetailId() == 0) {
-                userMapper.updUser(param);
+                userMapper.updUser(user);
             }
         }
         // 不为空 需要给  扫码用户 和 推荐用户发送模板消息

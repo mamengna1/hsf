@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>我的佣金</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <link rel="stylesheet" href="/_api/css/CSS.css?111" type="text/css"/>
+    <link rel="stylesheet" href="/_api/css/swiper.min.css" type="text/css"/>
+    <link rel="stylesheet" href="/_api/css/iconfont.css">
+    <script type="text/javascript" src="/_api/js/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="/_api/js/swiper.min.js"></script>
+    <script type="text/javascript">
+        var money;
+        var balanceScore;
+
+        // 判断输入的金额是否合法
+        function checkMoney() {
+            money = $("#money").val();
+            balanceScore = $("#balanceScore").html();
+            if (money < 2.0) {
+                alert("体现金额过少");
+                return false;
+            } else if (parseFloat(money) > parseFloat(balanceScore)) {
+                alert("超过了可提现金额");
+                return false;
+            }
+            return true;
+        }
+
+        function tijiao() {
+            if (!checkMoney()) {
+                return;
+            }
+            alert(money);
+            $.getJSON("/_api/insRecord", {"money": money}, function (data) {
+                if (data > 0) {
+                    $("#money").val("");
+                    $("#balanceScore").html(balanceScore - money);
+                    // alert("体现请求提交成功");
+                }
+            })
+        }
+    </script>
+</head>
+
+
+<body>
+
+<form action="">
+    <div class="yongjin">
+        <ul>
+            <li><a href="deposit.html"><em><i class="iconfont icon-redpacket"></i></em>
+                <p>总佣金<span id="totalScore">[[${totalScore}]]</span></p>
+            </a></li>
+            <li><a href="/_api/goBackList"><em><i class="iconfont icon-redpacket_fill"></i></em>
+                <p>可提现<span id="balanceScore">[[${balanceScore}]]</span></p>
+            </a></li>
+            <p class="p1">请输入提现金额</p>
+            <p class="p2"><input type="number" name="" id="money"
+                                 style="width:100%; text-align: left; line-height:40px; font-size:20px; border:0;"
+                                 placeholder="2元起提"></p>
+            <p class="p3"> <input type="button" id="btn_sbt" onclick="tijiao()" class="btn_sbt br3" value="提现到微信零钱包"></p>
+        </ul>
+    </div>
+</form>
+
+<div class="clear1"></div>
+
+<div class="sm">
+    <h1>提现须知：</h1>
+    <p>1、提现扣除10%服务费，T+1自动到账；</p>
+    <p>2、提现金额不得低于2元，每月最多3次；</p>
+</div>
+
+</body>
+</html>

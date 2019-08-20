@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--namespace:映射命名空间-->
+<mapper namespace="cn.hsf.hsf.mapper.back.CashBackMapper">
+
+    <resultMap id="selBackStatus" type="cn.hsf.hsf.pojo.back.CashBack">
+        <id property="id" column="id"/>
+        <result property="backStatusId" column="backStatusId"/>
+        <association property="backStatus" column="backStatusId" select="cn.hsf.hsf.mapper.back.BackStatusMapper.selById"/>
+    </resultMap>
+
+    <!--  List<CashBack> selAllByOpenId(String openId); -->
+    <select id="selAllByOpenId" resultMap="selBackStatus">
+        SELECT `id`, `openId`, `money`, `createDate`, `backStatusId`, `comment`
+        FROM `tb_cash_back`
+        WHERE openId = #{openId}
+    </select>
+
+    <!-- int insRecord(CashBack cashBack); -->
+    <insert id="insRecord">
+        INSERT INTO `tb_cash_back`(`id`, `openId`, `money`, `createDate`, `backStatusId`)
+        VALUES(DEFAULT, #{openId}, #{money}, NOW(), 1)
+    </insert>
+
+
+</mapper>

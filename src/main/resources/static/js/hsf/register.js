@@ -73,8 +73,6 @@ function checkForm() {
     }
 
     var yzm = $("#yzm").val();
-    var phone = $("#phone").val();
-
     if (bindCount < 3){
         if (yzm == code) {
             return true;

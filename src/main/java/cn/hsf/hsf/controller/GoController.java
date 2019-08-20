@@ -2,7 +2,9 @@ package cn.hsf.hsf.controller;
 
 import cn.hsf.hsf.commons.WxConstants;
 import cn.hsf.hsf.pojo.menu.*;
+import cn.hsf.hsf.pojo.user.User;
 import cn.hsf.hsf.pojo.user.UserSkill;
+import cn.hsf.hsf.service.back.CashBackService;
 import cn.hsf.hsf.service.user.UserDetailServiceImpl;
 import cn.hsf.hsf.service.user.UserService;
 import cn.hsf.hsf.utils.Send;
@@ -26,10 +28,14 @@ public class GoController {
     private UserDetailServiceImpl userDetailService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private CashBackService cashBackService;
 
     @RequestMapping("/goIndex")
     public String goIndex(Model model, HttpSession session) {
-        model.addAttribute("user", userService.selUserByOpenId((String) session.getAttribute("openId")));
+        User user = userService.selUserByOpenId((String) session.getAttribute("openId"));
+        System.out.println("返回前端的数据" + user);
+        model.addAttribute("user", user);
         return "index";
     }
 
@@ -45,8 +51,48 @@ public class GoController {
         return "register";
     }
 
+    @RequestMapping("/goBindPhone")
+    public String goBindPhone(HttpSession session, Model model) {
+        String phone = userService.selUserByOpenId((String) session.getAttribute("openId")).getPhone();
+        // "$1****$2"   $1 ：正则中的第一个\\d{3} $2 ：正则中的第二个
+        session.setAttribute("phone", phone != null ? phone.replaceAll("(\\d{3})\\d{4}(\\d{4})", "$1****$2") : phone);
+        return "bindingphone";
+    }
+
+    /**
+     * 去 二维码页面
+     *
+     * @return
+     */
+    @RequestMapping("/goMyEWN")
+    public String goMyEWN() {
+        return "myewm";
+    }
+
+    /**
+     * 根据openId查出  佣金和 可体现金额  去到  佣金页
+     *
+     * @param session
+     * @return
+     */
+    @RequestMapping("/goYongJin")
+    public String backMoney(HttpSession session, Model model) {
+
+        String openId = (String) session.getAttribute("openId");
+        User user = userService.selUserByOpenId(openId);
+        model.addAttribute("totalScore", user.getTotalScore());
+        model.addAttribute("balanceScore", user.getBalanceScore());
+        return "yongjin";
+    }
+
+    @RequestMapping("/goBackList")
+    public String goBackList(Model model, HttpSession session){
+        model.addAttribute("list", cashBackService.selAllByOpenId((String) session.getAttribute("openId")));
+        return "backList";
+    }
+
     @RequestMapping("/goTemp")
-    public String goTemp(){
+    public String goTemp() {
         return "temp";
     }
 

@@ -426,12 +426,17 @@ var provinceTag = document.getElementById("placeProvince");
 var cityTag = document.getElementById("placeCity");
 var areaTag = document.getElementById("placeArea");
 
+var workProvinceTag = document.getElementById("workProvince");
+var workCityTag = document.getElementById("workCity");
+var workAreaTag = document.getElementById("workArea");
+
 
 for(var i=0; i<provinceList.length; i++){
     var province = provinceList[i];
     var provinceName = province.name;
     provinceArray[i]=provinceName;
     provinceTag.add(new Option(provinceName,i));
+    workProvinceTag.add(new Option(provinceName,i));
 }
 
 
@@ -490,6 +495,64 @@ function chooseCity(tag){
             for(var a=0; a<areaList.length; a++){
                 var area = areaList[a];
                 areaTag.add(new Option(area,a));
+            }
+        }
+    }
+}
+
+//选择省
+function chooseProvince2(th){
+    var index = th.selectedIndex-1;
+    alert(index)
+    if (index == -1) {
+        workCityTag.innerHTML="";
+        workCityTag.add(new Option("选择市",-1));
+        workAreaTag.innerHTML="";
+        workAreaTag.add(new Option("所有区县",-1));
+        return;
+    }
+    var provinceName = provinceArray[index];
+
+    for(var n=0; n<provinceList.length; n++){
+        var provice = provinceList[n];
+        if (provice.name == provinceName){
+            cityList = provice.cityList;
+            workCityTag.innerHTML="";
+            for(var c=0; c<cityList.length; c++){
+                var city = cityList[c];
+                var cityName = city.name;
+                cityArray[c] = cityName;
+                workCityTag.add(new Option(cityName,c));
+            }
+        }
+    }
+    var cityName = cityArray[0];
+    var city1 = cityList[0];
+    var areaList = city1.areaList;
+    workAreaTag.innerHTML="";
+    for(var a=0; a<areaList.length; a++){
+        var area = areaList[a];
+        workAreaTag.add(new Option(area,a));
+    }
+}
+//选择市
+function chooseCity2(tag){
+    var index2 = tag.selectedIndex;
+    if (index2 == -1) {
+        workAreaTag.innerHTML="";
+        workAreaTag.add(new Option("所有区县",-1));
+        return;
+    }
+    alert(index2)
+    var cityName = cityArray[index2];
+    for(var m=0; m<cityList.length; m++){
+        var city1 = cityList[m];
+        if (city1.name == cityName){
+            var areaList = city1.areaList;
+            workAreaTag.innerHTML="";
+            for(var a=0; a<areaList.length; a++){
+                var area = areaList[a];
+                workAreaTag.add(new Option(area,a));
             }
         }
     }

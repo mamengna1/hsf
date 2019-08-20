@@ -1,113 +1,155 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-	<head>
-		<meta charset="utf-8">
-		<title>个人中心</title>
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-		<meta name="description" content="">
-		<meta name="keywords" content="">
-		<link rel="stylesheet" href="/_api/css/CSS.css" type="text/css" />
-		<link rel="stylesheet" href="/_api/css/swiper.min.css" type="text/css" />
-		<link rel="stylesheet" href="/_api/css/iconfont.css">
-		<script type="text/javascript" src="/_api/js/jquery-3.4.1.min.js"></script>
-		<script type="text/javascript" src="/_api/js/swiper.min.js"></script>
-	</head>
-	<style>	
-		label {font-size:14px;cursor:pointer;}
-		label i {font-size:14px;font-style:normal;display:inline-block; text-align:center;line-height:25px; color:#fff; background:#666; border:1px #666 solid; vertical-align:middle; border-radius:3px; padding:0 5px; }
-		input[type="checkbox"],input[type="radio"] {display:none;}
-		input[type="radio"] + i {border-radius:7px;}
-		input[type="checkbox"]:checked + i,input[type="radio"]:checked + i {background:#25c400; color:#fff; border:1px #25c400 solid;}
-		input[type="checkbox"]:disabled + i,input[type="radio"]:disabled + i {border-color:#fff;}
-		input[type="checkbox"]:checked:disabled + i,input[type="radio"]:checked:disabled + i {background:#ccc;}
-	</style>
-	<body style="background:#f5f5f5">
-		<section class="user">
-			<div class="user_info">
-				<p class="user_img"><A href=""><img th:src="${user.headPic}" class="br50"></A></p>
-				<p class="user_p1">
-					<script language="javaScript">
-						now = new Date(), hour = now.getHours()
-						if (hour < 6) {
-							document.write("凌晨好！")
-						} else if (hour < 9) {
-							document.write("早上好！")
-						} else if (hour < 12) {
-							document.write("上午好！")
-						} else if (hour < 14) {
-							document.write("中午好！")
-						} else if (hour < 17) {
-							document.write("下午好！")
-						} else if (hour < 19) {
-							document.write("傍晚好！")
-						} else if (hour < 22) {
-							document.write("晚上好！")
-						} else {
-							document.write("很晚了！")
-						}
-					</script>
-					[[${user.nickName}]]
-				</p>
-				<p class="user_p2">会员ID号：<span style="font-size:16px;  color:#666;">
+<head>
+    <meta charset="utf-8">
+    <title>个人中心</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <link rel="stylesheet" href="/_api/css/CSS.css" type="text/css"/>
+    <link rel="stylesheet" href="/_api/css/swiper.min.css" type="text/css"/>
+    <link rel="stylesheet" href="/_api/css/iconfont.css">
+    <script type="text/javascript" src="/_api/js/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="/_api/js/swiper.min.js"></script>
+</head>
+<style>
+    label {
+        font-size: 14px;
+        cursor: pointer;
+    }
+
+    label i {
+        font-size: 14px;
+        font-style: normal;
+        display: inline-block;
+        text-align: center;
+        line-height: 25px;
+        color: #fff;
+        background: #666;
+        border: 1px #666 solid;
+        vertical-align: middle;
+        border-radius: 3px;
+        padding: 0 5px;
+    }
+
+    input[type="checkbox"], input[type="radio"] {
+        display: none;
+    }
+
+    input[type="radio"] + i {
+        border-radius: 7px;
+    }
+
+    input[type="checkbox"]:checked + i, input[type="radio"]:checked + i {
+        background: #25c400;
+        color: #fff;
+        border: 1px #25c400 solid;
+    }
+
+    input[type="checkbox"]:disabled + i, input[type="radio"]:disabled + i {
+        border-color: #fff;
+    }
+
+    input[type="checkbox"]:checked:disabled + i, input[type="radio"]:checked:disabled + i {
+        background: #ccc;
+    }
+</style>
+<script type="text/javascript">
+    $(":checkbox").change(function () {
+        alert("进阿里了");
+        $(this).prop('checked', !$(this).prop('checked') ? '正在接单中' : '已停止接单');
+    })
+</script>
+<body style="background:#f5f5f5">
+<section class="user">
+    <div class="user_info">
+        <p class="user_img"><A href=""><img th:src="${user.headPic}" class="br50"></A></p>
+        <p class="user_p1">
+            <script language="javaScript">
+                now = new Date(), hour = now.getHours()
+                if (hour < 6) {
+                    document.write("凌晨好！")
+                } else if (hour < 9) {
+                    document.write("早上好！")
+                } else if (hour < 12) {
+                    document.write("上午好！")
+                } else if (hour < 14) {
+                    document.write("中午好！")
+                } else if (hour < 17) {
+                    document.write("下午好！")
+                } else if (hour < 19) {
+                    document.write("傍晚好！")
+                } else if (hour < 22) {
+                    document.write("晚上好！")
+                } else {
+                    document.write("很晚了！")
+                }
+            </script>
+            [[${user.nickName}]]
+        </p>
+        <p class="user_p2">会员ID号：<span style="font-size:16px;  color:#666;">
 						[[${user.id}]]</span></p>
-				<p class="user_p3">会员身份：
-					<em style="padding-left:8px; padding-right:8px; background:#e7141b; color:#fff;border-radius:15px; line-height:23px; display:inline-block;">[[${user.detailId == 0 ? '普通用户' : '师傅'}]]</em>&nbsp;&nbsp; &nbsp;&nbsp;
-					<label th:if="${user.detailId ne 0 && user.userDetail.lineStatus == 1}">
-						<input type="checkbox" name="checkbox" /><i>正在接单中</i>
-					</label>
-					<label th:if="${user.detailId ne 0 && user.userDetail.lineStatus == 0}">
-						<input type="checkbox" name="checkbox" /><i>已停止接单</i>
-					</label>
-				</p>
-				<p class="more_act"><a href="/myewm"><i class="fa fa-qrcode" style="color:#666;"></i> </a>　<a href="my_info.html"><i
-						 class="fa fa-angle-right" style="color:#ddd;"></i></a></p>
-			</div>
-		</section>
+        <p class="user_p3">会员身份：
+            <em style="padding-left:8px; padding-right:8px; background:#e7141b; color:#fff;border-radius:15px; line-height:23px; display:inline-block;">[[${user.detailId
+                == 0 ? '普通用户' : '师傅'}]]</em>&nbsp;&nbsp; &nbsp;&nbsp;
+            <label th:if="${user.detailId ne 0 && user.userDetail.lineStatus == 1}">
+                <input type="checkbox" name="checkbox" checked="checked"/><i>正在接单中</i>
+            </label>
+            <label th:if="${user.detailId ne 0 && user.userDetail.lineStatus == 0}">
+                <input type="checkbox" name="checkbox"/><i>已停止接单</i>
+            </label>
+        </p>
+        <p class="more_act"><a href="/myewm"><i class="fa fa-qrcode" style="color:#666;"></i> </a>　<a
+                href="my_info.html"><i
+                class="fa fa-angle-right" style="color:#ddd;"></i></a></p>
+    </div>
+</section>
 
-		<div class="c20" style="height:30px;"></div>
-		<!--<section class="user30">
-			<p class="user_pm_title">功能菜单</p>
-		</section>
-		-->
-		<section class="user_pm_list_1">
-			<ul>
-				<li><a href="deposit.html"><em><i class="iconfont icon-systemprompt"></i></em>
-						<p>接单中心</p>
-					</a></li>
-				<li><a href="/_api/zsf/goZsfView"><em><i class="iconfont icon-people"></i></em>
-						<p>找师傅</p>
-					</a></li>
-				<li><a href="/_api/goBindPhone"><em><i class="iconfont icon-mobilephone"></i></em>
-						<p>手机绑定</p>
-					</a></li>
-				<li><a href="my_gift_order.html"><em><i class="iconfont icon-coordinates"></i></em>
-						<p>我的工友</p>
-					</a></li>
-				<li><a href="zhuce.html"><em><i class="iconfont icon-setup"></i></em>
-						<p>修改资料</p>
-					</a></li>
-				<li><a href="/_api/goMyEWN"><em><i class="iconfont icon-qrcode"></i></em>
-						<p>推广海报</p>
-					</a></li>
-				<li><a href="/_api/goYongJin"><em><i class="iconfont icon-redpacket_fill"></i></em>
-						<p>推广佣金</p>
-					</a></li>
-				<li><a href="my_consume_ewm.html"><em><i class="iconfont icon-message"></i></em>
-						<p>发布案例</p>
-					</a></li>
-			</ul>
-			<div style="clear:both;"></div>
-		</section>
+<div class="c20" style="height:30px;"></div>
+<!--<section class="user30">
+    <p class="user_pm_title">功能菜单</p>
+</section>
+-->
+<section class="user_pm_list_1">
+    <ul>
+        <li><a href="deposit.html"><em><i class="iconfont icon-systemprompt"></i></em>
+            <p>接单中心</p>
+        </a></li>
+        <li><a href="/_api/zsf/goZsfView"><em><i class="iconfont icon-people"></i></em>
+            <p>找师傅</p>
+        </a></li>
+        <li><a href="/_api/goBindPhone"><em><i class="iconfont icon-mobilephone"></i></em>
+            <p>手机绑定</p>
+        </a></li>
+        <li><a href="my_gift_order.html"><em><i class="iconfont icon-coordinates"></i></em>
+            <p>我的工友</p>
+        </a></li>
+        <li><a href="zhuce.html"><em><i class="iconfont icon-setup"></i></em>
+            <p>修改资料</p>
+        </a></li>
+        <li><a href="/_api/goMyEWN"><em><i class="iconfont icon-qrcode"></i></em>
+            <p>推广海报</p>
+        </a></li>
+        <li><a href="/_api/goYongJin"><em><i class="iconfont icon-redpacket_fill"></i></em>
+            <p>推广佣金</p>
+        </a></li>
+        <li><a href="my_consume_ewm.html"><em><i class="iconfont icon-message"></i></em>
+            <p>发布案例</p>
+        </a></li>
+    </ul>
+    <div style="clear:both;"></div>
+</section>
 
-		<div style="height:80px;"></div>
+<div style="height:80px;"></div>
 
-		<footer>
-			<ul class="menu">
-				<li><a href="/"><i class="iconfont icon-homepage"></i>我要接活</a></li>
-				<li><a href="/mall/cart.html"><i class="iconfont icon-gouwuche"></i>我要找师傅</a></li>
-				<li><a href="/user/"><i class="iconfont icon-people"></i>个人中心</a></li>
-			</ul>
-		</footer>
+<footer>
+    <ul class="menu">
+        <li><a href="/"><i class="iconfont icon-homepage"></i>我要接活</a></li>
+        <li><a href="/mall/cart.html"><i class="iconfont icon-gouwuche"></i>我要找师傅</a></li>
+        <li><a href="/user/"><i class="iconfont icon-people"></i>个人中心</a></li>
+    </ul>
+</footer>
 
-	</body>
+</body>
 </html>

@@ -1,37 +1,37 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-	<head>
-		<meta charset="utf-8">
-		<title>我的佣金</title>
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-		<meta name="description" content="">
-		<meta name="keywords" content="">
-		<link rel="stylesheet" href="/_api/css/CSS.css?111" type="text/css" />
-		<link rel="stylesheet" href="/_api/css/swiper.min.css" type="text/css" />
-		<link rel="stylesheet" href="/_api/css/iconfont.css">
-		<script type="text/javascript" src="/_api/js/jquery-3.4.1.min.js"></script>
-		<script type="text/javascript" src="/_api/js/swiper.min.js"></script>
+<head>
+    <meta charset="utf-8">
+    <title>我的佣金</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <link rel="stylesheet" href="/_api/css/CSS.css?111" type="text/css"/>
+    <link rel="stylesheet" href="/_api/css/swiper.min.css" type="text/css"/>
+    <link rel="stylesheet" href="/_api/css/iconfont.css">
+    <script type="text/javascript" src="/_api/js/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="/_api/js/swiper.min.js"></script>
 
-	</head>
-
-
-	<body>
+</head>
 
 
-		<div class="clear1"></div>
+<body>
+<div class="clear1"></div>
 
-		<div class="txlist">
+<div class="txlist">
+    <h1>提现记录</h1>
+    <p th:each="cash : ${list}">
+        <span th:if="cash.backStatusId == 1">
+            <em th:text="${#dates.format(cash.createDate, 'yyyy-MM-dd')}"></em>￥[[${cash.money}]]<span> <i
+                class="iconfont icon-time"></i> [[${cash.backStatus.backStatusName}]]</span>
+        </span>
+        <span th:if="cash.backStatusId ne 1">
+            <em th:text="${#dates.format(cash.createDate, 'yyyy-MM-dd')}"></em>￥[[${cash.money}]]<span> <i
+                class="iconfont icon-success_fill"></i> [[${cash.backStatus.backStatusName}]]</span>
+        </span>
+    </p>
+</div>
 
-			<h1>提现记录</h1>
-			<p th:each="cash : ${list}">
-				<span th:if="cash.backStatusId == 1">
-                    <em th:text="${#dates.format(cash.createDate, 'yyyy-MM-dd')}"></em>￥[[${cash.money}]]<span> <i class="iconfont icon-time"></i> [[${cash.backStatus.backStatusName}]]</span>
-				</span>
-                <span th:if="cash.backStatusId ne 1">
-                    <em th:text="${#dates.format(cash.createDate, 'yyyy-MM-dd')}"></em>￥[[${cash.money}]]<span> <i class="iconfont icon-success_fill"></i> [[${cash.backStatus.backStatusName}]]</span>
-				</span>
-			</p>
-		</div>
-
-	</body>
+</body>
 </html>

@@ -23,7 +23,7 @@ public class RegisterController {
         System.out.println("师傅信息" + userDetail);
         userDetailService.insUserDetail(userDetail);
         userService.updUser(new User((String) session.getAttribute("openId"), phone, userDetail.getId()));
-        return "/_api/index";
+        return "redirect:/_api/goIndex";
     }
 
 }

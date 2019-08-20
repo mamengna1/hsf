@@ -86,7 +86,6 @@
     wx.ready(function () {
         $.ajaxSettings.async = true;
         $("#card1,#card2").click(function () {
-            alert("点击了")
             var $btn = $(this);
             wx.chooseImage({
                 count: 1, // 最多可以选择的图片张数，默认9
@@ -100,7 +99,6 @@
                         success: function (result) {
                             var serverId = result.serverId; // 返回图片的服务器端ID
                             $.getJSON("/_api/saveImage", {"url": serverId}, function (res) {
-                                alert("res : " + res.message);
                                 $btn.attr("src", res.message);
                             });
                         }
@@ -188,7 +186,6 @@
             <li style="height:90px; padding-top:10px;">
                 <img src="http://java.86blue.cn/images/card2.png" id="card2" name="cardOne" width="150px" height="80px"/>
             </li>
-
             <li>
                 <input type="text" name="phone" id="phone" class="priceinput" placeholder="请输入手机号码" value="">
                 <input type="button" class="btn_getyzm br3 active" id="send" onclick="sendMessage()" value="获取验证码" data-type="1">

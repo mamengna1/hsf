@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>师傅入驻申请</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <link rel="stylesheet" href="/_api/css/CSS.css" type="text/css"/>
+    <link rel="stylesheet" href="/_api/css/swiper.min.css" type="text/css"/>
+    <link rel="stylesheet" href="/_api/css/iconfont.css">
+    <script type="text/javascript" src="/_api/js/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="/_api/js/swiper.min.js"></script>
+    <script type="text/javascript" src="/_api/js/hsf/register.js"></script>
+    <script type="text/javascript" src="/_api/js/common/util.js"></script>
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+</head>
+
+<style>
+    label {
+        font-size: 14px;
+        cursor: pointer;
+    }
+
+    label i {
+        font-size: 14px;
+        font-style: normal;
+        display: inline-block;
+        text-align: center;
+        line-height: 25px;
+        color: #333;
+        border: 1px #ddd solid;
+        vertical-align: middle;
+        border-radius: 3px;
+        padding: 0 5px;
+    }
+
+    input[type="checkbox"], input[type="radio"] {
+        display: none;
+    }
+
+    input[type="radio"] + i {
+        border-radius: 7px;
+    }
+
+    input[type="checkbox"]:checked + i, input[type="radio"]:checked + i {
+        background: #25c400;
+        color: #fff;
+        border: 1px #25c400 solid;
+    }
+
+    input[type="checkbox"]:disabled + i, input[type="radio"]:disabled + i {
+        border-color: #fff;
+    }
+
+    input[type="checkbox"]:checked:disabled + i, input[type="radio"]:checked:disabled + i {
+        background: #ccc;
+    }
+</style>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var url = location.href.split('#')[0];
+        $.ajaxSettings.async = false;
+        $.getJSON("/_api/getImage", {"path": url}, function (data) {
+            wx.config({
+                debug: false, // 因为在手机上测试没法打印，当debug为true时，所有的返回值都会在手机上alert出来
+                appId: "wx8bf85bd98eaddb86", // 必填，公众号唯一标识
+                timestamp: data.timestamp, // 必填，生成签名的时间戳
+                nonceStr: data.nonceStr, // 必填，生成签名的随机串
+                signature: data.signature,// 必填，签名
+                jsApiList: ['chooseImage', 'uploadImage'] // 必填，需要使用的JS接口列表，需要用到什么接口就去开发者文档查看相应的字段名
+            });
+        })
+        // 取页面路径的某个字段所对应的参数
+        var AppId = "wx8bf85bd98eaddb86";
+        var code = getUrlParam('code');
+        var local = window.location.href;
+        // 重新刷一遍页面
+        if (code == null || code == '') {
+            window.location.href = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + AppId + "&redirect_uri=" + encodeURIComponent(local) + "&response_type=code&scope=snsapi_base&state=1#wechat_redirect"
+        } else {
+            getOpenId(code);
+        }
+    });
+    wx.ready(function () {
+        $.ajaxSettings.async = true;
+        $("#card1,#card2").click(function () {
+            alert("点击了")
+            var $btn = $(this);
+            wx.chooseImage({
+                count: 1, // 最多可以选择的图片张数，默认9
+                sizeType: ['original', 'compressed'], // original 原图，compressed 压缩图，默认二者都有
+                sourceType: ['album', 'camera'], // album 从相册选图，camera 使用相机，默认二者都有
+                success: function (res) {
+                    var localIds = res.localIds; // 返回选定照片的本地ID列表（手机上操作就是手机端的ID列表，是一个数组），localId可以作为img标签的src属性显示图片
+                    wx.uploadImage({
+                        localId: localIds[0], // 需要上传的图片的本地ID，由chooseImage接口获得
+                        isShowProgressTips: 2, // 默认为1，显示进度提示
+                        success: function (result) {
+                            var serverId = result.serverId; // 返回图片的服务器端ID
+                            $.getJSON("/_api/saveImage", {"url": serverId}, function (res) {
+                                alert("res : " + res.message);
+                                $btn.attr("src", res.message);
+                            });
+                        }
+                    });
+                },
+                fail: function () {
+                    alert("失败");
+                },
+                complete: function () {
+                    // alert("完成")
+                }
+            });
+        })
+    });
+</script>
+<body>
+
+<div class="myinfoform">
+    <form action="/_api/insUserDetail" method="post" name="" id="registerForm" onsubmit="return checkForm()">
+        <ul>
+
+            <li><input type="text" name="name" id="name" class="priceinput" value="" placeholder="输入您的真实姓名"></li>
+            <li><input type="text" name="card" id="card" class="priceinput" value="" placeholder="输入您的身份证号码"></li>
+            <li>
+                <p>常住地址：</p>
+            </li>
+            <li style="height:45px;">
+                <select name="placeProvince" id="placeProvince" class="select1" onchange="chooseProvince(this)">
+                        <option value="-1">选择省</option>
+                </select>
+                <select  name="placeCity" id="placeCity" class="select1" onChange="chooseCity(this)">
+                        <option value="-1">选择市</option>
+                </select>
+                <select  name="placeArea" id="placeArea" class="select1">
+                        <option value="-1">选择区县</option>
+                </select>
+            </li>
+            <li><input type="text" name="address" id="address" class="priceinput" value=""
+                       placeholder="输入详细住址(不含省市区县)"></li>
+            <li>
+                <p>选择工种：(最多可选择3项)</p>
+            </li>
+            <li style="height: auto; padding-left:2%;">
+                <label th:each="skill : ${skills}"><input type="checkbox" class="skills" name="skills"><i>[[${skill.skillName}]]</i></label>
+            </li>
+            <li>
+                <p>从业年限：</p>
+            </li>
+            <li style="height:45px;">
+                <select name="education" id="education" class="priceinput" style=" background:#fff;">
+                    <option value="-1">选择您的从业年限</option>
+                    <option value="1">1年</option>
+                    <option value="2">2年</option>
+                    <option value="3">3年</option>
+                    <option value="5">5年以上</option>
+                    <option value="10">10年以上</option>
+                </select>
+            </li>
+            <li>
+                <p>当前可服务区域：</p>
+            </li>
+            <li style="height:45px;">
+                <select name="workProvince" id="workProvince" class="select1">
+                    <option value="">选择省</option>
+                    <option value="1">浙江省</option>
+                </select>
+                <select name="workCity" id="workCity" class="select1">
+                    <option value="">选择市</option>
+                    <option value="2">宁波市</option>
+                </select>
+                <select name="workArea" id="workArea" class="select1">
+                    <option value="">所有区县</option>
+                    <option value="3">鄞州区</option>
+                </select>
+            </li>
+            <li>
+                <p>上传身份证正面照：</p>
+            </li>
+            <li style="height:90px; padding-top:10px;">
+                <img src="http://java.86blue.cn/images/card1.png" id="card1" name="cardOne" width="150px" height="80px"/>
+            </li>
+            <li>
+                <p>上传身份证反面照：</p>
+            </li>
+            <li style="height:90px; padding-top:10px;">
+                <img src="http://java.86blue.cn/images/card2.png" id="card2" name="cardOne" width="150px" height="80px"/>
+            </li>
+
+            <li>
+                <input type="text" name="phone" id="phone" class="priceinput" placeholder="请输入手机号码" value="">
+                <input type="button" class="btn_getyzm br3 active" id="send" onclick="sendMessage()" value="获取验证码" data-type="1">
+            </li>
+            <li>
+                <input type="tel" name="yzm" id="yzm" class="priceinput" value="" placeholder="请填写手机验证码" maxlength="6">
+                <span id="temp"></span>
+            </li>
+            <li>
+                <input type="submit" name="btn_sbt" id="btn_sbt" class="btn_sbt br3" style="margin-top:20px;" value="提交">
+            </li>
+        </ul>
+    </form>
+</div>
+
+
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<script type="text/javascript" src="/_api/js/common/area2.js"></script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--namespace:映射命名空间-->
+<mapper namespace="cn.hsf.hsf.mapper.user.UserDetailMapper">
+
+    <!--    UserDetail selById(Integer id); -->
+    <select id="selById" resultType="cn.hsf.hsf.pojo.user.UserDetail">
+        SELECT `id`, `name`, `card`, `placeProvince`, `placeCity`, `placeArea`, `address`, `cardOne`, `cardTwo`, `skills`, `workProvince`, `workCity`, `workArea`, `status`
+        FROM `tb_user_detail`
+        WHERE id = #{id}
+    </select>
+
+    <!--  int insUserDetail(UserDetail userDetail); -->
+    <insert id="insUserDetail" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `tb_user_detail`(`id`, `name`, `card`, `placeProvince`, `placeCity`, `placeArea`, `address`, `cardOne`, `cardTwo`, `skills`, `workProvince`, `workCity`, `workArea`, `status`, lineStatus)
+        VALUES(DEFAULT, #{name}, #{card},#{placeProvince}, #{placeCity}, #{placeArea}, #{address}, #{cardOne}, #{cardTwo}, #{skills}, #{workProvince}, #{workCity}, #{workArea}, 0, 1)
+    </insert>
+
+</mapper>

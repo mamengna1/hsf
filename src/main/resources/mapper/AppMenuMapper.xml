@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--namespace:映射命名空间-->
+<mapper namespace="cn.hsf.hsf.mapper.app.AppMenuMapper">
+
+    <resultMap id="selMenuType" type="cn.hsf.hsf.pojo.app.AppMenu">
+        <id property="id" column="id"/>
+        <result property="menuTypeId" column="menuTypeId"/>
+        <association property="appMenuType" column="menuTypeId" select="cn.hsf.hsf.mapper.app.AppMenuTypeMapper.selById"/>
+    </resultMap>
+
+    <!-- List<AppMenu> selAll(); -->
+    <select id="selAll" resultMap="selMenuType">
+        SELECT `id`, `menuName`, `menuTypeId`, `parentMenuId`, `message`, `key`
+        FROM `tb_app_menu`
+        WHERE parentMenuId = #{id}
+    </select>
+
+    <!-- AppMenu selByKey(String key); -->
+    <select id="selByKey" resultType="cn.hsf.hsf.pojo.app.AppMenu">
+        SELECT `id`, `menuName`, `menuTypeId`, `parentMenuId`, `message`, `key`
+        FROM `tb_app_menu`
+        WHERE `key` = #{key}
+    </select>
+
+</mapper>

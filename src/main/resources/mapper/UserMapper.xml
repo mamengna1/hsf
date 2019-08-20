@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--namespace:映射命名空间-->
+<mapper namespace="cn.hsf.hsf.mapper.user.UserMapper">
+
+    <resultMap id="selUserDetail" type="cn.hsf.hsf.pojo.user.User">
+        <id property="id" column="id"/>
+        <result property="detailId" column="detailId"/>
+        <association property="userDetail" column="detailId" select="cn.hsf.hsf.mapper.user.UserDetailMapper.selById"/>
+    </resultMap>
+
+    <!--  User selUserByOpenId(String openId); -->
+    <select id="selUserByOpenId" resultMap="selUserDetail">
+        SELECT *
+        FROM `tb_user`
+        WHERE openId = #{openId}
+    </select>
+
+    <!-- int insUser(User user); -->
+    <insert id="insUser" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `tb_user`(`nickName`,`openId`,`sex`,`headPic`,`country`,`province`,`city`,`isSub`,`memberType`,`totalMoney`,`balanceMoney`,`totalScore`,`balanceScore`,`userParent`,`createDate`,`detailId`)
+        VALUES(#{nickName},#{openId},#{sex},#{headPic},#{country},#{province},#{city},1,1,0,0,10,10,#{userParent},NOW(),0)
+    </insert>
+
+    <!-- int updUser(User user); -->
+    <update id="updUser">
+        UPDATE `tb_user`
+        <set>
+            <if test="nickName != null and nickName != ''">
+                nickName = #{nickName},
+            </if>
+            <if test="sex != null and sex != ''">
+                sex = #{sex},
+            </if>
+            <if test="country != null and country != ''">
+                country = #{country},
+            </if>
+            <if test="city != null and city != ''">
+                city = #{city},
+            </if>
+            <if test="isSub != null and isSub != ''">
+                isSub = #{isSub},
+            </if>
+            <if test="headPic != null and headPic != ''">
+                headPic = #{headPic},
+            </if>
+            <if test="phone != null and phone != ''">
+                phone = #{phone},
+            </if>
+            <if test="totalMoney != null and totalMoney != ''">
+                totalMoney = totalMoney + #{totalMoney},
+                balanceMoney = balanceMoney + #{totalMoney},
+            </if>
+            <if test="totalScore != null and totalScore != ''">
+                totalScore = totalScore + #{totalScore},
+                balanceScore = balanceScore + #{totalScore},
+            </if>
+            <if test="userParent != null and userParent != ''">
+                userParent = #{userParent},
+            </if>
+            <if test="detailId != null and detailId != ''">
+                detailId = #{detailId}
+            </if>
+        </set>
+        WHERE openId = #{openId}
+    </update>
+
+    <!--  int selByPhone(String phone); -->
+    <select id="selByPhone" resultType="int">
+        SELECT COUNT(1) FROM tb_user WHERE phone = #{phone}
+    </select>
+
+</mapper>

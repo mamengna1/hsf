@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--namespace:映射命名空间-->
+<mapper namespace="cn.hsf.hsf.mapper.sms.SendMessageMapper">
+
+    <!-- int insSms(SendMessage sendMessage); -->
+    <insert id="insSms">
+        INSERT INTO `tb_send_message`(`id`, `phone`, `code`, `message`, `ip`, `sendDate`)
+        VALUES(DEFAULT, #{phone}, #{code}, #{message}, #{ip}, #{sendDate})
+    </insert>
+
+
+</mapper>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--namespace:映射命名空间-->
+<mapper namespace="cn.hsf.hsf.mapper.user.UserReleaseMapper">
+
+    <insert id="insertUserRelease" parameterType="cn.hsf.hsf.pojo.user.UserRelease">
+        insert into `tb_user_release`(`title`,`nickName`,`phone`,`serviceProvince`,`serviceCity`,`serviceArea`,`serverDetail`,`appointTime`,`demand`,`createDate`,`state`,`receiveId`)
+        values(#{title},#{nickName},#{phone},#{serviceProvince},#{serviceCity},#{serviceArea},#{serverDetail},#{appointTime},#{demand},now(),0,#{receiveId})
+    </insert>
+
+</mapper>

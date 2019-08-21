@@ -86,6 +86,7 @@ public class CommonController {
             req.getSession().setAttribute("openId", openid);
             req.getSession().setAttribute("timestacp", System.currentTimeMillis());
             req.getSession().setAttribute("uid", user.getId());
+            req.getSession().setAttribute("detailId", user.getDetailId());
             resp.sendRedirect("/_api/goIndex");
         } catch (IOException e) {
             e.printStackTrace();

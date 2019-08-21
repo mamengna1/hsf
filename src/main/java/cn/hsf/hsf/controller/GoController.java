@@ -39,6 +39,11 @@ public class GoController {
         return "index";
     }
 
+    @RequestMapping("/goAwait")
+    public String goAwait(){
+        return "await";
+    }
+
 
     @RequestMapping("/user")
     public String goUser() {
@@ -48,6 +53,8 @@ public class GoController {
     @RequestMapping("/goRegister")
     public String goRegister(Model model) {
         model.addAttribute("skills", userDetailService.selAll());
+        System.out.println("年份 ： " + userDetailService.selYearAll());
+        model.addAttribute("yearWorks", userDetailService.selYearAll());
         return "register";
     }
 
@@ -89,6 +96,12 @@ public class GoController {
     public String goBackList(Model model, HttpSession session){
         model.addAttribute("list", cashBackService.selAllByOpenId((String) session.getAttribute("openId")));
         return "backList";
+    }
+
+    @RequestMapping("/goSource")
+    public String goSource(Model model, HttpSession session){
+        model.addAttribute("list", userService.selAllByOpeniId((String) session.getAttribute("openId")));
+        return "sourceList";
     }
 
     @RequestMapping("/goTemp")

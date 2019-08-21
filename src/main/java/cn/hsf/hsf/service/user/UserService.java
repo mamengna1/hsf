@@ -1,6 +1,9 @@
 package cn.hsf.hsf.service.user;
 
 import cn.hsf.hsf.pojo.user.User;
+import cn.hsf.hsf.pojo.user.UserScoreSource;
+
+import java.util.List;
 
 public interface UserService {
 
@@ -32,6 +35,14 @@ public interface UserService {
      */
     User selUserByOpenId(String openId);
 
+    /**
+     *  用户所有积分的来源
+     * @param openId
+     * @return
+     */
+    List<UserScoreSource> selAllByOpeniId(String openId);
+
+    int insScoreSource(UserScoreSource userScoreSource);
 
 
 }

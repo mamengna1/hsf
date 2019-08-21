@@ -6,17 +6,78 @@
 <!--namespace:映射命名空间-->
 <mapper namespace="cn.hsf.hsf.mapper.user.UserDetailMapper">
 
+    <resultMap id="selYear" type="cn.hsf.hsf.pojo.user.UserDetail">
+        <id property="id" column="id"/>
+        <result property="yearWorkId" column="yearWorkId"/>
+        <association property="yearWork" column="yearsWorkId" select="cn.hsf.hsf.mapper.user.UserDetailMapper.selYearById"/>
+    </resultMap>
+
     <!--    UserDetail selById(Integer id); -->
-    <select id="selById" resultType="cn.hsf.hsf.pojo.user.UserDetail">
-        SELECT `id`, `name`, `card`, `placeProvince`, `placeCity`, `placeArea`, `address`, `cardOne`, `cardTwo`, `skills`, `workProvince`, `workCity`, `workArea`, `status`, `lineStatus`
+    <select id="selById" resultMap="selYear">
+        SELECT `id`, `name`, `card`, `placeProvince`, `placeCity`, `placeArea`, `address`, `cardOne`, `cardTwo`, `skills`, `workProvince`, `workCity`, `workArea`, `status`, `lineStatus`, `yearWorkId`
         FROM `tb_user_detail`
         WHERE id = #{id}
     </select>
 
     <!--  int insUserDetail(UserDetail userDetail); -->
     <insert id="insUserDetail" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO `tb_user_detail`(`id`, `name`, `card`, `placeProvince`, `placeCity`, `placeArea`, `address`, `cardOne`, `cardTwo`, `skills`, `workProvince`, `workCity`, `workArea`, `status`, lineStatus)
-        VALUES(DEFAULT, #{name}, #{card},#{placeProvince}, #{placeCity}, #{placeArea}, #{address}, #{cardOne}, #{cardTwo}, #{skills}, #{workProvince}, #{workCity}, #{workArea}, 0, 1)
+        INSERT INTO `tb_user_detail`(`id`, `name`, `card`, `placeProvince`, `placeCity`, `placeArea`, `address`, `cardOne`, `cardTwo`, `skills`, `workProvince`, `workCity`, `workArea`, `status`, lineStatus,`yearWorkId`)
+        VALUES(DEFAULT, #{name}, #{card},#{placeProvince}, #{placeCity}, #{placeArea}, #{address}, #{cardOne}, #{cardTwo}, #{skills}, #{workProvince}, #{workCity}, #{workArea}, 0, 1, #{yearWorkId})
     </insert>
+
+    <!--    int updUserLineStatus(UserDetail userDetail); -->
+    <update id="updUserLineStatus">
+        UPDATE `tb_user_detail`
+        <set>
+            <if test="name != null and name != ''">
+                `name` = #{name},
+            </if>
+            <if test="card != null and card != ''">
+                `card` = #{card},
+            </if>
+            <if test="placeProvince != null and placeProvince != ''">
+                `placeProvince` = #{placeProvince},
+            </if>
+            <if test="placeCity != null and placeCity != ''">
+                `placeCity` = #{placeCity},
+            </if>
+            <if test="placeArea != null and placeArea != ''">
+                `placeArea` = #{placeArea},
+            </if>
+            <if test="address != null and address != ''">
+                `address` = #{address},
+            </if>
+            <if test="cardOne != null and cardOne != ''">
+                `cardOne` = #{cardOne},
+            </if>
+            <if test="cardTwo != null and cardTwo != ''">
+                `cardTwo` = #{cardTwo},
+            </if>
+            <if test="skills != null and skills != ''">
+                `skills` = #{skills},
+            </if>
+            <if test="workProvince != null and workProvince != ''">
+                `workProvince` = #{workProvince},
+            </if>
+            <if test="workCity != null and workCity != ''">
+                `workCity` = #{workCity},
+            </if>
+            <if test="workArea != null and workArea != ''">
+                `workArea` = #{workArea},
+            </if>
+            <if test="status != null and status != ''">
+                `status` = #{status},
+            </if>
+            <if test="lineStatus != null and lineStatus != ''">
+                `lineStatus` = #{lineStatus},
+            </if>
+        </set>
+        WHERE `id` = #{id}
+    </update>
+
+    <!-- List<UserYearWork> selYearById(Integer id); -->
+    <select id="selYearAll" resultType="cn.hsf.hsf.pojo.user.UserYearWork">
+        SELECT `id`, `yearName` FROM `tb_user_year_work` WHERE id = #{id}
+    </select>
 
 </mapper>

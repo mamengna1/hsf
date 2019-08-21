@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--namespace:映射命名空间-->
+<mapper namespace="cn.hsf.hsf.mapper.user.ScoreSourceTypeMapper">
+
+    <!-- ScoreSourceType selById(Integer id); -->
+    <select id="selById" resultType="cn.hsf.hsf.pojo.user.ScoreSourceType">
+        SELECT `id`, `sourceName` FROM `tb_score_source_type` WHERE id = #{id}
+    </select>
+
+
+</mapper>

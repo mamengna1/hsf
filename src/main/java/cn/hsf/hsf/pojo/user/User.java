@@ -33,6 +33,17 @@ public class User {
     public User() {
     }
 
+    public User(String nickName, String openId, Integer sex, String headPic, String country, String province, String city, String userParent) {
+        this.nickName = nickName;
+        this.openId = openId;
+        this.sex = sex;
+        this.headPic = headPic;
+        this.country = country;
+        this.province = province;
+        this.city = city;
+        this.userParent = userParent;
+    }
+
     public User(String nickName, String openId, Integer sex, String headPic, String country, String province, String city) {
         this.nickName = nickName;
         this.openId = openId;

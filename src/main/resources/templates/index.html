@@ -56,10 +56,15 @@
     }
 </style>
 <script type="text/javascript">
-    $(":checkbox").change(function () {
-        alert("进阿里了");
-        $(this).prop('checked', !$(this).prop('checked') ? '正在接单中' : '已停止接单');
+    $(function () {
+        $(":checkbox").click(function () {
+            $(this).next().html($(this).prop('checked') ? '正在接单中' : '已停止接单');
+            $.getJSON("/_api/updLineStatus", {"lineStatus": $(this).prop('checked') ? 1 : 0}, function (data) {
+                alert("状态修改成功");
+            })
+        })
     })
+
 </script>
 <body style="background:#f5f5f5">
 <section class="user">
@@ -91,12 +96,11 @@
         <p class="user_p2">会员ID号：<span style="font-size:16px;  color:#666;">
 						[[${user.id}]]</span></p>
         <p class="user_p3">会员身份：
-            <em style="padding-left:8px; padding-right:8px; background:#e7141b; color:#fff;border-radius:15px; line-height:23px; display:inline-block;">[[${user.detailId
-                == 0 ? '普通用户' : '师傅'}]]</em>&nbsp;&nbsp; &nbsp;&nbsp;
-            <label th:if="${user.detailId ne 0 && user.userDetail.lineStatus == 1}">
+            <em style="padding-left:8px; padding-right:8px; background:#e7141b; color:#fff;border-radius:15px; line-height:23px; display:inline-block;">[[${user.detailId != 0 && user.userDetail.status == 1 ? '师傅' : '普通用户'}]]</em>&nbsp;&nbsp; &nbsp;&nbsp;
+            <label th:if="${user.detailId ne 0 && user.userDetail.status == 1 && user.userDetail.lineStatus == 1}">
                 <input type="checkbox" name="checkbox" checked="checked"/><i>正在接单中</i>
             </label>
-            <label th:if="${user.detailId ne 0 && user.userDetail.lineStatus == 0}">
+            <label th:if="${user.detailId ne 0 && user.userDetail.status == 1 && user.userDetail.lineStatus == 0}">
                 <input type="checkbox" name="checkbox"/><i>已停止接单</i>
             </label>
         </p>

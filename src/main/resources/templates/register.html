@@ -12,8 +12,6 @@
     <link rel="stylesheet" href="/_api/css/iconfont.css">
     <script type="text/javascript" src="/_api/js/jquery-3.4.1.min.js"></script>
     <script type="text/javascript" src="/_api/js/swiper.min.js"></script>
-    <script type="text/javascript" src="/_api/js/hsf/register.js"></script>
-    <script type="text/javascript" src="/_api/js/common/util.js"></script>
     <script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
 </head>
 
@@ -120,7 +118,8 @@
 <div class="myinfoform">
     <form action="/_api/insUserDetail" method="post" name="" id="registerForm" onsubmit="return checkForm()">
         <ul>
-
+            <input type="hidden" name="status" id="status"/>
+            <input type="hidden" name="id" id="id"/>
             <li><input type="text" name="name" id="name" class="priceinput" value="" placeholder="输入您的真实姓名"></li>
             <li><input type="text" name="card" id="card" class="priceinput" value="" placeholder="输入您的身份证号码"></li>
             <li>
@@ -143,19 +142,16 @@
                 <p>选择工种：(最多可选择3项)</p>
             </li>
             <li style="height: auto; padding-left:2%;">
-                <label th:each="skill : ${skills}"><input type="checkbox" class="skills" name="skills"><i>[[${skill.skillName}]]</i></label>
+                <input type="hidden" id="skills" name="skills" value="" />
+                <label th:each="skill : ${skills}"><input type="checkbox" th:id="'skill' + ${skill.id}" th:attr="sid=${skill.id}" class="skills"><i>[[${skill.skillName}]]</i></label>
             </li>
             <li>
                 <p>从业年限：</p>
             </li>
             <li style="height:45px;">
-                <select name="education" id="education" class="priceinput" style=" background:#fff;">
+                <select name="yearWorkId" id="yearWorkId" class="priceinput" style=" background:#fff;">
                     <option value="-1">选择您的从业年限</option>
-                    <option value="1">1年</option>
-                    <option value="2">2年</option>
-                    <option value="3">3年</option>
-                    <option value="5">5年以上</option>
-                    <option value="10">10年以上</option>
+                    <option th:each="year : ${yearWorks}" th:value="${year.id}" th:text="${year.yearName}"></option>
                 </select>
             </li>
             <li>
@@ -176,14 +172,14 @@
                 <p>上传身份证正面照：</p>
             </li>
             <li style="height:90px; padding-top:10px;">
-                <input type="hidden" name="cardOne"/>
+                <input type="hidden" id="cardOne" name="cardOne"/>
                 <img src="http://java.86blue.cn/images/card1.png" id="card1" width="150px" height="80px"/>
             </li>
             <li>
                 <p>上传身份证反面照：</p>
             </li>
             <li style="height:90px; padding-top:10px;">
-                <input type="hidden" name="cardTwo"/>
+                <input type="hidden" id="cardTwo" name="cardTwo"/>
                 <img src="http://java.86blue.cn/images/card2.png" id="card2" width="150px" height="80px"/>
             </li>
             <li>
@@ -206,5 +202,7 @@
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <script type="text/javascript" src="/_api/js/common/area2.js"></script>
+<script type="text/javascript" src="/_api/js/hsf/register.js"></script>
+<script type="text/javascript" src="/_api/js/common/util.js"></script>
 </body>
 </html>

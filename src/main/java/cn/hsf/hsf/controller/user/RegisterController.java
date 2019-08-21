@@ -13,6 +13,8 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class RegisterController {
 
+    private static Double[] score = {5.0, 2.0};
+
     @Autowired
     private UserService userService;
     @Autowired
@@ -21,8 +23,15 @@ public class RegisterController {
     @RequestMapping("/insUserDetail")
     public String insUserDetail(UserDetail userDetail, String phone, HttpSession session) {
         System.out.println("师傅信息" + userDetail);
-        userDetailService.insUserDetail(userDetail);
-        userService.updUser(new User((String) session.getAttribute("openId"), phone, userDetail.getId()));
+        if (userDetail.getStatus() == 2) {
+            System.out.println("重新提交");
+            userDetail.setStatus(3);
+            userDetailService.updUserLineStatus(userDetail);
+        } else {
+            userDetailService.insUserDetail(userDetail);
+        }
+        String openId = (String) session.getAttribute("openId");
+        userService.updUser(new User(openId, phone, userDetail.getId()));
         return "redirect:/_api/goIndex";
     }
 

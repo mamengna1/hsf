@@ -30,15 +30,17 @@ function sendMessage() {
                 if (time == 60 && flag) {
                     flag = false;
                     $.getJSON("/_api/sendMessage", {"phone": phone, "isDef": isDef}, function (data) {
-                        if (data == "false") {
-                            $("#msg").html("该手机号已经绑定账号，请核对");
+                        alert(typeof data);
+                        if (!data) {
+                            alert("该手机号已经绑定账号，请核对");
+                            flag = true;
+                            time = 60;
+                            clearInterval(timer);
                             return;
                         }
                         count++;
                         // 验证码
                         code = data;
-                        flag = false;
-                        time = 60;
                     });
                 } else if (time == 0) {
                     $("#send").removeAttr("disabled");

@@ -32,6 +32,7 @@ public class SendMessageController {
     public String sendMessage(String phone, Boolean isDef) throws Exception {
         // 验证手机号是有已绑定其他账号
         int count = sendMessageService.selByPhone(phone);
+        System.out.println("COUNT : " + count + "    FLAG" + isDef);
         if (count > 0 && !isDef) {
             return "false";
         }

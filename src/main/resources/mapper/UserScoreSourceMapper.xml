@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--namespace:映射命名空间-->
+<mapper namespace="cn.hsf.hsf.mapper.user.UserScoreSourceMapper">
+
+    <resultMap id="selScoreSource" type="cn.hsf.hsf.pojo.user.UserScoreSource">
+        <id property="id" column="id"/>
+        <result property="scoreSourceId" column="scoreSourceId"/>
+        <association property="type" column="scoreSourceId" select="cn.hsf.hsf.mapper.user.ScoreSourceTypeMapper.selById"/>
+    </resultMap>
+
+    <!--  List<UserScoreSource> selAllByOpenId(String openId); -->
+    <select id="selAllByOpenId" resultMap="selScoreSource">
+        SELECT `id`, `openId`, `score`, `scoreSourceId`, `sourceOpenId`, `createDate`
+        FROM `tb_user_score_source`
+        WHERE openId = #{openId}
+    </select>
+
+    <!--    int insScoreSource(UserScoreSource userScoreSource); -->
+    <insert id="insScoreSource">
+        INSERT INTO `tb_user_score_source`(`id`, `openId`, `score`, `scoreSourceId`, `sourceOpenId`, `createDate`)
+        VALUES(DEFAULT, #{openId}, #{score}, #{scoreSourceId}, #{sourceOpenId}, NOW())
+    </insert>
+
+</mapper>

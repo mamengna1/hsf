@@ -20,6 +20,9 @@ public class UserDetail {
     private Integer workArea;
     private Integer status;
     private Integer lineStatus;
+    private Integer yearWorkId;
+
+    private UserYearWork yearWork;
 
     @Override
     public String toString() {
@@ -39,7 +42,25 @@ public class UserDetail {
                 ", workArea=" + workArea +
                 ", status=" + status +
                 ", lineStatus=" + lineStatus +
+                ", yearWorkId=" + yearWorkId +
+                ", yearWork=" + yearWork +
                 '}';
+    }
+
+    public Integer getYearWorkId() {
+        return yearWorkId;
+    }
+
+    public void setYearWorkId(Integer yearWorkId) {
+        this.yearWorkId = yearWorkId;
+    }
+
+    public UserYearWork getYearWork() {
+        return yearWork;
+    }
+
+    public void setYearWork(UserYearWork yearWork) {
+        this.yearWork = yearWork;
     }
 
     public Integer getLineStatus() {

@@ -42,4 +42,9 @@ public class UserReleaseController {
         System.out.println(userRelease);
         return releaseService.insertUserRelease(userRelease) > 0 ? true : false;
     }
+
+    @RequestMapping("/goMapView")
+    public String goMapView(){
+        return "MapView";
+    }
 }

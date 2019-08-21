@@ -58,7 +58,7 @@
 					</select>
 				</div>
 			</li>
-			<li style="border:0"><textarea name="textarea" id="textarea" class="area_txt" value="" placeholder="备注您的需求(30字内)" sstyle="height: 100px;width: 800px;resize: none;"></textarea></li>
+			<li style="border:0"><textarea name="textarea" id="textarea" class="area_txt" value="" placeholder="备注您的需求(30字内)" style="height: 120px;width: 400px;resize: none;"></textarea></li>
 			<li style="border:0; text-align: right;">0/30</li>
 			<li><input type="button" name="btn_bd_mobile" id="btn_bd_mobile" class="btn_sbt br3" value="立即发布"></li>
 		</ul>
@@ -94,17 +94,7 @@
 			alert("预约时间必须在今日之后！");
 			return false;
 		}else {
-			$.getJSON("/_api/zsf/insUserRelease", {
-				"title": title,
-				"nickName": nickName,
-				"phone": phone,
-				"serviceProvince": serviceProvince,
-				"serviceCity": serviceCity,
-				"serviceArea": serviceArea,
-				"serverDetail": serverDetail,
-				"appointTime": appointTime,
-				"demand": demand
-			}, function (data) {
+			$.getJSON("/_api/zsf/insUserRelease", {"title": title, "nickName": nickName, "phone": phone, "serviceProvince": serviceProvince, "serviceCity": serviceCity, "serviceArea": serviceArea, "serverDetail": serverDetail, "appointTime": appointTime, "demand": demand}, function (data) {
 				if (data == true) {
 					alert("发布成功！")
 				} else {

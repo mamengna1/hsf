@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <link rel="stylesheet" href="/_api/css/CSS.css" type="text/css"/>
+    <link rel="stylesheet" href="/_api/css/swiper.min.css" type="text/css"/>
+    <link rel="stylesheet" href="/_api/css/iconfont.css">
+    <script type="text/javascript" src="/_api/js/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="/_api/js/swiper.min.js"></script>
+    <script type="text/javascript" src="/_api/js/hsf/register.js"></script>
+    <script type="text/javascript" src="/_api/js/common/util.js"></script>
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+</head>
+<body>
+
+    <p id="mapAddress"> 浙江省宁波市鄞州区万里学院</p>
+
+
+</body>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var url = location.href.split('#')[0];
+        $.ajaxSettings.async = false;
+        $.getJSON("/_api/getImage", {"path": url}, function (data) {
+            wx.config({
+                debug: false, // 因为在手机上测试没法打印，当debug为true时，所有的返回值都会在手机上alert出来
+                appId: "wx8bf85bd98eaddb86", // 必填，公众号唯一标识
+                timestamp: data.timestamp, // 必填，生成签名的时间戳
+                nonceStr: data.nonceStr, // 必填，生成签名的随机串
+                signature: data.signature,// 必填，签名
+                jsApiList: ['openLocation', 'getLocation'] // 必填，需要使用的JS接口列表，需要用到什么接口就去开发者文档查看相应的字段名
+            });
+        })
+    })
+    function getLocation() {
+        var mapAddress = $("#mapAddress").html();
+        wx.getLocation({
+            type : 'gcj02', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
+            success : function(res) {
+                //使用微信内置地图查看位置接口
+                wx.openLocation({
+                    latitude : res.latitude, // 纬度，浮点数，范围为90 ~ -90
+                    longitude : res.longitude, // 经度，浮点数，范围为180 ~ -180。
+                    name : '我的位置', // 位置名
+                    address :mapAddress, // 地址详情说明
+                    scale : 28, // 地图缩放级别,整形值,范围从1~28。默认为最大
+                    infoUrl : 'http://www.gongjuji.net' // 在查看位置界面底部显示的超链接,可点击跳转（测试好像不可用）
+                });
+            },
+            cancel : function(res) {
+
+            }
+        });
+    }
+
+
+
+
+</script>
+</html>

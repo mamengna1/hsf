@@ -1,9 +1,11 @@
 package cn.hsf.hsf.service.user;
 
 import cn.hsf.hsf.commons.WxConstants;
+import cn.hsf.hsf.mapper.user.UserInformationMapper;
 import cn.hsf.hsf.mapper.user.UserMapper;
 import cn.hsf.hsf.mapper.user.UserScoreSourceMapper;
 import cn.hsf.hsf.pojo.user.User;
+import cn.hsf.hsf.pojo.user.UserInformation;
 import cn.hsf.hsf.pojo.user.UserScoreSource;
 import cn.hsf.hsf.utils.Send;
 import cn.hsf.hsf.utils.WxUtil;
@@ -20,9 +22,10 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserMapper userMapper;
-
     @Autowired
     private UserScoreSourceMapper userScoreSourceMapper;
+    @Autowired
+    private UserInformationMapper userInformationMapper;
 
     @Override
     public String getUserInfo(String openId) {
@@ -40,6 +43,11 @@ public class UserServiceImpl implements UserService {
         return userMapper.updUser(user);
     }
 
+    /**
+     *  查询用户信息
+     * @param openId
+     * @return
+     */
     @Override
     public User selUserByOpenId(String openId) {
         return userMapper.selUserByOpenId(openId);
@@ -63,6 +71,26 @@ public class UserServiceImpl implements UserService {
     @Override
     public int insScoreSource(UserScoreSource userScoreSource) {
         return userScoreSourceMapper.insScoreSource(userScoreSource);
+    }
+
+    /**
+     *  查询我的直系下线
+     * @param openId
+     * @return
+     */
+    @Override
+    public List<User> selMyWorkmate(String openId) {
+        return userMapper.selMyWorkmate(openId);
+    }
+
+    /**
+     *  添加资讯
+     * @param userInformation
+     * @return
+     */
+    @Override
+    public int insInformation(UserInformation userInformation) {
+        return userInformationMapper.insInfomation(userInformation);
     }
 
 

@@ -19,12 +19,16 @@
 <body>
 <script>
     $(function () {
-        var phone = '<%=session.getAttribute("phone")%>';
-        if (phone == "null") {
-            $("#editPhone").hide();
-        } else {
-            $("#myform").hide();
-        }
+        $.ajaxSettings.async = false;
+        $.getJSON("/_api/getPhone",function (res) {
+            if (res.message == null || phone == '' || phone == undefined) {
+                $("#editPhone").hide();
+            } else {
+                $("#xianPhone").html(res.message);
+                $("#myform").hide();
+            }
+        });
+        $.ajaxSettings.async = true;
     });
 
 </script>
@@ -40,16 +44,16 @@
             <li><label>验证码：</label><input type="tel" name="yzm" id="yzm" class="input_txt" value=""
                                           placeholder="请填写手机验证码"
                                           maxlength="6"></li>
-            <li><input type="button" name="btn_bd_mobile" id="btn_bd_mobile" onclick="bind()" class="btn_sbt br3"
-                       value="绑定"></li>
+            <li>
+                <input type="button" onclick="bind()" class="btn_sbt br3" value="绑定">
+            </li>
         </ul>
     </div>
 </form>
 
 <div class="phoneOK" id="editPhone">
-    <p><i class="iconfont icon-mobilephone"></i>[[${session.phone}]]</p>
-    <p><input type="button" name="btn_bd_mobile" onclick="bindPhone()" id="btn_bd_mobile" class="btn_sbt br3"
-              value="更换手机绑定"></p>
+    <p><i class="iconfont icon-mobilephone"></i><span id="xianPhone"></span></p>
+    <p><input type="button" onclick="bindPhone()"class="btn_sbt br3" value="更换手机绑定"></p>
 </div>
 
 <script>

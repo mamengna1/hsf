@@ -77,7 +77,7 @@
 
     <!-- List<UserYearWork> selYearById(Integer id); -->
     <select id="selYearAll" resultType="cn.hsf.hsf.pojo.user.UserYearWork">
-        SELECT `id`, `yearName` FROM `tb_user_year_work` WHERE id = #{id}
+        SELECT `id`, `yearName` FROM `tb_user_year_work`
     </select>
 
 </mapper>

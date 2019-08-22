@@ -54,9 +54,12 @@ public class ImageController {
     @GetMapping("/saveImage")
     public Result saveImage(HttpServletRequest request, String url) {
         System.out.println("==========================================================================================");
-
-        String fileName = WxUtil.saveImageToDisk(url, ImageURL.USER_CARD_URL);
-
-        return new Result(ImageURL.READ_USER_CARD_URL + fileName);
+        String fileName;
+        try{
+            fileName = WxUtil.saveImageToDisk(url, ImageURL.USER_CARD_URL);
+        }catch (Exception e){
+            return new Result(null, false);
+        }
+        return new Result(ImageURL.READ_USER_CARD_URL + fileName, true);
     }
 }

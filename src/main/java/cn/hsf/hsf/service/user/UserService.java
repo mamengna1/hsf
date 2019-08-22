@@ -1,6 +1,7 @@
 package cn.hsf.hsf.service.user;
 
 import cn.hsf.hsf.pojo.user.User;
+import cn.hsf.hsf.pojo.user.UserInformation;
 import cn.hsf.hsf.pojo.user.UserScoreSource;
 
 import java.util.List;
@@ -42,7 +43,26 @@ public interface UserService {
      */
     List<UserScoreSource> selAllByOpeniId(String openId);
 
+    /**
+     *  添加积分来源
+     * @param userScoreSource
+     * @return
+     */
     int insScoreSource(UserScoreSource userScoreSource);
+
+    /**
+     *  查询我的直系下线
+     * @param openId
+     * @return
+     */
+    List<User> selMyWorkmate(String openId);
+
+    /**
+     *  添加资讯
+     * @param userInformation
+     * @return
+     */
+    int insInformation(UserInformation userInformation);
 
 
 }

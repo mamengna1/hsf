@@ -1,6 +1,7 @@
 package cn.hsf.hsf.controller;
 
 import cn.hsf.hsf.commons.WxConstants;
+import cn.hsf.hsf.pojo.Result;
 import cn.hsf.hsf.pojo.menu.*;
 import cn.hsf.hsf.pojo.user.User;
 import cn.hsf.hsf.pojo.user.UserSkill;
@@ -10,13 +11,17 @@ import cn.hsf.hsf.service.user.UserService;
 import cn.hsf.hsf.utils.Send;
 import cn.hsf.hsf.utils.WxUtil;
 import net.sf.json.JSONObject;
+import org.hibernate.validator.constraints.pl.REGON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.util.List;
 
 /**
  * @author kaituozhe
@@ -59,11 +64,15 @@ public class GoController {
     }
 
     @RequestMapping("/goBindPhone")
-    public String goBindPhone(HttpSession session, Model model) {
-        String phone = userService.selUserByOpenId((String) session.getAttribute("openId")).getPhone();
-        // "$1****$2"   $1 ：正则中的第一个\\d{3} $2 ：正则中的第二个
-        session.setAttribute("phone", phone != null ? phone.replaceAll("(\\d{3})\\d{4}(\\d{4})", "$1****$2") : phone);
+    public String goBindPhone() throws IOException {
         return "bindingphone";
+    }
+
+    @ResponseBody
+    @RequestMapping("/getPhone")
+    public Result getPhone(HttpSession session){
+        String phone = userService.selUserByOpenId((String) session.getAttribute("openId")).getPhone();
+        return new Result(phone != null ? phone.replaceAll("(\\d{3})\\d{4}(\\d{4})", "$1****$2") : phone, true);
     }
 
     /**
@@ -102,6 +111,19 @@ public class GoController {
     public String goSource(Model model, HttpSession session){
         model.addAttribute("list", userService.selAllByOpeniId((String) session.getAttribute("openId")));
         return "sourceList";
+    }
+
+    @RequestMapping("/goMyDynamic")
+    public String goMyDynamic(){
+        return "myDynamic";
+    }
+
+    @RequestMapping("/goMyWorkmate")
+    public String goMyWorkmate(Model model, HttpSession session){
+        List<User> list = userService.selMyWorkmate((String) session.getAttribute("openId"));
+        model.addAttribute("list", list);
+        model.addAttribute("len", list.size());
+        return "myWorkmate";
     }
 
     @RequestMapping("/goTemp")

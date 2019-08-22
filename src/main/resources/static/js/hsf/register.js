@@ -7,12 +7,11 @@ $(function () {
                 return false;
             }
         }
-        if ($(this).prop('checked')){
+        if ($(this).prop('checked')) {
             skills.push($(this).attr("sid"));
         } else {
-            skills.splice(jQuery.inArray($(this).attr("sid"),skills),1);
+            skills.splice(jQuery.inArray($(this).attr("sid"), skills), 1);
         }
-        alert(skills.join());
         $("#skills").val(skills.join());
     })
 });
@@ -37,18 +36,14 @@ function getUrlParam(name) {
  */
 function getOpenId(code) {
     $.getJSON("/_api/getUserInfo", {"code": code}, function (data) {
-        if (data.detailId != 0 && data.userDetail.status == 1) {
-            location.href = "/_api/goIndex";
-        } else if (data.detailId != 0 && (data.userDetail.status == 0 || data.userDetail.status == 3) && (data.userDetail.message == null || data.userDetail.message == '')) {
-            location.href = "/_api/goAwait";
-        } else if (data.detailId != 0 && data.userDetail.status == 2){
+        if (data.detailId != 0 && (data.userDetail.status == 2 || data.userDetail.status == 1)) {
             $("#name").val(data.userDetail.name);
             $("#card").val(data.userDetail.card);
             $("#address").val(data.userDetail.address);
 
             var skills = (data.userDetail.skills).split(",");
-            for (var i = 0; i < skills.length; i ++){
-                $("#skill" + skills[i]).prop("checked","checked");
+            for (var i = 0; i < skills.length; i++) {
+                $("#skill" + skills[i]).prop("checked", "checked");
             }
             $("#skills").val(skills.join());
             $("#yearWorkId").val(data.userDetail.yearWorkId);
@@ -66,14 +61,26 @@ function getOpenId(code) {
 
             chooseProvince(data.userDetail.placeProvince);
             $("#placeProvince").val(data.userDetail.placeProvince);
-            chooseProvince2(data.userDetail.workProvince);
-            $("#workProvince").val(data.userDetail.workProvince);
             chooseCity(data.userDetail.placeCity);
             $("#placeCity").val(data.userDetail.placeCity);
+            $("#placeArea").val(data.userDetail.placeArea);
+
+
+            chooseProvince2(data.userDetail.workProvince);
+            $("#workProvince").val(data.userDetail.workProvince);
             chooseCity2(data.userDetail.workCity);
             $("#workCity").val(data.userDetail.workCity);
-            $("#placeArea").val(data.userDetail.placeArea);
             $("#workArea").val(data.userDetail.workArea);
+
+
+            if (data.userDetail.status == 1) {
+                $("#name").attr("disabled", true);
+                $("#card").attr("disabled", true);
+                $("#card1").attr("disabled", true).css("pointer-events", "none");
+                $("#card2").attr("disabled", true).css("pointer-events", "none");
+            }
+        } else if (data.detailId != 0 && (data.userDetail.status == 0 || data.userDetail.status == 3) && (data.userDetail.message == null || data.userDetail.message == '')) {
+            location.href = "/_api/goAwait";
         } else {
             $("#phone").val(data.phone);
             if ($("#phone").val() != '' && $("#phone").val() != undefined && $("#phone").val() != null) {

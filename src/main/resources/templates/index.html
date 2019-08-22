@@ -96,7 +96,9 @@
         <p class="user_p2">会员ID号：<span style="font-size:16px;  color:#666;">
 						[[${user.id}]]</span></p>
         <p class="user_p3">会员身份：
-            <em style="padding-left:8px; padding-right:8px; background:#e7141b; color:#fff;border-radius:15px; line-height:23px; display:inline-block;">[[${user.detailId != 0 && user.userDetail.status == 1 ? '师傅' : '普通用户'}]]</em>&nbsp;&nbsp; &nbsp;&nbsp;
+
+            <em style="padding-left:8px; padding-right:8px; background:#e7141b; color:#fff;border-radius:15px; line-height:23px; display:inline-block;">[[${user.detailId
+                != 0 && user.userDetail.status == 1 ? '师傅' : '普通用户'}]]</em>&nbsp;&nbsp; &nbsp;&nbsp;
             <label th:if="${user.detailId ne 0 && user.userDetail.status == 1 && user.userDetail.lineStatus == 1}">
                 <input type="checkbox" name="checkbox" checked="checked"/><i>正在接单中</i>
             </label>
@@ -117,30 +119,46 @@
 -->
 <section class="user_pm_list_1">
     <ul>
-        <li><a href="deposit.html"><em><i class="iconfont icon-systemprompt"></i></em>
-            <p>接单中心</p>
-        </a></li>
-        <li><a href="/_api/zsf/goZsfView"><em><i class="iconfont icon-people"></i></em>
-            <p>找师傅</p>
-        </a></li>
-        <li><a href="/_api/goBindPhone"><em><i class="iconfont icon-mobilephone"></i></em>
-            <p>手机绑定</p>
-        </a></li>
-        <li><a href="my_gift_order.html"><em><i class="iconfont icon-coordinates"></i></em>
-            <p>我的工友</p>
-        </a></li>
-        <li><a href="zhuce.html"><em><i class="iconfont icon-setup"></i></em>
-            <p>修改资料</p>
-        </a></li>
-        <li><a href="/_api/goMyEWN"><em><i class="iconfont icon-qrcode"></i></em>
-            <p>推广海报</p>
-        </a></li>
-        <li><a href="/_api/goYongJin"><em><i class="iconfont icon-redpacket_fill"></i></em>
-            <p>推广佣金</p>
-        </a></li>
-        <li><a href="my_consume_ewm.html"><em><i class="iconfont icon-message"></i></em>
-            <p>发布案例</p>
-        </a></li>
+        <li th:if="${user.detailId !=0 && user.userDetail.status == 1}">
+            <a href="deposit.html"><em><i class="iconfont icon-systemprompt"></i></em>
+                <p>接单中心</p>
+            </a>
+        </li>
+        <li>
+            <a href="/_api/zsf/goZsfView"><em><i class="iconfont icon-people"></i></em>
+                <p>找师傅</p>
+            </a>
+        </li>
+        <li>
+            <a href="/_api/goBindPhone"><em><i class="iconfont icon-mobilephone"></i></em>
+                <p>手机绑定</p>
+            </a>
+        </li>
+        <li>
+            <a href="/_api/goMyWorkmate"><em><i class="iconfont icon-coordinates"></i></em>
+                <p>我的工友</p>
+            </a>
+        </li>
+        <li>
+            <a href="/_api/goRegister"><em><i class="iconfont icon-setup"></i></em>
+                <p>修改资料</p>
+            </a>
+        </li>
+        <li>
+            <a href="/_api/goMyEWN"><em><i class="iconfont icon-qrcode"></i></em>
+                <p>推广海报</p>
+            </a>
+        </li>
+        <li>
+            <a href="/_api/goYongJin"><em><i class="iconfont icon-redpacket_fill"></i></em>
+                <p>推广佣金</p>
+            </a>
+        </li>
+        <li th:if="${user.detailId !=0 && user.userDetail.status == 1}">
+            <a href="/_api/goMyDynamic"><em><i class="iconfont icon-message"></i></em>
+                <p>发布案例</p>
+            </a>
+        </li>
     </ul>
     <div style="clear:both;"></div>
 </section>

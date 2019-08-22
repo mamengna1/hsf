@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>我的佣金</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <link rel="stylesheet" href="/_api/css/CSS.css?111" type="text/css"/>
+    <link rel="stylesheet" href="/_api/css/swiper.min.css" type="text/css"/>
+    <link rel="stylesheet" href="/_api/css/iconfont.css">
+    <script type="text/javascript" src="/_api/js/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="/_api/js/swiper.min.js"></script>
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var url = location.href.split('#')[0];
+            $.getJSON("/_api/getImage", {"path": url}, function (data) {
+                wx.config({
+                    debug: false, // 因为在手机上测试没法打印，当debug为true时，所有的返回值都会在手机上alert出来
+                    appId: "wx8bf85bd98eaddb86", // 必填，公众号唯一标识
+                    timestamp: data.timestamp, // 必填，生成签名的时间戳
+                    nonceStr: data.nonceStr, // 必填，生成签名的随机串
+                    signature: data.signature,// 必填，签名
+                    jsApiList: ['chooseImage', 'uploadImage'] // 必填，需要使用的JS接口列表，需要用到什么接口就去开发者文档查看相应的字段名
+                });
+            })
+        });
+        //定义images用来保存选择的本地图片ID，和上传后的服务器图片ID
+        var images = {
+            localId: [],
+            serverId: []
+        };
+        wx.ready(function () {
+            $("#btn_upload").click(function () {
+                wx.chooseImage({
+                    count: 9, // 最多可以选择的图片张数，默认9
+                    sizeType: ['original', 'compressed'], // original 原图，compressed 压缩图，默认二者都有
+                    sourceType: ['album', 'camera'], // album 从相册选图，camera 使用相机，默认二者都有
+                    success: function (res) {
+                        images.localId = res.localIds; // 返回选定照片的本地ID列表（手机上操作就是手机端的ID列表，是一个数组），localId可以作为img标签的src属性显示图片
+                        var i = 0;
+                        len = images.localId.length;
+
+                        function wxUpload() {
+                            wx.uploadImage({
+                                localId: images.localId[i], // 需要上传的图片的本地ID，由chooseImage接口获得
+                                isShowProgressTips: 1, // 默认为1，显示进度提示
+                                success: function (res) {
+                                    i++;
+                                    //将上传成功后的serverId保存到serverId
+                                    images.serverId.push(res.serverId); // 返回图片的服务器端ID
+                                    serverIds = images.serverId[i - 1];
+                                    $.getJSON("/_api/saveImage", {"url": serverIds}, function (res) {
+                                        if (res.flag) {
+                                            $("#imgs_pre").append("<li><img style='width:30px; height: 30px' src=\"" + res.message + "\">\n" +
+                                                "                <span class=\"br50\" >X</span></li>");
+
+                                        } else {
+                                            alert("获取图片失败");
+                                        }
+                                    });
+                                    if (i < len) {
+                                        wxUpload();
+                                    } else {
+                                        images.localId = [];
+                                        images.serverId = [];
+                                    }
+                                }
+                            });
+                        }
+
+                        wxUpload();
+                    },
+                    fail: function () {
+                        alert("失败");
+                    },
+                    complete: function () {
+                        alert("完成")
+                    }
+                });
+            })
+        });
+
+    </script>
+</head>
+
+
+<body>
+<div class="clear1"></div>
+
+<p id="myp"></p>
+
+<div class="txlist">
+    <ul>
+        <section id="imgs_pre">
+            <li id="li_201908201115370654"><img src="">
+                <span class="br50" onclick="del_li()">X</span></li>
+        </section>
+        <li><a href="javascipt:void(0)" id="btn_upload">+</a></li>
+    </ul>
+</div>
+<script type="text/javascript" src="/_api/js/common/area2.js"></script>
+
+<script type="text/javascript">
+    $(function () {
+        var wordadd = showProvince(3, 0, 5);
+    })
+
+</script>
+
+</body>
+</html>

@@ -32,7 +32,7 @@ public class RegisterController {
         }
         String openId = (String) session.getAttribute("openId");
         userService.updUser(new User(openId, phone, userDetail.getId()));
-        return "redirect:/_api/goIndex";
+        return "redirect:/goIndex";
     }
 
 }

@@ -75,5 +75,12 @@
     <select id="selByPhone" resultType="int">
         SELECT COUNT(1) FROM tb_user WHERE phone = #{phone}
     </select>
-
+    
+    <!-- List<User> selMyWorkmate(String openId); -->
+    <select id="selMyWorkmate" resultMap="selUserDetail">
+        SELECT `id`, `openId`, `sex`, `headPic`, `phone`, `detailId`
+        FROM `tb_user`
+        WHERE userParent = #{openId} AND  detailId is not null AND detailId != 0
+    </select>
+    
 </mapper>

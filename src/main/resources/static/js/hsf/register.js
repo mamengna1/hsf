@@ -1,5 +1,5 @@
 $(function () {
-    var skills = $("#skills").val().split(",");
+    var skills = new Array();
     $(".skills").click(function () {
         var len = $(".skills").filter(":checked").length;
         if (len > 3) {
@@ -13,6 +13,7 @@ $(function () {
             skills.splice(jQuery.inArray($(this).attr("sid"), skills), 1);
         }
         $("#skills").val(skills.join());
+        alert($("#skills").val());
     })
 });
 
@@ -113,6 +114,7 @@ function checkForm() {
         alert("请输入详细地址");
         return false;
     }
+
     var len = $(".skills").filter(":checked").length;
     if (len == 0) {
         alert("请选择至少一种 工种");
@@ -125,18 +127,23 @@ function checkForm() {
     }
 
     var yzm = $("#yzm").val();
+    var phone = $("#phone").val();
+    var status = $("#status").val();
+    $.ajaxSettings.async = false;
     if (bindCount < 3) {
-        if (yzm == code) {
-            return true;
-        } else {
-            bindCount++;
-            $("#temp").html("验证码不正确");
-            return false;
-        }
+        $.getJSON("/_api/isCode", {"phone": phone, "code": yzm}, function (res) {
+            if (!res.flag && status != 2) {
+                alert(res.message);
+                return true;
+            } else {
+                bindCount++;
+                alert(res.message);
+                return false;
+            }
+        });
     } else {
         alert("多次输入不正确请重新获取");
         return false;
     }
-
-
+    $.ajaxSettings.async = true;
 }

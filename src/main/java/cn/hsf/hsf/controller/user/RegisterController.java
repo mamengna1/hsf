@@ -27,6 +27,8 @@ public class RegisterController {
             System.out.println("重新提交");
             userDetail.setStatus(3);
             userDetailService.updUserLineStatus(userDetail);
+        } else if (userDetail.getStatus() == 1) {
+            userDetailService.updUserLineStatus(userDetail);
         } else {
             userDetailService.insUserDetail(userDetail);
         }

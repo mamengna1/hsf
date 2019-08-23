@@ -1,9 +1,6 @@
 var count = 0;
 var time = 60; // 设置点击标记  防止60秒内再次点击
 var flag = true;
-
-var code;
-
 // 验证手机号
 function verify(phone) {
     if (!(/^1[3456789]\d{9}$/.test(phone))) {
@@ -13,12 +10,14 @@ function verify(phone) {
     return true;
 }
 
+var code;
+var oldPhone;
 // 发送短信
 function sendMessage() {
-    var phone = $("#phone").val();
+    oldPhone = $("#phone").val();
     var isDef = $("#phone").attr("readonly") == 'readonly' ? true : false;
     alert("ISDEF" + isDef);
-    if (!verify(phone)) {
+    if (!verify(oldPhone)) {
         return;
     }
     // 禁用
@@ -29,7 +28,7 @@ function sendMessage() {
             var timer = setInterval(function () {
                 if (time == 60 && flag) {
                     flag = false;
-                    $.getJSON("/_api/sendMessage", {"phone": phone, "isDef": isDef}, function (data) {
+                    $.getJSON("/_api/sendMessage", {"phone": oldPhone, "isDef": isDef}, function (data) {
                         alert(typeof data);
                         if (!data) {
                             alert("该手机号已经绑定账号，请核对");

@@ -1,5 +1,6 @@
 package cn.hsf.hsf.controller;
 
+import cn.hsf.hsf.pojo.Result;
 import cn.hsf.hsf.pojo.sms.SendMessage;
 import cn.hsf.hsf.pojo.user.User;
 import cn.hsf.hsf.service.sms.SendMessageService;
@@ -8,10 +9,12 @@ import config.AppConfig;
 import lib.MessageSend;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import utils.ConfigLoader;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.net.InetAddress;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,15 +31,13 @@ public class SendMessageController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping("/sendMessage")
-    public String sendMessage(String phone, Boolean isDef) throws Exception {
-        // 验证手机号是有已绑定其他账号
-        int count = sendMessageService.selByPhone(phone);
-        System.out.println("COUNT : " + count + "    FLAG" + isDef);
-        if (count > 0 && !isDef) {
-            return "false";
-        }
 
+    @RequestMapping("/sendMessage")
+    public boolean sendMessage(String phone, Boolean isDef, HttpSession session) throws Exception {
+        // 验证手机号是有已绑定其他账号
+        if (existsPhone(phone) && !isDef) {
+            return false;
+        }
         AppConfig config = ConfigLoader.load(ConfigLoader.ConfigType.Message);
         MessageSend submail = new MessageSend(config);
         submail.addTo(phone);
@@ -51,18 +52,53 @@ public class SendMessageController {
         // 给用户发送消息
         submail.addContent(message);
         submail.send();
-        return code + "";
+        session.setAttribute("code", code + "");
+        session.setAttribute("phone", phone);
+        return true;
     }
 
     @RequestMapping("/editUser")
     public Boolean addUserPhone(HttpServletRequest request, String phone){
-        Map params = new HashMap();
-        params.put("openId", request.getSession().getAttribute("openId"));
-        params.put("phone", phone);
+        return userService.updUser(new User((String) request.getSession().getAttribute("openId"), phone,null)) > 0 ;
+    }
 
-        int count = userService.updUser(new User());
+    @ResponseBody
+    @RequestMapping("/isExist")
+    public Boolean isExist(String phone){
+        return existsPhone(phone);
+    }
 
-        return count > 0 ? true : false;
+    /**
+     *  验证码 手机判断
+     * @param phone
+     * @param code
+     * @param session
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/isCode")
+    public Result isCode(String phone, String code, HttpSession session){
+        String oldPhone = (String) session.getAttribute("phone");
+        String oldCode = (String) session.getAttribute("code");
+        System.out.println("code" + code + " oldCode" + oldCode);
+        if (oldCode == null || oldPhone == null) {
+            return new Result("请先获取验证码", false);
+        } else if (!oldPhone.equals(phone)) {
+            return new Result("请勿更改手机号", false);
+        } else if (!oldCode.equals(code)) {
+            return new Result("验证码不正确", false);
+        } else {
+            return new Result(null, true);
+        }
+    }
+
+    /**
+     *  验证手机号是否存在
+     * @param phone
+     * @return
+     */
+    private Boolean existsPhone(String phone){
+        return sendMessageService.selByPhone(phone) > 0;
     }
 
 }

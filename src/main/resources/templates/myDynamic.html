@@ -31,7 +31,11 @@
         //定义images用来保存选择的本地图片ID，和上传后的服务器图片ID
         wx.ready(function () {
             $("#btn_upload").click(function () {
-                imgs = $("#imgs").val().split(",");
+                if ($("#imgs").val() == ''){
+                    imgs = new Array();
+                } else{
+                    imgs = $("#imgs").val().split(",");
+                }
                 wx.chooseImage({
                     count: 9, // 最多可以选择的图片张数，默认9
                     sizeType: ['original', 'compressed'], // original 原图，compressed 压缩图，默认二者都有

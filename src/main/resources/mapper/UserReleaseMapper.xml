@@ -7,8 +7,8 @@
 <mapper namespace="cn.hsf.hsf.mapper.user.UserReleaseMapper">
 
     <insert id="insertUserRelease" parameterType="cn.hsf.hsf.pojo.user.UserRelease">
-        insert into `tb_user_release`(`title`,`nickName`,`phone`,`serviceProvince`,`serviceCity`,`serviceArea`,`serverDetail`,`appointTime`,`demand`,`createDate`,`state`,`receiveId`)
-        values(#{title},#{nickName},#{phone},#{serviceProvince},#{serviceCity},#{serviceArea},#{serverDetail},#{appointTime},#{demand},now(),0,#{receiveId})
+        insert into `tb_user_release`(`title`,`nickName`,`phone`,`serviceProvince`,`serviceCity`,`serviceArea`,`serverDetail`,`appointTime`,`demand`,`createDate`,`state`,`receiveId`,`userId`)
+        values(#{title},#{nickName},#{phone},#{serviceProvince},#{serviceCity},#{serviceArea},#{serverDetail},#{appointTime},#{demand},now(),0,#{receiveId},#{userId})
     </insert>
 
 </mapper>

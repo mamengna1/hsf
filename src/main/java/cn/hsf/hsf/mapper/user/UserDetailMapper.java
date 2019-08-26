@@ -14,4 +14,6 @@ public interface UserDetailMapper {
     int updUserLineStatus(UserDetail userDetail);
 
     List<UserYearWork> selYearAll();
+
+    UserYearWork selYearById(Integer id);
 }

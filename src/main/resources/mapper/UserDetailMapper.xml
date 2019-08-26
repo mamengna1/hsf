@@ -6,18 +6,33 @@
 <!--namespace:映射命名空间-->
 <mapper namespace="cn.hsf.hsf.mapper.user.UserDetailMapper">
 
-    <resultMap id="selYear" type="cn.hsf.hsf.pojo.user.UserDetail">
+    <!--<resultMap id="selY" type="cn.hsf.hsf.pojo.user.UserDetail">
         <id property="id" column="id"/>
         <result property="yearWorkId" column="yearWorkId"/>
-        <association property="yearWork" column="yearsWorkId" select="cn.hsf.hsf.mapper.user.UserDetailMapper.selYearById"/>
+        <association property="userYearWork" column="yearsWorkId" select="cn.hsf.hsf.mapper.user.UserDetailMapper.selYearById"/>
     </resultMap>
 
-    <!--    UserDetail selById(Integer id); -->
-    <select id="selById" resultMap="selYear">
+    &lt;!&ndash;    UserDetail selById(Integer id); &ndash;&gt;
+    <select id="selById" resultMap="selY">
+        SELECT `id`, `name`, `card`, `placeProvince`, `placeCity`, `placeArea`, `address`, `cardOne`, `cardTwo`, `skills`, `workProvince`, `workCity`, `workArea`, `status`, `lineStatus`, `yearWorkId`
+        FROM `tb_user_detail`
+        WHERE id = #{id}
+    </select>-->
+
+    <resultMap id="selY" type="cn.hsf.hsf.pojo.user.UserDetail">
+        <id property="id" column="id"/>
+        <result property="yearWorkId" column="yearWorkId"/>
+        <association property="userYearWork" column="yearWorkId" select="cn.hsf.hsf.mapper.user.UserDetailMapper.selYearById"/>
+    </resultMap>
+
+    <!--  User selUserByOpenId(String openId); -->
+    <select id="selById" resultMap="selY">
         SELECT `id`, `name`, `card`, `placeProvince`, `placeCity`, `placeArea`, `address`, `cardOne`, `cardTwo`, `skills`, `workProvince`, `workCity`, `workArea`, `status`, `lineStatus`, `yearWorkId`
         FROM `tb_user_detail`
         WHERE id = #{id}
     </select>
+
+
 
     <!--  int insUserDetail(UserDetail userDetail); -->
     <insert id="insUserDetail" useGeneratedKeys="true" keyProperty="id">
@@ -75,9 +90,13 @@
         WHERE `id` = #{id}
     </update>
 
-    <!-- List<UserYearWork> selYearById(Integer id); -->
+    <!-- List<UserYearWork> selYearAll(Integer id); -->
     <select id="selYearAll" resultType="cn.hsf.hsf.pojo.user.UserYearWork">
         SELECT `id`, `yearName` FROM `tb_user_year_work`
+    </select>
+
+    <select id="selYearById" resultType="cn.hsf.hsf.pojo.user.UserYearWork">
+        SELECT `id`, `yearName` FROM `tb_user_year_work` WHERE id = #{id}
     </select>
 
 </mapper>

@@ -105,6 +105,9 @@
             <label th:if="${user.detailId ne 0 && user.userDetail.status == 1 && user.userDetail.lineStatus == 0}">
                 <input type="checkbox" name="checkbox"/><i>已停止接单</i>
             </label>
+            <label th:if="${user.detailId ne 0 && user.userDetail.status == 1}">
+                <a href="/_api/goSFHone">个人主页</a>
+            </label>
         </p>
         <p class="more_act"><a href="/myewm"><i class="fa fa-qrcode" style="color:#666;"></i> </a>　<a
                 href="my_info.html"><i

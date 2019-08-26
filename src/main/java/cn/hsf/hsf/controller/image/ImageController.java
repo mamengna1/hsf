@@ -5,6 +5,7 @@ import cn.hsf.hsf.commons.WxConstants;
 import cn.hsf.hsf.pojo.Result;
 import cn.hsf.hsf.pojo.user.User;
 import cn.hsf.hsf.service.user.UserService;
+import cn.hsf.hsf.utils.ImageUtil;
 import cn.hsf.hsf.utils.Send;
 import cn.hsf.hsf.utils.Sign;
 import cn.hsf.hsf.utils.WxUtil;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
@@ -61,5 +63,25 @@ public class ImageController {
             return new Result(null, false);
         }
         return new Result(ImageURL.READ_USER_CARD_URL + fileName, true);
+    }
+
+    @GetMapping("/savePoster")
+    public String savePoster(String url, HttpSession session) {
+        String fileName = WxUtil.saveImageToDisk(url);
+
+        if (StringUtils.isEmpty(fileName)) {
+            return "false";
+        }
+        User user = userService.selUserByOpenId((String) session.getAttribute("openId"));
+        String file = ImageURL.GET_POSTERS_URL + ImageUtil.saveImage(ImageURL.GET_BACK_IMG_URL + fileName, ImageURL.GET_USER_EWM_URL + session.getAttribute("uid") + ".jpg", user.getId() + ".jpg", user.getNickName());
+        System.out.println("海报保存路径： " + file);
+        return file;
+    }
+    @RequestMapping("/savePoster_2")
+    public String savePoster_2(String path, HttpSession session){
+        User user = userService.selUserByOpenId((String) session.getAttribute("openId"));
+        String file = ImageURL.GET_POSTERS_URL + ImageUtil.saveImage(path, ImageURL.GET_USER_EWM_URL + session.getAttribute("uid") + ".jpg", user.getId() + ".jpg", user.getNickName());
+        System.out.println("海报保存路径： " + file);
+        return file;
     }
 }

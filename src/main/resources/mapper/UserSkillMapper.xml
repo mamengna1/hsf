@@ -11,4 +11,13 @@
         SELECT `id`, `skillName` FROM `tb_user_skill`
     </select>
 
+    <select id="selById" resultType="cn.hsf.hsf.pojo.user.UserSkill">
+        SELECT `id`, `skillName` FROM `tb_user_skill`
+        <foreach item="id" index="index" collection="ids"
+                 open="WHERE id in (" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
+
 </mapper>

@@ -4,12 +4,14 @@ import cn.hsf.hsf.commons.WxConstants;
 import cn.hsf.hsf.pojo.Result;
 import cn.hsf.hsf.pojo.menu.*;
 import cn.hsf.hsf.pojo.user.User;
+import cn.hsf.hsf.pojo.user.UserDetail;
 import cn.hsf.hsf.pojo.user.UserSkill;
 import cn.hsf.hsf.service.back.CashBackService;
 import cn.hsf.hsf.service.user.UserDetailServiceImpl;
 import cn.hsf.hsf.service.user.UserService;
 import cn.hsf.hsf.utils.Send;
 import cn.hsf.hsf.utils.WxUtil;
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import net.sf.json.JSONObject;
 import org.hibernate.validator.constraints.pl.REGON;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -39,7 +42,6 @@ public class GoController {
     @RequestMapping("/goIndex")
     public String goIndex(Model model, HttpSession session) {
         User user = userService.selUserByOpenId((String) session.getAttribute("openId"));
-        System.out.println("返回前端的数据" + user);
         model.addAttribute("user", user);
         return "index";
     }
@@ -58,7 +60,6 @@ public class GoController {
     @RequestMapping("/goRegister")
     public String goRegister(Model model) {
         model.addAttribute("skills", userDetailService.selAll());
-        System.out.println("年份 ： " + userDetailService.selYearAll());
         model.addAttribute("yearWorks", userDetailService.selYearAll());
         return "register";
     }
@@ -93,7 +94,6 @@ public class GoController {
      */
     @RequestMapping("/goYongJin")
     public String backMoney(HttpSession session, Model model) {
-
         String openId = (String) session.getAttribute("openId");
         User user = userService.selUserByOpenId(openId);
         model.addAttribute("totalScore", user.getTotalScore());
@@ -124,6 +124,20 @@ public class GoController {
         model.addAttribute("list", list);
         model.addAttribute("len", list.size());
         return "myWorkmate";
+    }
+
+    /**
+     *  去到师傅个人主页
+     * @return
+     */
+    @RequestMapping("/goSFHone")
+    public String goSFHone(Model model, HttpSession session){
+        User user = userService.selUserByOpenId((String) session.getAttribute("openId"));
+        model.addAttribute("user", user);
+        model.addAttribute("userDetail", user.getUserDetail());
+        model.addAttribute("flag","1");
+        model.addAttribute("skills", userDetailService.selSkillById(Arrays.asList(user.getUserDetail().getSkills().split(","))));
+        return "sf/sfhome";
     }
 
     @RequestMapping("/goTemp")

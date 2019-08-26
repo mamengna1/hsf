@@ -66,13 +66,11 @@ function getOpenId(code) {
             $("#placeCity").val(data.userDetail.placeCity);
             $("#placeArea").val(data.userDetail.placeArea);
 
-
             chooseProvince2(data.userDetail.workProvince);
             $("#workProvince").val(data.userDetail.workProvince);
             chooseCity2(data.userDetail.workCity);
             $("#workCity").val(data.userDetail.workCity);
             $("#workArea").val(data.userDetail.workArea);
-
 
             if (data.userDetail.status == 1) {
                 $("#name").attr("disabled", true);

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="utf-8">
+		<title>[[${userDetail.name}]]师傅</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<meta name="description" content="">
+		<meta name="keywords" content="">
+		<link rel="stylesheet" href="/_api/css/CSS.css" type="text/css" />
+		<link rel="stylesheet" href="/_api/css/swiper.min.css" type="text/css" />
+		<link rel="stylesheet" href="/_api/css/iconfont.css">
+		<script type="text/javascript" src="/_api/js/jquery-3.4.1.min.js"></script>
+		<script type="text/javascript" src="/_api/js/swiper.min.js"></script>
+	</head>
+	<body>
+
+
+		<div class="sf_info">
+			<p class="headimg"><img src="images/headimg.jpg"th:src="${user.headPic}" class="br50"></p>
+			<p class="sfname" th:text="${userDetail.name}"></p>
+			<p>
+				<label th:if="${userDetail.lineStatus == 1}"><i class="iconfont icon-time"></i> 正在接单</label>
+				<label th:if="${userDetail.lineStatus == 0}"><i class="iconfont icon-time"></i> 已停止接单</label>
+				<label><i class="iconfont icon-coordinates"></i></label>
+				<label><i class="iconfont icon-success"></i> 实名认证</label>
+			</p>
+		</div>
+
+		<div class="clear1"></div>
+
+		<div class="jbxx">
+			<p th:text="'从业年限：' + ${userDetail.userYearWork.yearName}"></p>
+			<p>专业特长：<a href="" th:each="skill : ${skills}"><label>[[${skill.skillName}]]</label></a></p>
+			<input type="hidden" th:value="${userDetail.placeProvince} + ${userDetail.placeCity} + ${userDetail.placeArea} + ${userDetail.address}"/>
+			<p>所在位置：宁波市鄞州区诚信路959号B幢202室</p>
+			<p>手机号码：<a href="tel:18657463227"><label>[[${user.phone}]]</label></a></p>
+		</div>
+		<div class="clear1"></div>
+		<div class="gybtn" th:if="${flag == '1'}"><a href="">发布动态</a></div>
+		<div class="gybtn" th:if="${flag == '2'}"><a href="">直接雇佣TA</a></div>
+
+		<div class="clear1"></div>
+		<div class="dttitle">[[${userDetail.name}]]的动态</div>
+		
+		
+
+		<div class="tdshow">
+			<p><em><img src="images/headimg.jpg" width=30 height=30 class="br50"></em><label>发布动态的时间</label><span th:if="${flag eq '1'}"><a href="">删除</a></span></p>
+			<p>这一刻的想法…</p>
+
+			<div class="dt_img">
+				<ul>
+					<li id="li_201908201115370654"><img src="http://jugou.net.cn/uploads/building/201908201115370654.jpg"></li>
+				</ul>
+			</div>
+		</div>
+		<div class="clear1"></div>
+		
+		<div class="tdshow">
+			<p><em><img src="images/headimg.jpg" width=30 height=30 class="br50"></em><label>2019年8月26日15:15:02</label><span th:if="${flag eq '1'}"><a href="">删除</a></span></p>
+			<p>这一刻的想法…</p>
+		
+			<div class="dt_img">
+				<ul>
+					<li id="li_201908201115370654"><img src="http://jugou.net.cn/uploads/building/201908201115370654.jpg"></li>
+				</ul>
+			</div>
+		</div>
+		<div class="clear1"></div>
+
+		<div style="height:80px;"></div>
+
+	</body>
+</html>

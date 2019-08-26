@@ -21,11 +21,12 @@ public class UserRelease {
     private Date createDate;  // 订单生成时间
     private Integer state;   //订单状态  0 等待中 1接单中  2 已接单 3 实施中 4  订单完成
     private Integer receiveId;   //接单师傅id
+    private Integer userId;
 
     public UserRelease() {
     }
 
-    public UserRelease(String title, String nickName, String phone, Integer serviceProvince, Integer serviceCity, Integer serviceArea, String serverDetail, Date appointTime, String demand) {
+    public UserRelease(String title, String nickName, String phone, Integer serviceProvince, Integer serviceCity, Integer serviceArea, String serverDetail, Date appointTime, String demand, Integer userId) {
         this.title = title;
         this.nickName = nickName;
         this.phone = phone;
@@ -35,6 +36,7 @@ public class UserRelease {
         this.serverDetail = serverDetail;
         this.appointTime = appointTime;
         this.demand = demand;
+        this.userId = userId;
     }
 
     @Override
@@ -47,13 +49,22 @@ public class UserRelease {
                 ", serviceProvince=" + serviceProvince +
                 ", serviceCity=" + serviceCity +
                 ", serviceArea=" + serviceArea +
-                ", serverDeatil='" + serverDetail + '\'' +
+                ", serverDetail='" + serverDetail + '\'' +
                 ", appointTime=" + appointTime +
                 ", demand='" + demand + '\'' +
                 ", createDate=" + createDate +
                 ", state=" + state +
                 ", receiveId=" + receiveId +
+                ", userId=" + userId +
                 '}';
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public Integer getId() {

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping("/zsf")
@@ -34,11 +35,11 @@ public class UserReleaseController {
      */
     @RequestMapping("/insUserRelease")
     @ResponseBody
-    public boolean insUserRelease(String title,String  nickName,String phone,@RequestParam(value = "serviceProvince",required = false,defaultValue = "-1") Integer serviceProvince,
-            @RequestParam(value = "serviceCity",required = false,defaultValue = "-1") Integer serviceCity,@RequestParam(value = "serviceArea",required = false,defaultValue = "-1") Integer serviceArea,
-                                 String serverDetail,@RequestParam("appointTime") String appointTime ,String demand){
+    public boolean insUserRelease(String title, String  nickName, String phone, @RequestParam(value = "serviceProvince",required = false,defaultValue = "-1") Integer serviceProvince,
+                                  @RequestParam(value = "serviceCity",required = false,defaultValue = "-1") Integer serviceCity, @RequestParam(value = "serviceArea",required = false,defaultValue = "-1") Integer serviceArea,
+                                  String serverDetail, @RequestParam("appointTime") String appointTime , String demand, HttpServletRequest request){
         System.out.println("appointTime："+ appointTime);
-        UserRelease userRelease = new UserRelease(title,nickName,phone,serviceProvince,serviceCity,serviceArea,serverDetail, DateUtil.StrToDate2(appointTime),demand);
+        UserRelease userRelease = new UserRelease(title,nickName,phone,serviceProvince,serviceCity,serviceArea,serverDetail, DateUtil.StrToDate2(appointTime),demand, (Integer) request.getSession().getAttribute("uid"));
         System.out.println(userRelease);
         return releaseService.insertUserRelease(userRelease) > 0 ? true : false;
     }

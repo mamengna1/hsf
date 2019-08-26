@@ -21,8 +21,7 @@ public class UserDetail {
     private Integer status;
     private Integer lineStatus;
     private Integer yearWorkId;
-
-    private UserYearWork yearWork;
+    private UserYearWork userYearWork;
 
     @Override
     public String toString() {
@@ -43,7 +42,7 @@ public class UserDetail {
                 ", status=" + status +
                 ", lineStatus=" + lineStatus +
                 ", yearWorkId=" + yearWorkId +
-                ", yearWork=" + yearWork +
+                ", userYearWork=" + userYearWork +
                 '}';
     }
 
@@ -55,12 +54,12 @@ public class UserDetail {
         this.yearWorkId = yearWorkId;
     }
 
-    public UserYearWork getYearWork() {
-        return yearWork;
+    public UserYearWork getUserYearWork() {
+        return userYearWork;
     }
 
-    public void setYearWork(UserYearWork yearWork) {
-        this.yearWork = yearWork;
+    public void setUserYearWork(UserYearWork userYearWork) {
+        this.userYearWork = userYearWork;
     }
 
     public Integer getLineStatus() {

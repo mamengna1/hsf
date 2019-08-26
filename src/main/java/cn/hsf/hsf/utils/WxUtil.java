@@ -223,7 +223,43 @@ public class WxUtil {
         }
         return is;
     }
+    /**
+     * 保存到服务器
+     *
+     * @param mediaId
+     * @return
+     */
+    public static String saveImageToDisk(String mediaId) {
+        String filename = "";
+        InputStream inputStream = getMediaStream(mediaId);
+        byte[] data = new byte[1024];
+        int len;
+        FileOutputStream fileOutputStream = null;
+        try {
 
-
-
+            filename = System.currentTimeMillis() + ".jpg";
+            fileOutputStream = new FileOutputStream(ImageURL.BACK_IMG_URL + File.separator + filename);
+            while ((len = inputStream.read(data)) != -1) {
+                fileOutputStream.write(data, 0, len);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (inputStream != null) {
+                try {
+                    inputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (fileOutputStream != null) {
+                try {
+                    fileOutputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return filename;
+    }
 }

@@ -12,19 +12,91 @@
     <link rel="stylesheet" href="/_api/css/iconfont.css">
     <script type="text/javascript" src="/_api/js/jquery-3.4.1.min.js"></script>
     <script type="text/javascript" src="/_api/js/swiper.min.js"></script>
+
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+
     <script type="text/javascript">
-        // 二维码
+        /*// 二维码
         $(function () {
             var url = "/_api/getEWM";
             $.get(url, function (ewm) {
                 $("img").attr("src", ewm.message + ".jpg");
             });
+        });*/
+
+
+        $(document).ready(function () {
+
+            var url = location.href.split('#')[0];
+            // alert("URL :" + url);
+            $.getJSON("/_api/getImage", {"path": url}, function (data) {
+                // alert("timestamp:" + data.timestamp + "nonceStr : " + data.noncestr + "signature:" + data.signature);
+                wx.config({
+                    debug: false, // 因为在手机上测试没法打印，当debug为true时，所有的返回值都会在手机上alert出来
+                    appId: "wx8bf85bd98eaddb86", // 必填，公众号唯一标识
+                    timestamp: data.timestamp, // 必填，生成签名的时间戳
+                    nonceStr: data.nonceStr, // 必填，生成签名的随机串
+                    signature: data.signature,// 必填，签名
+                    jsApiList: ['chooseImage', 'uploadImage'] // 必填，需要使用的JS接口列表，需要用到什么接口就去开发者文档查看相应的字段名
+                });
+            })
         });
+
+        wx.ready(function () {
+            $("#poster").click(function () {
+                // alert("点击");
+                wx.chooseImage({
+                    count: 1, // 最多可以选择的图片张数，默认9
+                    sizeType: ['original', 'compressed'], // original 原图，compressed 压缩图，默认二者都有
+                    sourceType: ['album', 'camera'], // album 从相册选图，camera 使用相机，默认二者都有
+                    success: function (res) {
+                        // alert("执行");
+                        var localIds = res.localIds; // 返回选定照片的本地ID列表（手机上操作就是手机端的ID列表，是一个数组），localId可以作为img标签的src属性显示图片
+                        wx.uploadImage({
+                            localId: localIds[0], // 需要上传的图片的本地ID，由chooseImage接口获得
+                            isShowProgressTips: 2, // 默认为1，显示进度提示
+                            success: function (result) {
+                                var serverId = result.serverId; // 返回图片的服务器端ID
+                                // 可以将serverId传给后台，用于存放在自己服务器上
+                                alert("图片URL ： " + serverId);
+                                $.getJSON("/_api/savePoster", {"url": serverId}, function (res) {
+                                    $("src").attr("src", res);
+                                });
+                            }
+                        });
+                    },
+                    fail: function () {
+                        alert("失败");
+                    },
+                    complete: function () {
+                        alert("完成")
+                    }
+                });
+            })
+        });
+
+        function savePosters(btn) {
+            var path = $(btn).attr("src");
+            $.getJSON("/_api/savePoster_2", {"path": path}, function (res) {
+                $("src").attr("src", res);
+            })
+        }
     </script>
 </head>
 
 
 <body>
+
+<h1>海报生成</h1>
+<button type="button" id="poster">手机图片上传方式（不推荐）</button>
+<div>
+    <img onclick="savePosters(this)" width="100px" src="http://java.86blue.cn/images/background/background_1.jpg"/>
+    <img onclick="savePosters(this)" width="100px" src="http://java.86blue.cn/images/background/background_2.jpg"/>
+</div>
+
+<div class="myewm">
+    <img id="btnImg" src=""/>
+</div>
 
 
 <div class="myewm">

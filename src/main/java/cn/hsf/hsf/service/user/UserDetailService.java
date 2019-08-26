@@ -8,6 +8,8 @@ import java.util.List;
 
 public interface UserDetailService {
 
+    UserDetail selById(Integer id);
+
     int insUserDetail(UserDetail userDetail);
 
     List<UserSkill> selAll();
@@ -15,4 +17,11 @@ public interface UserDetailService {
     int updUserLineStatus(UserDetail userDetail);
 
     List<UserYearWork> selYearAll();
+
+    /**
+     *  查询师傅所有的技能
+     * @param ids
+     * @return
+     */
+    List<UserSkill> selSkillById(List ids);
 }

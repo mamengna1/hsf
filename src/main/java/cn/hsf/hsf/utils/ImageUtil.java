@@ -132,14 +132,14 @@ public class ImageUtil {
 //            BufferedImage background = resizeImage(618,1000, ImageIO.read(new File(backgroundPath)));
             BufferedImage background = resizeImage(400, 600, zhuanhuan(backgroundPath));
 //            BufferedImage qrCode = resizeImage(150,150,ImageIO.read(new File(qrCodePath)));
-            BufferedImage qrCode = resizeImage(150, 150, zhuanhuan(qrCodePath));
+            BufferedImage qrCode = resizeImage(120, 170, zhuanhuan(qrCodePath));
             //在背景图片中添加入需要写入的信息，例如：扫描下方二维码，欢迎大家添加我的淘宝返利机器人，居家必备，省钱购物专属小秘书！
             //String message = "扫描下方二维码，欢迎大家添加我的淘宝返利机器人，居家必备，省钱购物专属小秘书！";
             Graphics2D g = background.createGraphics();
-            g.setColor(Color.white);
+            g.setColor(Color.green);
             g.setFont(new Font("微软雅黑", Font.BOLD, 20));
-            g.drawString(message01, 150, 240);
-            g.drawString(message02, 150, 250);
+            g.drawString(message01, 150, 215);
+            g.drawString(message02, 150, 240);
             //在背景图片上添加二维码图片
             g.drawImage(qrCode, 150, 260, qrCode.getWidth(), qrCode.getHeight(), null);
             g.dispose();

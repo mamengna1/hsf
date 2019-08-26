@@ -21,6 +21,11 @@ public class UserDetailServiceImpl implements UserDetailService {
     @Autowired
     private UserSkillMapper userSkillMapper;
 
+    @Override
+    public UserDetail selById(Integer id) {
+        return userDetailMapper.selById(id);
+    }
+
     /**
      *  师傅注册添加
      * @param userDetail
@@ -57,5 +62,10 @@ public class UserDetailServiceImpl implements UserDetailService {
     @Override
     public List<UserYearWork> selYearAll() {
         return userDetailMapper.selYearAll();
+    }
+
+    @Override
+    public List<UserSkill> selSkillById(List ids) {
+        return userSkillMapper.selById(ids);
     }
 }

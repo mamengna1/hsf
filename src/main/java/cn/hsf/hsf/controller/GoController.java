@@ -113,6 +113,10 @@ public class GoController {
         return "sourceList";
     }
 
+    /**
+     * 去到发布动态
+     * @return
+     */
     @RequestMapping("/goMyDynamic")
     public String goMyDynamic(){
         return "myDynamic";
@@ -137,6 +141,7 @@ public class GoController {
         model.addAttribute("userDetail", user.getUserDetail());
         model.addAttribute("flag","1");
         model.addAttribute("skills", userDetailService.selSkillById(Arrays.asList(user.getUserDetail().getSkills().split(","))));
+        model.addAttribute("infos", userDetailService.selInfoByOpenId((String) session.getAttribute("openId")));
         return "sf/sfhome";
     }
 

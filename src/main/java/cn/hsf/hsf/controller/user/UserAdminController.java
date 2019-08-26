@@ -32,6 +32,7 @@ public class UserAdminController {
     @RequestMapping("/updLineStatus")
     public boolean updLineStatus(UserDetail userDetail, HttpSession session) {
         userDetail.setId((Integer) session.getAttribute("detailId"));
+        System.out.println(userDetail);
         return userDetailService.updUserLineStatus(userDetail) > 0;
     }
 
@@ -41,7 +42,7 @@ public class UserAdminController {
         userInformation.setOpenId((String) session.getAttribute("openId"));
         userService.insInformation(userInformation);
         // return userService.insInformation(userInformation) > 0;
-        return "redirect:/goIndex";
+        return "redirect:/goSFHone";
     }
 
 

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>师傅列表</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <link rel="stylesheet" href="/_api/css/CSS.css" type="text/css"/>
+    <link rel="stylesheet" href="/_api/css/swiper.min.css" type="text/css"/>
+    <link rel="stylesheet" href="/_api/css/iconfont.css">
+    <script type="text/javascript" src="/_api/js/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="/_api/js/swiper.min.js"></script>
+</head>
+<body>
+
+<div class="kwbox">
+        <input type="hidden" id="skills" th:value="${skill}"/>
+        <input type="search" autocomplete="off" name="skey" id="skey" placeholder="搜索师傅"
+               onblur="search();"/>
+</div>
+<div id="SFList">
+
+</div>
+
+<div style="height:80px;"></div>
+
+</body>
+<script type="text/javascript" src="/_api/js/common/area2.js"></script>
+<script type="text/javascript">
+    $(function () {
+        search();
+    })
+    function search() {
+        var skill = $("#skills").val();
+        var name = $("#skey").val();
+        alert(skill + name);
+        $.getJSON("/_api/selSFList", {"skills": skill, "name": name}, function (res) {
+            $("#SFList").html("");
+            for (var i = 0; i < res.length; i++) {
+                var lab = "";
+                for (var j = 0; j < res[i].skillList.length; j++) {
+                    lab += "<label>" + res[i].skillList[j].skillName + "</label>";
+                }
+                var addr = showProvince(res[i].placeProvince, res[i].placeCity, res[i].placeArea).replace("/","") + res[i].address;
+                $("#SFList").append("<a href=\"#\">\n" +
+                    "\t<div class=\"sflist\">\n" +
+                    "\t\t<p class=\"headimg1\"><img src=\"images/headimg.jpg\" width='50px' height='50px' class=\"br50\"></p>\n" +
+                    "\t\t<p class=\"sfname1\">" + res[i].name + "师傅</p>\n" +
+                    "\t\t<p class=\"tips1\">\n" +
+                    "\t\t\t<em><i class=\"iconfont icon-praise\"></i>接单率100%</em>\n" +
+                    "\t\t\t<em><i class=\"iconfont icon-coordinates\"></i>宁波</em>\n" +
+                    "\t\t\t<em><i class=\"iconfont icon-success\"></i>实名认证</em>\n" +
+                    "\t\t</p>\n" +
+                    "\t\t<p class=\"tips2\">\n" +
+                    "\t\t\t" + lab + "\n" +
+                    "\t\t</p>\n" +
+                    "            <p class=\"tips3\">" + addr + "</p>\n" +
+                    "\t</div>\n" +
+                    "</a>");
+            }
+        })
+    }
+</script>
+</html>

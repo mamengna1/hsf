@@ -811,7 +811,7 @@ function showProvince(index1, index2, index3) {
     var cityName = cityList[index2].name;
     var areaList = cityList[index2].areaList;
     var areaName = areaList[index3];
-    return provinceName +  " / " + cityName + " / " + areaName;
+    return provinceName +  "/" + cityName + "/" + areaName;
 }
 
 
@@ -831,6 +831,7 @@ function chooseProvince(th) {
         return;
     }
     var provinceName = provinceArray[index];
+    // $("#provinceName").val(provinceName);
     for (var n = 0; n < provinceList.length; n++) {
         var provice = provinceList[n];
         if (provice.name == provinceName) {
@@ -844,6 +845,7 @@ function chooseProvince(th) {
         }
     }
     var cityName = cityArray[0];
+    // $("#cityName").val(cityName);
     var city1 = cityList[0];
     var areaList = city1.areaList;
     for (var a = 0; a < areaList.length; a++) {
@@ -866,6 +868,7 @@ function chooseCity(tag) {
         return;
     }
     var cityName = cityArray[index2];
+    // $("#cityName").val(cityName);
     for (var m = 0; m < cityList.length; m++) {
         var city1 = cityList[m];
         if (city1.name == cityName) {
@@ -874,8 +877,12 @@ function chooseCity(tag) {
                 var area = areaList[a];
                 areaTag.add(new Option(area, a));
             }
+            // $("#areaName").val(areaList[0]);
         }
     }
+}
+function chooseArea(tag) {
+    // $("#areaName").val(tag.text());
 }
 
 //选择省
@@ -920,7 +927,7 @@ function chooseProvince2(th) {
 function chooseCity2(tag) {
     var index2;
     if (typeof tag == "object") {
-        index2 = ttagh.selectedIndex - 1;
+        index2 = tag.selectedIndex - 1;
     } else if (typeof tag == "number") {
         index2 = tag;
     }

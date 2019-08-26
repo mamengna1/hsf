@@ -1,5 +1,7 @@
 package cn.hsf.hsf.pojo.user;
 
+import java.util.List;
+
 /**
  * @author kaituozhe
  */
@@ -23,6 +25,8 @@ public class UserDetail {
     private Integer yearWorkId;
     private UserYearWork userYearWork;
 
+    private List<UserSkill> skillList;
+
     @Override
     public String toString() {
         return "UserDetail{" +
@@ -43,7 +47,16 @@ public class UserDetail {
                 ", lineStatus=" + lineStatus +
                 ", yearWorkId=" + yearWorkId +
                 ", userYearWork=" + userYearWork +
+                ", skillList=" + skillList +
                 '}';
+    }
+
+    public List<UserSkill> getSkillList() {
+        return skillList;
+    }
+
+    public void setSkillList(List<UserSkill> skillList) {
+        this.skillList = skillList;
     }
 
     public Integer getYearWorkId() {

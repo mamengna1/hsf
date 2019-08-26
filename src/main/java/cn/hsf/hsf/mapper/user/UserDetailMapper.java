@@ -16,4 +16,6 @@ public interface UserDetailMapper {
     List<UserYearWork> selYearAll();
 
     UserYearWork selYearById(Integer id);
+
+    List<UserDetail> selBySkill(UserDetail userDetail);
 }

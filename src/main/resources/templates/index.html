@@ -58,9 +58,11 @@
 <script type="text/javascript">
     $(function () {
         $(":checkbox").click(function () {
+            var lineStatus = $(this).prop('checked') ? 1 : 0
+            alert(lineStatus)
             $(this).next().html($(this).prop('checked') ? '正在接单中' : '已停止接单');
-            $.getJSON("/_api/updLineStatus", {"lineStatus": $(this).prop('checked') ? 1 : 0}, function (data) {
-                alert("状态修改成功");
+            $.getJSON("/_api/updLineStatus", {"lineStatus": lineStatus}, function (data) {
+                alert("状态修改成功" + data);
             })
         })
     })

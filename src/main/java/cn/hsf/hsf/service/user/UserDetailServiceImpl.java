@@ -1,8 +1,10 @@
 package cn.hsf.hsf.service.user;
 
 import cn.hsf.hsf.mapper.user.UserDetailMapper;
+import cn.hsf.hsf.mapper.user.UserInformationMapper;
 import cn.hsf.hsf.mapper.user.UserSkillMapper;
 import cn.hsf.hsf.pojo.user.UserDetail;
+import cn.hsf.hsf.pojo.user.UserInformation;
 import cn.hsf.hsf.pojo.user.UserSkill;
 import cn.hsf.hsf.pojo.user.UserYearWork;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,8 @@ public class UserDetailServiceImpl implements UserDetailService {
     private UserDetailMapper userDetailMapper;
     @Autowired
     private UserSkillMapper userSkillMapper;
+    @Autowired
+    private UserInformationMapper userInformationMapper;
 
     @Override
     public UserDetail selById(Integer id) {
@@ -67,5 +71,20 @@ public class UserDetailServiceImpl implements UserDetailService {
     @Override
     public List<UserSkill> selSkillById(List ids) {
         return userSkillMapper.selById(ids);
+    }
+
+    /**
+     *  查看师傅对应的所有动态
+     * @param openId
+     * @return
+     */
+    @Override
+    public List<UserInformation> selInfoByOpenId(String openId) {
+        return userInformationMapper.selByOpenId(openId);
+    }
+
+    @Override
+    public List<UserDetail> selBySkill(UserDetail userDetail) {
+        return userDetailMapper.selBySkill(userDetail);
     }
 }

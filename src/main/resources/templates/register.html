@@ -126,13 +126,16 @@
                 <p>常住地址：</p>
             </li>
             <li style="height:45px;">
+                <!--<input type="hidden" name="provinceName" id="provinceName"/>-->
                 <select name="placeProvince" id="placeProvince" class="select1" onchange="chooseProvince(this)">
                         <option value="-1">选择省</option>
                 </select>
+                <!--<input type="hidden" name="cityName" id="cityName"/>-->
                 <select  name="placeCity" id="placeCity" class="select1" onChange="chooseCity(this)">
                         <option value="-1">选择市</option>
                 </select>
-                <select  name="placeArea" id="placeArea" class="select1">
+                <!--<input type="hidden" name="areaName" id="areaName"/>-->
+                <select  name="placeArea" id="placeArea" class="select1" onChange="chooseArea(this)">
                         <option value="-1">选择区县</option>
                 </select>
             </li>

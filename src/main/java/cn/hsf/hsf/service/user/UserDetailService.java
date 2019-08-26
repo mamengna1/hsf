@@ -1,6 +1,7 @@
 package cn.hsf.hsf.service.user;
 
 import cn.hsf.hsf.pojo.user.UserDetail;
+import cn.hsf.hsf.pojo.user.UserInformation;
 import cn.hsf.hsf.pojo.user.UserSkill;
 import cn.hsf.hsf.pojo.user.UserYearWork;
 
@@ -24,4 +25,8 @@ public interface UserDetailService {
      * @return
      */
     List<UserSkill> selSkillById(List ids);
+
+    List<UserInformation> selInfoByOpenId(String openId);
+
+    List<UserDetail> selBySkill(UserDetail userDetail);
 }

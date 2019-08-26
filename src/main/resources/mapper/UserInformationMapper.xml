@@ -12,5 +12,11 @@
         VALUES(DEFAULT, #{openId}, #{content}, #{images}, 0, NOW())
     </insert>
 
+    <!--  List<UserInformation> selByOpenId(String openId); -->
+    <select id="selByOpenId" resultType="cn.hsf.hsf.pojo.user.UserInformation">
+        SELECT `id`, `openId`, `content`, `images`, `lookTotal`, `createDate`
+        FROM `tb_user_information`
+        WHERE openId = #{openId}
+    </select>
 
 </mapper>

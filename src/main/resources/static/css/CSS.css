@@ -108,7 +108,7 @@ a:hover {color:#006189; text-decoration:none;  font-family:arial;}
 .txlist h1 {line-height:45px; font-size:20px;  color:#333;}
 .txlist em {width:150px; display: inline-block;}
 .txlist span {float:right;}
-.green {color:#31BF00}
+
 
 .newsbox {width:90%; margin:0 auto; overflow:hidden;}
 .newsbox li {border-bottom:1px #f5f5f5 solid; height:30px;}
@@ -205,3 +205,23 @@ display: box; display: -webkit-box; display: -moz-box; -webkit-box-pack:center; 
 
 .kwbox {width:100%; margin:0 auto; height:50px; padding-top:7px; background:#cbc5a7; text-align:center;}
 .kwbox input {width:95%; margin:0 auto;background:#fff url(../images/so.svg) 10px 10px no-repeat; background-size:18px;  height:40px;  border:0; text-align:left; padding-left:35px; font-size:16px; border-radius:5px; -webkit-appearance:none;}
+
+.ordershow {width: 90%;margin: 0 auto;padding-top: 20px;}
+.ordershow a {line-height: 25px; font-size: 16px;}
+.ordershow li {line-height: 35px; font-size: 16px; padding-top:10px; color:#333; border-bottom:1px #f5f5f5 solid; }
+.ordershow label{color: #ff6600;}
+.ordershow li span {color: #25C400;}
+
+.orderstate {width: 90%;margin: 0 auto;padding-top: 20px;}
+.orderstate label{margin-right:5px; width: 30%; display: inline-block;}
+.red {background:#FF0000;}
+.gray {background:#ccc; color:#000}
+.blue {background:#007AFF;}
+.bggreen {background:#31BF00;}
+.bgyellow {background:#a2bf00;}
+.green {color:#31BF00}
+
+.orderlist {width: 90%;margin: 0 auto;padding-top: 20px;}
+.orderlist li {line-height: 35px; font-size: 16px; padding-top:10px; color:#333; border-bottom:1px #f5f5f5 solid; }
+.orderlist span{float:right;  padding:0 5px; border-radius: 3px; display: inline-block; color:#fff; line-height: 20px; font-size: 12px;}
+.orderlist label {font-size: 12px; color:#666;}

@@ -7,7 +7,7 @@ import java.util.Date;
  * `id`
  * `title`，`nickName`，`phone`，`serviceProvince`，`serviceCity`，`serviceArea`，`serverDeatil`，`appointTime`，`demand`，`createDate`，`state`，`receiveId`
  */
-public class UserRelease {
+public class    UserRelease {
     private Integer id;
     private String title;     // 雇佣标题
     private String nickName;    // 昵称

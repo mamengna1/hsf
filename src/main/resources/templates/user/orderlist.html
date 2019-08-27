@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>接单中心</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <link rel="stylesheet" href="/_api/css/CSS.css?0" type="text/css"/>
+    <link rel="stylesheet" href="/_api/css/swiper.min.css" type="text/css"/>
+    <link rel="stylesheet" href="/_api/css/iconfont.css">
+    <script type="text/javascript" src="/_api/js/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="/_api/js/swiper.min.js"></script>
+
+</head>
+<body>
+<div class="orderlist">
+    <ul>
+        <a th:each="order : ${list}" th:href="@{/goOrderShow(id=${order.id})}">
+            <li>[[${order.userRelease.title}]]
+                <p><label>[[${#dates.format(order.createTime, 'yyyy-MM-dd')}]]</label><span class="bggreen">[[${order.status.statusName}]]</span></p>
+            </li>
+        </a>
+    </ul>
+</div>
+<div class="clear1"></div>
+
+</body>
+</html>

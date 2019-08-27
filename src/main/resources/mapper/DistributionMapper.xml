@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--namespace:映射命名空间-->
+<mapper namespace="cn.hsf.hsf.mapper.user.DistributionMapper">
+
+    <select id="selStatusById" resultType="cn.hsf.hsf.pojo.user.DistributionStatus">
+        SELECT `id`, `statusName` FROM `tb_distribution_status` WHERE id = #{id}
+    </select>
+    <resultMap id="selOrderStatus" type="cn.hsf.hsf.pojo.user.Distribution">
+        <id property="id" column="id"/>
+        <result property="statusId" column="statusId"/>
+        <result property="releaseId" column="releaseId"/>
+        <association property="status" column="statusId" select="cn.hsf.hsf.mapper.user.DistributionMapper.selStatusById"/>
+        <association property="userRelease" column="releaseId" select="cn.hsf.hsf.mapper.user.UserReleaseMapper.selReleaseById"/>
+    </resultMap>
+
+    <select id="selAllOrderBySfId" resultMap="selOrderStatus">
+        SELECT `id`, `releaseId`, `statusId`, `refusedMessage`, `createTime`, `updateTime`, `sfId`, `orderId`
+        FROM `tb_distribution`
+        WHERE `sfId` = #{sfId}
+    </select>
+    
+    <select id="selOrderById" resultMap="selOrderStatus">
+        SELECT `id`, `releaseId`, `statusId`, `refusedMessage`, `createTime`, `updateTime`, `sfId`, `orderId`
+        FROM `tb_distribution`
+        WHERE `id` = #{id}
+    </select>
+
+
+
+</mapper>

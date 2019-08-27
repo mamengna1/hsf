@@ -3,10 +3,12 @@ package cn.hsf.hsf.controller;
 import cn.hsf.hsf.commons.WxConstants;
 import cn.hsf.hsf.pojo.Result;
 import cn.hsf.hsf.pojo.menu.*;
+import cn.hsf.hsf.pojo.user.Distribution;
 import cn.hsf.hsf.pojo.user.User;
 import cn.hsf.hsf.pojo.user.UserDetail;
 import cn.hsf.hsf.pojo.user.UserSkill;
 import cn.hsf.hsf.service.back.CashBackService;
+import cn.hsf.hsf.service.user.DistributionService;
 import cn.hsf.hsf.service.user.UserDetailServiceImpl;
 import cn.hsf.hsf.service.user.UserService;
 import cn.hsf.hsf.utils.Send;
@@ -38,6 +40,8 @@ public class GoController {
     private UserService userService;
     @Autowired
     private CashBackService cashBackService;
+    @Autowired
+    private DistributionService distributionService;
 
     @RequestMapping("/goIndex")
     public String goIndex(Model model, HttpSession session) {
@@ -143,6 +147,25 @@ public class GoController {
         model.addAttribute("skills", userDetailService.selSkillById(Arrays.asList(user.getUserDetail().getSkills().split(","))));
         model.addAttribute("infos", userDetailService.selInfoByOpenId((String) session.getAttribute("openId")));
         return "sf/sfhome";
+    }
+
+    /**
+     *  去到 师傅订单列表
+     * @return
+     */
+    @RequestMapping("/goOrderList")
+    public String goOrderList(Model model, HttpSession session){
+        Integer userDetailId = userService.selUserByOpenId((String) session.getAttribute("openId")).getDetailId();
+        List<Distribution> uid = distributionService.selAllOrderBySfId(userDetailId);
+        model.addAttribute("list", uid);
+        return "user/orderlist";
+    }
+
+    @RequestMapping("/goOrderShow")
+    public String goOrderShow(Integer id, Model model){
+        System.out.println("进来了");
+        model.addAttribute("order", distributionService.selOrderById(id));
+        return "user/ordershow";
     }
 
     @RequestMapping("/goTemp")

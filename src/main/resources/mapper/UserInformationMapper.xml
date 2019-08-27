@@ -8,8 +8,8 @@
 
     <!-- int insInfomation(UserInformation userInformation); -->
     <insert id="insInfomation">
-        INSERT INTO `tb_user_information`(`id`, `openId`, `content`, `images`, `lookTotal`, `createDate`)
-        VALUES(DEFAULT, #{openId}, #{content}, #{images}, 0, NOW())
+        INSERT INTO `tb_user_information`(`id`, `openId`, `content`, `images`, `lookTotal`, `createDate`,`isDelete`)
+        VALUES(DEFAULT, #{openId}, #{content}, #{images}, 0, NOW(), 0)
     </insert>
 
     <!--  List<UserInformation> selByOpenId(String openId); -->

@@ -28,7 +28,6 @@ function receiving() {
     $.ajaxSettings.async = true;
 }
 function jujue() {
-
     var message = prompt("请输入拒单原因");
     if (message){
         var releaseId = $("#releaseId").val();

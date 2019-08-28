@@ -18,6 +18,8 @@ public interface UserReleaseMapper {
      */
     int updUserRelease(UserRelease userRelease);
 
+    int updUserRelease2(UserRelease userRelease);
+
     /**
      *  查询用户的所有订单
      * @param userId

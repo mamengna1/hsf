@@ -56,6 +56,10 @@ public class GoController {
         return "await";
     }
 
+    @RequestMapping("/goComment")
+    public String goComment() {
+        return "user/comment";
+    }
 
     @RequestMapping("/user")
     public String goUser() {
@@ -68,9 +72,11 @@ public class GoController {
      * @return
      */
     @RequestMapping("/goRegister")
-    public String goRegister(Model model, boolean flag) {
+    public String goRegister(Model model, Integer flag) {
+        System.out.println("FLAG : " + flag);
         model.addAttribute("skills", userDetailService.selAll());
         model.addAttribute("yearWorks", userDetailService.selYearAll());
+        model.addAttribute("flag", flag);
         return "register";
     }
 
@@ -182,7 +188,7 @@ public class GoController {
 
     @RequestMapping("/goOrderShow")
     public String goOrderShow(Integer id, Model model, HttpSession session) {
-        System.out.println( "派单ID ： "+id);
+        System.out.println("派单ID ： " + id);
         model.addAttribute("order", distributionService.selOrderById(id));
         model.addAttribute("user", userService.selUserByOpenId((String) session.getAttribute("openId")));
         return "user/ordershow";

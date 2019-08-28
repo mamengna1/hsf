@@ -24,6 +24,12 @@
         WHERE `id` = #{id} AND state = 1
     </update>
 
+    <update id="updUserRelease2" >
+        UPDATE `tb_user_release`
+        SET `state` = #{state}, `receiveId` = #{receiveId}
+        WHERE `id` = #{id} AND state = 2
+    </update>
+
     <!--  List<UserRelease>  selAllByUserId(Integer id); -->
     <select id="selAllByUserId" resultType="cn.hsf.hsf.pojo.user.UserRelease">
         select *

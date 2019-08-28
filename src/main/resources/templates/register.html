@@ -120,6 +120,8 @@
         <ul>
             <input type="hidden" name="status" id="status" value="0"/>
             <input type="hidden" name="id" id="id"/>
+            <!-- true表示从用户列表进来的  false表示从模板和菜单进入 -->
+            <input type="hidden" id="flag" th:value="${flag}"/>
             <li><input type="text" name="name" id="name" class="priceinput" value="" placeholder="输入您的真实姓名"></li>
             <li><input type="text" name="card" id="card" class="priceinput" value="" placeholder="输入您的身份证号码"></li>
             <li>

@@ -45,6 +45,11 @@ public class    UserRelease {
         this.receiveId = receiveId;
     }
 
+    public UserRelease(Integer id, Integer state) {
+        this.id = id;
+        this.state = state;
+    }
+
     @Override
     public String toString() {
         return "UserRelease{" +

@@ -93,5 +93,10 @@ public class UserServiceImpl implements UserService {
         return userInformationMapper.insInfomation(userInformation);
     }
 
+    @Override
+    public User selById(Integer id) {
+        return userMapper.selById(id);
+    }
+
 
 }

@@ -16,7 +16,14 @@
     <select id="selByOpenId" resultType="cn.hsf.hsf.pojo.user.UserInformation">
         SELECT `id`, `openId`, `content`, `images`, `lookTotal`, `createDate`
         FROM `tb_user_information`
-        WHERE openId = #{openId}
+        WHERE openId = #{openId} AND isDelete = 0
     </select>
+
+    <!--   int delDynamic(Integer id); -->
+    <update id="delDynamic">
+        update `tb_user_information`
+        set isDelete = 1
+        where id = #{id}
+    </update>
 
 </mapper>

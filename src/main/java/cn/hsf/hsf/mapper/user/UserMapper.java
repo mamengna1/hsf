@@ -18,4 +18,6 @@ public interface UserMapper {
     int selByPhone(String phone);
 
     List<User> selMyWorkmate(String openId);
+
+    User selById(Integer id);
 }

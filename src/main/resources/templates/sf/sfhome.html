@@ -17,7 +17,13 @@
     function goList(btn) {
         var skill = $(btn).attr("skill");
         alert(skill);
-        location.href = "/_api/goSFList?skills=" +skill;
+        location.href = "/_api/goSFList?skills=" + skill;
+    }
+
+    function delInfo(id) {
+        if (window.confirm("确定要删除吗")) {
+            location.href = "/_api/delDynamic?id=" + id
+        }
     }
 </script>
 <body>
@@ -36,7 +42,9 @@
 
 <div class="jbxx">
     <p th:text="'从业年限：' + ${userDetail.userYearWork.yearName}"></p>
-    <p>专业特长：<a th:each="skill : ${skills}" href="javascript:void(0);"><label th:attr="skill=${skill.id}" onclick="goList(this)">[[${skill.skillName}]]</label></a></p>
+    <p>专业特长：<a th:each="skill : ${skills}" href="javascript:void(0);"><label th:attr="skill=${skill.id}"
+                                                                             onclick="goList(this)">[[${skill.skillName}]]</label></a>
+    </p>
     <input type="hidden" id="address"
            th:value="${userDetail.placeProvince}+','+${userDetail.placeCity}+','+${userDetail.placeArea}+','+${userDetail.address}"/>
     <p id="address2">所在位置：</p>
@@ -51,8 +59,9 @@
 
 <div th:each="info : ${infos}">
     <div class="tdshow">
-        <p><em><img src="images/headimg.jpg" width=30 height=30 class="br50"></em><label>[[${#dates.format(info.createDate, 'yyyy年MM月dd日')}]]</label><span
-                th:if="${flag eq '1'}"><a href="">删除</a></span></p>
+        <p><em><img src="images/headimg.jpg" width=30 height=30 class="br50"></em><label>[[${#dates.format(info.createDate,
+            'yyyy年MM月dd日')}]]</label><span
+                th:if="${flag eq '1'}"><a th:onclick="'javascript:delInfo(\''+${info.id}+'\')'" href="javascript:void(0);">删除</a></span></p>
         <p th:text="${info.content}"></p>
         <div class="dt_img">
             <ul>
@@ -70,9 +79,9 @@
 <script type="text/javascript">
     $(function () {
         var address = $("#address").val().split(",");
-        var addr = showProvince(address[0], address[1],address[2]);
+        var addr = showProvince(address[0], address[1], address[2]);
         $("#area").html(addr.substr(addr.lastIndexOf("/") + 1));
-        $("#address2").html(addr.replace("/","") + " : " +address[3]);
+        $("#address2").html(addr.replace("/", "") + " : " + address[3]);
     });
 
 </script>

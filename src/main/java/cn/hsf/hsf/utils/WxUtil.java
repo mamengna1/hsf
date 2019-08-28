@@ -157,6 +157,15 @@ public class WxUtil {
         return dateFormat.format(date);
     }
 
+    public static String tranfDate(long l) {
+        SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        //new日期对象
+        Date date = new Date(l);
+        String str = formatter.format(date);
+        return  str;
+
+    }
+
 
     /**
      * 保存到服务器
@@ -262,4 +271,6 @@ public class WxUtil {
         }
         return filename;
     }
+
+
 }

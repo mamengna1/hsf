@@ -52,10 +52,46 @@
             updateTime = NOW()
         </set>
         <where>
-            statusId = 1
+             statusId = 1
             <if test="id != null and id != ''">
                 and id = #{id}
             </if>
+            <if test="releaseId != null and releaseId != ''">
+                and releaseId = #{releaseId}
+            </if>
         </where>
     </update>
+
+    <update id="updDistribution2">
+        UPDATE `tb_distribution`
+        <set>
+            <if test="statusId != null and statusId != ''">
+                statusId = #{statusId},
+            </if>
+            <if test="refusedMessage != null and refusedMessage != ''">
+                refusedMessage = #{refusedMessage},
+            </if>
+            <if test="orderId != null and orderId != ''">
+                orderId = #{orderId},
+            </if>
+            updateTime = NOW()
+        </set>
+        <where>
+            statusId = 2
+            <if test="id != null and id != ''">
+                and id = #{id}
+            </if>
+            <if test="releaseId != null and releaseId != ''">
+                and releaseId = #{releaseId}
+            </if>
+        </where>
+    </update>
+
+    <!--   Distribution sel(UserRelease userRelease); -->
+    <select id="sel" resultType="cn.hsf.hsf.pojo.user.Distribution">
+        SELECT `id`, `releaseId`, `statusId`, `refusedMessage`, `createTime`, `updateTime`, `sfId`, `orderId`
+        FROM `tb_distribution`
+        WHERE releaseId = #{id} AND sfId = #{receiveId}
+    </select>
+
 </mapper>

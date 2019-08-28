@@ -36,7 +36,7 @@ function getUrlParam(name) {
  */
 function getOpenId(code) {
     $.getJSON("/_api/getUserInfo", {"code": code}, function (data) {
-        if (data.detailId != 0 && (data.userDetail.status == 2 || data.userDetail.status == 1)) {
+        if (data.detailId != 0 && (data.userDetail.status == 2 || (data.userDetail.status == 1 && flag))) {
             $("#name").val(data.userDetail.name);
             $("#card").val(data.userDetail.card);
             $("#address").val(data.userDetail.address);
@@ -77,6 +77,8 @@ function getOpenId(code) {
                 $("#card1").attr("disabled", true).css("pointer-events", "none");
                 $("#card2").attr("disabled", true).css("pointer-events", "none");
             }
+        } else if (data.userDetail.status == 1 && !flag){
+
         } else if (data.detailId != 0 && (data.userDetail.status == 0 || data.userDetail.status == 3) && (data.userDetail.message == null || data.userDetail.message == '')) {
             location.href = "/_api/goAwait";
         } else {
@@ -135,11 +137,9 @@ function checkForm() {
                 flag = false;
             } else {
                 bindCount++;
-                alert(res.message);
                 flag = true;
             }
         });
-        alert(flag);
         return flag;
     } else {
         alert("多次输入不正确请重新获取");

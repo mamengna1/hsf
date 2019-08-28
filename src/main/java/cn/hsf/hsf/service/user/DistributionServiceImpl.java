@@ -52,7 +52,7 @@ public class DistributionServiceImpl implements DistributionService {
             if (count > 0) {
                 int count2 = distributionMapper.updDistribution(distribution);
                 if (count2 > 0) {
-                    distributionMapper.updDistribution(new Distribution(3));
+                    distributionMapper.updDistribution(new Distribution(distribution.getReleaseId(),3));
                     return true;
                 }else {
                     throw new RuntimeException("订单已经被接受");
@@ -65,4 +65,37 @@ public class DistributionServiceImpl implements DistributionService {
         }
 
     }
+
+    @Override
+    public Distribution sel(UserRelease userRelease) {
+
+        return distributionMapper.sel(userRelease);
+    }
+
+    /**
+     *  拒单
+     * @param distribution
+     * @return
+     */
+    @Override
+    public int turnDown(Distribution distribution) {
+        return distributionMapper.updDistribution(distribution);
+    }
+
+    /**
+     *  已取消
+     * @param distribution
+     * @return
+     */
+    @Override
+    public int callOff(Distribution distribution) {
+        return distributionMapper.updDistribution2(distribution);
+    }
+
+    @Override
+    public int comple(Distribution distribution) {
+        return distributionMapper.updDistribution2(distribution);
+    }
+
+
 }

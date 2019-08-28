@@ -29,4 +29,6 @@ public interface UserDetailService {
     List<UserInformation> selInfoByOpenId(String openId);
 
     List<UserDetail> selBySkill(UserDetail userDetail);
+
+    int delDynamic(Integer id);
 }

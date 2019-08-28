@@ -2,6 +2,7 @@ package cn.hsf.hsf.mapper.user;
 
 import cn.hsf.hsf.pojo.user.Distribution;
 import cn.hsf.hsf.pojo.user.DistributionStatus;
+import cn.hsf.hsf.pojo.user.UserRelease;
 
 import java.util.List;
 
@@ -41,6 +42,10 @@ public interface DistributionMapper {
      * @return
      */
     int updDistribution(Distribution distribution);
+    int updDistribution2(Distribution distribution);
+
+    Distribution sel(UserRelease userRelease);
+
 
 
 

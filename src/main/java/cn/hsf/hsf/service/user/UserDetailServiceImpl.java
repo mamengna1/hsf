@@ -87,4 +87,9 @@ public class UserDetailServiceImpl implements UserDetailService {
     public List<UserDetail> selBySkill(UserDetail userDetail) {
         return userDetailMapper.selBySkill(userDetail);
     }
+
+    @Override
+    public int delDynamic(Integer id) {
+        return userInformationMapper.delDynamic(id);
+    }
 }

@@ -64,5 +64,7 @@ public interface UserService {
      */
     int insInformation(UserInformation userInformation);
 
+    User selById(Integer id);
+
 
 }

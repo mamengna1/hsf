@@ -15,4 +15,6 @@ public interface MessageService {
 
     void sendSalesTemplateMessage(Map<String, String> map);
 
+    void sendZhaoSf(Map<String, String> map);
+
 }

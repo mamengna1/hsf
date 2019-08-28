@@ -10,4 +10,6 @@ public interface UserInformationMapper {
 
     List<UserInformation> selByOpenId(String openId);
 
+    int delDynamic(Integer id);
+
 }

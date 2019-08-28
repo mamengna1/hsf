@@ -97,6 +97,7 @@
 			$.getJSON("/_api/zsf/insUserRelease", {"title": title, "nickName": nickName, "phone": phone, "serviceProvince": serviceProvince, "serviceCity": serviceCity, "serviceArea": serviceArea, "serverDetail": serverDetail, "appointTime": appointTime, "demand": demand}, function (data) {
 				if (data == true) {
 					alert("发布成功！")
+					location.href = "/_api/goOrderList";
 				} else {
 					alert("发布失败！")
 				}

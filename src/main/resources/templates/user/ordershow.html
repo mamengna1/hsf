@@ -25,36 +25,41 @@
         <li><label>雇佣标题：</label>[[${order.userRelease.title}]]</li>
         <li><label>发布时间：</label>[[${#dates.format(order.createTime, 'yyyy-MM-dd')}]]</li>
         <li><label>业主姓名：</label>[[${order.userRelease.nickName}]]</li>
-        <li><label>联系方式：</label><a href="tel:18657463227">[[${order.userRelease.phone}]] <span><i class="iconfont icon-mobilephone"></i>拨打电话</span></a>
+        <li>
+            <label>联系方式：</label><a href="tel:18657463227">[[${order.userRelease.phone}]] <span><i class="iconfont icon-mobilephone"></i>拨打电话</span></a>
         </li>
-        <li><label>服务地址：</label>浙江省宁波市鄞州区诚信路955号九五九电商园B幢202室<a href="#"><span><i class="iconfont icon-coordinates"></i>地图导航</span></a>
+        <li>
+            <label>服务地址：</label>浙江省宁波市鄞州区诚信路955号九五九电商园B幢202室<a href="#"><span><i class="iconfont icon-coordinates"></i>地图导航</span></a>
         </li>
         <li><label>预约时间：</label>[[${#dates.format(order.userRelease.createDate, 'yyyy-MM-dd')}]]</li>
         <li><label>备注信息：</label>[[${order.userRelease.demand}]]</li>
     </ul>
 </div>
-
-<div class="orderstate" th:if="${order.statusId == 1}">
-    <label><input type="button" name="" onclick="receiving()" class="btn_sbt br3" value="接单"></label>
-    <label><input type="button" name="" class="btn_sbt br3 red" value="拒单"></label>
-
-</div>
-
-<div class="orderstate">
-    <label th:if="${order.statusId == 2}"><input type="button" name="" class="btn_sbt br3 blue" value="已接单" disabled="disabled"></label>
+<!-- 师傅 -->
+<div class="orderstate" th:if="${user.detailId ne 0 && user.userDetail.status == 1}">
+    <label th:if="${order.statusId == 1}"><input type="button" name="" onclick="receiving()" class="btn_sbt br3" value="接单"></label>
+    <label th:if="${order.statusId == 1}"><input type="button" name="" onclick="jujue()" class="btn_sbt br3 red" value="拒单"></label>
     <label th:if="${order.statusId == 3}"><input type="button" name="" class="btn_sbt br3 gray" value="已拒单" disabled="disabled"></label>
-</div>
-
-<div class="orderstate" th:if="${order.statusId == 4}">
-    <label><input type="button" name="" class="btn_sbt br3" value="服务进行中"></label>
-    <label><input type="button" name="" class="btn_sbt br3 red" value="取消订单"></label>
-    <label><input type="button" name="" class="btn_sbt br3 blue" value="申请完工"></label>
+    <label th:if="${order.statusId == 5}"><input type="button" name="" class="btn_sbt br3 gray" value="已取消" disabled="disabled"></label>
+    <label th:if="${order.statusId == 2}"><input type="button" name="" class="btn_sbt br3" value="服务进行中"></label>
+    <label th:if="${order.statusId == 2}"><input type="button" name="" onclick="callOff()" class="btn_sbt br3 red" value="取消订单"></label>
+    <label th:if="${order.statusId == 2}"><input type="button" name="" onclick="comple()"  class="btn_sbt br3 blue" value="申请完工"></label>
+    <label th:if="${order.statusId == 7}"><input type="button" name="" class="btn_sbt br3" value="服务进行中"></label>
+    <label th:if="${order.statusId == 7}"><input type="button" name="" class="btn_sbt br3 blue" value="已申请完工"></label>
 </div>
 
 <div class="orderstate" th:if="${order.statusId == 6}">
     <label><input type="button" name="" class="btn_sbt br3 blue" value="已完工"></label>
 </div>
 
+
+<div class="orderstate" th:if="${user.detailId eq 0}">
+    <label th:if="${order.statusId == 3}"><input type="button" name="" class="btn_sbt br3 gray" value="已拒单" disabled="disabled"></label>
+    <label th:if="${order.statusId == 5}"><input type="button" name="" class="btn_sbt br3 gray" value="已取消" disabled="disabled"></label>
+    <label th:if="${order.statusId == 2}"><input type="button" name="" class="btn_sbt br3" value="服务进行中"></label>
+    <label th:if="${order.statusId == 7}"><input type="button" name="" class="btn_sbt br3" value="服务进行中"></label>
+    <label th:if="${order.statusId == 7}"><input type="button" name=""  class="btn_sbt br3 blue" value="评论"></label>
+</div>
 
 <div class="clear1"></div>
 

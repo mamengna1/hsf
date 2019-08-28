@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>订单信息</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <link rel="stylesheet" href="/_api/css/CSS.css?0" type="text/css"/>
+    <link rel="stylesheet" href="/_api/css/swiper.min.css" type="text/css"/>
+    <link rel="stylesheet" href="/_api/css/iconfont.css">
+    <script type="text/javascript" src="/_api/js/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="/_api/js/swiper.min.js"></script>
+    <script type="text/javascript" src="/_api/js/hsf/ordershow.js"></script>
+</head>
+
+
+<body>
+<div class="ordershow">
+    <input type="hidden" id="releaseId" th:value="${userOrder.id}"/>
+    <ul>
+        <li><label>雇佣标题：</label>[[${userOrder.title}]]</li>
+        <li><label>发布时间：</label>[[${#dates.format(userOrder.createDate, 'yyyy-MM-dd')}]]</li>
+        <li><label>业主姓名：</label>[[${userOrder.nickName}]]</li>
+        <li>
+            <label>联系方式：</label><a href="tel:18657463227">[[${userOrder.phone}]] <span><i class="iconfont icon-mobilephone"></i>拨打电话</span></a>
+        </li>
+        <li>
+            <label>服务地址：</label>浙江省宁波市鄞州区诚信路955号九五九电商园B幢202室<a href="#"><span><i class="iconfont icon-coordinates"></i>地图导航</span></a>
+        </li>
+        <li><label>预约时间：</label>[[${#dates.format(userOrder.createDate, 'yyyy-MM-dd')}]]</li>
+        <li><label>备注信息：</label>[[${userOrder.demand}]]</li>
+    </ul>
+</div>
+
+
+<div class="orderstate">
+    <label th:if="${userOrder.state == 1}"><input type="button" name="" class="btn_sbt br3 blue" value="接单中" disabled="disabled"></label>
+    <label th:if="${userOrder.state == 3}"><input type="button" name="" class="btn_sbt br3 gray" value="预约失败" disabled="disabled"></label>
+</div>
+
+
+
+<div class="clear1"></div>
+
+</body>
+</html>

@@ -82,5 +82,12 @@
         FROM `tb_user`
         WHERE userParent = #{openId} AND  detailId is not null AND detailId != 0
     </select>
+
+    <!--User selById(Integer id);-->
+    <select id="selById"  resultMap="selUserDetail">
+        SELECT `id`, `nickName`, `openId`, `sex`, `headPic`, `country`, `province`, `city`, `phone`, `isSub`, `memberType`, `sourceType`, `totalMoney`, `balanceMoney`, `totalScore`, `balanceScore`, `userParent`, `createDate`, `lastLoginTime`, `detailId`
+        FROM `tb_user`
+        WHERE id = #{id}
+    </select>
     
 </mapper>

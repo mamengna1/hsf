@@ -13,17 +13,14 @@
     <script type="text/javascript" src="/_api/js/jquery-3.4.1.min.js"></script>
     <script type="text/javascript" src="/_api/js/swiper.min.js"></script>
 
-    <script type="text/javascript">
-
-    </script>
 </head>
 <body>
 <div class="orderlist">
     <ul>
-        <!-- order.id=派单表的主键 -->
-        <a th:each="order : ${list}" th:href="@{/goOrderShow(id=${order.id})}">
-            <li>[[${order.userRelease.title}]]
-                <p><label>[[${#dates.format(order.createTime, 'yyyy-MM-dd')}]]</label><span class="bggreen">[[${order.status.statusName}]]</span></p>
+        <!-- order.id = release表中的主键 -->
+        <a th:each="order : ${orders}" th:href="@{/goUserOrderDetail(id=${order.id})}">
+            <li>[[${order.title}]]
+                <p><label>[[${#dates.format(order.createDate, 'yyyy-MM-dd')}]]</label><span class="bggreen">[[${order.state == 1 ? '接单中' : order.state == 2 ? '已接单' : '预约失败'}]]</span></p>
             </li>
         </a>
     </ul>

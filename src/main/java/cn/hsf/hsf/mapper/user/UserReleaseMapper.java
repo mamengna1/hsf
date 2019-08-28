@@ -2,6 +2,8 @@ package cn.hsf.hsf.mapper.user;
 
 import cn.hsf.hsf.pojo.user.UserRelease;
 
+import java.util.List;
+
 public interface UserReleaseMapper {
 
     UserRelease selReleaseById(Integer id);
@@ -16,5 +18,11 @@ public interface UserReleaseMapper {
      */
     int updUserRelease(UserRelease userRelease);
 
+    /**
+     *  查询用户的所有订单
+     * @param userId
+     * @return
+     */
+    List<UserRelease>  selAllByUserId(Integer userId);
 
 }

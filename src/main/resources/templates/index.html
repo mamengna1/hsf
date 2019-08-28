@@ -124,7 +124,8 @@
 -->
 <section class="user_pm_list_1">
     <ul>
-        <li th:if="${user.detailId !=0 && user.userDetail.status == 1}">
+        <!--  <li th:if="${user.detailId !=0 && user.userDetail.status == 1}">-->
+        <li>
             <a href="/_api/goOrderList"><em><i class="iconfont icon-systemprompt"></i></em>
                 <p>接单中心</p>
             </a>
@@ -145,7 +146,7 @@
             </a>
         </li>
         <li>
-            <a href="/_api/goRegister"><em><i class="iconfont icon-setup"></i></em>
+            <a href="/_api/goRegister?flag=true"><em><i class="iconfont icon-setup"></i></em>
                 <p>修改资料</p>
             </a>
         </li>

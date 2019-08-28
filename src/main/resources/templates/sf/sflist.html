@@ -35,7 +35,6 @@
     function search() {
         var skill = $("#skills").val();
         var name = $("#skey").val();
-        alert(skill + name);
         $.getJSON("/_api/selSFList", {"skills": skill, "name": name}, function (res) {
             $("#SFList").html("");
             for (var i = 0; i < res.length; i++) {

@@ -5,6 +5,7 @@ import cn.hsf.hsf.pojo.user.UserRelease;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Service
 public class UserReleaseServiceImpl implements UserReleaseService {
@@ -15,5 +16,20 @@ public class UserReleaseServiceImpl implements UserReleaseService {
     @Override
     public int insertUserRelease(UserRelease userRelease) {
         return userReleaseMapper.insertUserRelease(userRelease);
+    }
+
+    @Override
+    public List<UserRelease> selAllByUserId(Integer userId) {
+        return userReleaseMapper.selAllByUserId(userId);
+    }
+
+    /**
+     *  用户查看订单详情
+     * @param id
+     * @return
+     */
+    @Override
+    public UserRelease selReleaseById(Integer id) {
+        return userReleaseMapper.selReleaseById(id);
     }
 }

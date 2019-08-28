@@ -5,13 +5,11 @@ import cn.hsf.hsf.commons.WxConstants;
 import cn.hsf.hsf.pojo.Result;
 import cn.hsf.hsf.pojo.menu.*;
 import cn.hsf.hsf.pojo.menu.Button;
-import cn.hsf.hsf.pojo.user.Distribution;
-import cn.hsf.hsf.pojo.user.User;
-import cn.hsf.hsf.pojo.user.UserDetail;
-import cn.hsf.hsf.pojo.user.UserSkill;
+import cn.hsf.hsf.pojo.user.*;
 import cn.hsf.hsf.service.back.CashBackService;
 import cn.hsf.hsf.service.user.DistributionService;
 import cn.hsf.hsf.service.user.UserDetailServiceImpl;
+import cn.hsf.hsf.service.user.UserReleaseService;
 import cn.hsf.hsf.service.user.UserService;
 import cn.hsf.hsf.utils.Send;
 import cn.hsf.hsf.utils.WxUtil;
@@ -54,7 +52,7 @@ public class GoController {
     }
 
     @RequestMapping("/goAwait")
-    public String goAwait(){
+    public String goAwait() {
         return "await";
     }
 
@@ -64,8 +62,13 @@ public class GoController {
         return "user/user.html";
     }
 
+    /**
+     * @param model
+     * @param flag  true表示从个人中心点击
+     * @return
+     */
     @RequestMapping("/goRegister")
-    public String goRegister(Model model) {
+    public String goRegister(Model model, boolean flag) {
         model.addAttribute("skills", userDetailService.selAll());
         model.addAttribute("yearWorks", userDetailService.selYearAll());
         return "register";
@@ -78,7 +81,7 @@ public class GoController {
 
     @ResponseBody
     @RequestMapping("/getPhone")
-    public Result getPhone(HttpSession session){
+    public Result getPhone(HttpSession session) {
         String phone = userService.selUserByOpenId((String) session.getAttribute("openId")).getPhone();
         return new Result(phone != null ? phone.replaceAll("(\\d{3})\\d{4}(\\d{4})", "$1****$2") : phone, true);
     }
@@ -110,28 +113,29 @@ public class GoController {
     }
 
     @RequestMapping("/goBackList")
-    public String goBackList(Model model, HttpSession session){
+    public String goBackList(Model model, HttpSession session) {
         model.addAttribute("list", cashBackService.selAllByOpenId((String) session.getAttribute("openId")));
         return "backList";
     }
 
     @RequestMapping("/goSource")
-    public String goSource(Model model, HttpSession session){
+    public String goSource(Model model, HttpSession session) {
         model.addAttribute("list", userService.selAllByOpeniId((String) session.getAttribute("openId")));
         return "sourceList";
     }
 
     /**
      * 去到发布动态
+     *
      * @return
      */
     @RequestMapping("/goMyDynamic")
-    public String goMyDynamic(){
+    public String goMyDynamic() {
         return "myDynamic";
     }
 
     @RequestMapping("/goMyWorkmate")
-    public String goMyWorkmate(Model model, HttpSession session){
+    public String goMyWorkmate(Model model, HttpSession session) {
         List<User> list = userService.selMyWorkmate((String) session.getAttribute("openId"));
         model.addAttribute("list", list);
         model.addAttribute("len", list.size());
@@ -139,38 +143,65 @@ public class GoController {
     }
 
     /**
-     *  去到师傅个人主页
+     * 去到师傅个人主页
+     *
      * @return
      */
     @RequestMapping("/goSFHone")
-    public String goSFHone(Model model, HttpSession session){
+    public String goSFHone(Model model, HttpSession session) {
         User user = userService.selUserByOpenId((String) session.getAttribute("openId"));
         model.addAttribute("user", user);
         model.addAttribute("userDetail", user.getUserDetail());
-        model.addAttribute("flag","1");
+        model.addAttribute("flag", "1");
         model.addAttribute("skills", userDetailService.selSkillById(Arrays.asList(user.getUserDetail().getSkills().split(","))));
         model.addAttribute("infos", userDetailService.selInfoByOpenId((String) session.getAttribute("openId")));
         return "sf/sfhome";
     }
 
+    @Autowired
+    private UserReleaseService userReleaseService;
+
     /**
-     *  去到 师傅订单列表
+     * 去到 师傅订单列表
+     *
      * @return
      */
     @RequestMapping("/goOrderList")
-    public String goOrderList(Model model, HttpSession session){
+    public String goOrderList(Model model, HttpSession session) {
         Integer userDetailId = userService.selUserByOpenId((String) session.getAttribute("openId")).getDetailId();
-        List<Distribution> uid = distributionService.selAllOrderBySfId(userDetailId);
-        model.addAttribute("list", uid);
-        return "user/orderlist";
+        // 师傅的订单
+        if (userDetailId != null && userDetailId != 0) {
+            List<Distribution> uid = distributionService.selAllOrderBySfId(userDetailId);
+            model.addAttribute("list", uid);
+            return "user/orderlist";
+        } else { // 用户的订单
+            model.addAttribute("orders", userReleaseService.selAllByUserId((Integer) session.getAttribute("uid")));
+            return "user/userList";
+        }
     }
 
     @RequestMapping("/goOrderShow")
-    public String goOrderShow(Integer id, Model model){
-        System.out.println("进来了");
+    public String goOrderShow(Integer id, Model model, HttpSession session) {
+        System.out.println( "派单ID ： "+id);
         model.addAttribute("order", distributionService.selOrderById(id));
+        model.addAttribute("user", userService.selUserByOpenId((String) session.getAttribute("openId")));
         return "user/ordershow";
     }
+
+    @RequestMapping("/goUserOrderDetail")
+    public String goUserOrderDetail(Integer id, Model model) {
+        UserRelease userRelease = userReleaseService.selReleaseById(id);
+        // 是否有师傅接单
+        if (userRelease.getReceiveId() == null) {
+            // 跟这个师傅的订单  需要显示信息
+            model.addAttribute("userOrder", userReleaseService.selReleaseById(id));
+            return "user/usershow";
+        } else {
+            Distribution sf = distributionService.sel(userRelease);
+            return "redirect:/goOrderShow?id=" + sf.getId();
+        }
+    }
+
 
     @RequestMapping("/goTemp")
     public String goTemp() {

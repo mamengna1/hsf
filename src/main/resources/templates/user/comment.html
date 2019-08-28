@@ -18,16 +18,11 @@
     </script>
 </head>
 <body>
+
 <div class="orderlist">
-    <ul>
-        <!-- order.id=派单表的主键 -->
-        <a th:each="order : ${list}" th:href="@{/goOrderShow(id=${order.id})}">
-            <li>[[${order.userRelease.title}]]
-                <p><label>[[${#dates.format(order.createTime, 'yyyy-MM-dd')}]]</label><span class="bggreen">[[${order.status.statusName}]]</span></p>
-            </li>
-        </a>
-    </ul>
+    网站建设中建设中
 </div>
+
 <div class="clear1"></div>
 
 </body>

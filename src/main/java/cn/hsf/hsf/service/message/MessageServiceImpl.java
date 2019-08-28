@@ -144,4 +144,49 @@ public class MessageServiceImpl implements MessageService {
         String result = Send.post(url, data);
         System.out.println(result);
     }
+
+    /**
+     *  找师傅
+     * @param map
+     */
+    @Override
+    public void sendZhaoSf(Map<String, String> map) {
+        String at = WxUtil.getAccessToken();
+        String url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token="+at;
+        String data = "{\n" +
+                "           \"touser\":\""+map.get("openId")+"\",\n" +
+                "           \"template_id\":\""+map.get("template_id")+"\",\n" +
+                "           \"url\":\""+map.get("url")+"\",\n" +
+                "           \"data\":{\n" +
+                "                   \"first\": {\n" +
+                "                       \"value\":\""+map.get("title")+"\",\n" +
+                "                       \"color\":\"#173177\"\n" +
+                "                   },\n" +
+                "                   \"keyword1\":{\n" +
+                "                       \"value\":\""+map.get("serviceType")+"\",\n" +
+                "                       \"color\":\"#173177\"\n" +
+                "                   },\n" +
+                "                   \"keyword2\":{\n" +
+                "                       \"value\":\""+map.get("orderNo")+"\",\n" +
+                "                       \"color\":\"#173177\"\n" +
+                "                   },\n" +
+                "                   \"keyword3\":{\n" +
+                "                       \"value\":\""+map.get("orderState")+"\",\n" +
+                "                       \"color\":\"#173177\"\n" +
+                "                   },\n" +
+                "                   \"keyword4\": {\n" +
+                "                       \"value\":\""+ WxUtil.tranfDate(System.currentTimeMillis())+"\",\n" +
+                "                       \"color\":\"#173177\"\n" +
+                "                   },\n" +
+                "                   \"remark\":{\n" +
+                "                       \"value\":\""+map.get("end")+"\",\n" +
+                "                       \"color\":\"#173177\"\n" +
+                "                   }\n" +
+                "           }\n" +
+                "       }";
+        String result = Send.post(url,data);
+        System.out.println(result);
+    }
+
+
 }

@@ -6,9 +6,9 @@
 <!--namespace:映射命名空间-->
 <mapper namespace="cn.hsf.hsf.mapper.user.UserReleaseMapper">
 
-    <insert id="insertUserRelease" parameterType="cn.hsf.hsf.pojo.user.UserRelease">
+    <insert id="insertUserRelease" parameterType="cn.hsf.hsf.pojo.user.UserRelease" useGeneratedKeys="true" keyProperty="id">
         insert into `tb_user_release`(`title`,`nickName`,`phone`,`serviceProvince`,`serviceCity`,`serviceArea`,`serverDetail`,`appointTime`,`demand`,`createDate`,`state`,`receiveId`,`userId`)
-        values(#{title},#{nickName},#{phone},#{serviceProvince},#{serviceCity},#{serviceArea},#{serverDetail},#{appointTime},#{demand},now(),0,#{receiveId},#{userId})
+        values(#{title},#{nickName},#{phone},#{serviceProvince},#{serviceCity},#{serviceArea},#{serverDetail},#{appointTime},#{demand},now(),1,#{receiveId},#{userId})
     </insert>
 
     <select id="selReleaseById" resultType="cn.hsf.hsf.pojo.user.UserRelease">
@@ -23,5 +23,14 @@
         SET `state` = #{state}, `receiveId` = #{receiveId}
         WHERE `id` = #{id} AND state = 1
     </update>
+
+    <!--  List<UserRelease>  selAllByUserId(Integer id); -->
+    <select id="selAllByUserId" resultType="cn.hsf.hsf.pojo.user.UserRelease">
+        select *
+        from tb_user_release
+        where userId = #{userId}
+    </select>
+
+
 
 </mapper>

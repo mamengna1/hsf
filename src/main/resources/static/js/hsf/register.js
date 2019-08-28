@@ -13,7 +13,6 @@ $(function () {
             skills.splice(jQuery.inArray($(this).attr("sid"), skills), 1);
         }
         $("#skills").val(skills.join());
-        alert($("#skills").val());
     })
 });
 
@@ -129,16 +128,19 @@ function checkForm() {
     var status = $("#status").val();
     $.ajaxSettings.async = false;
     if (bindCount < 3) {
+        var flag;
         $.getJSON("/_api/isCode", {"phone": phone, "code": yzm}, function (res) {
             if (!res.flag && status != 2) {
                 alert(res.message);
-                return true;
+                flag = false;
             } else {
                 bindCount++;
                 alert(res.message);
-                return false;
+                flag = true;
             }
         });
+        alert(flag);
+        return flag;
     } else {
         alert("多次输入不正确请重新获取");
         return false;

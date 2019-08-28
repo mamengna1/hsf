@@ -16,7 +16,6 @@ var oldPhone;
 function sendMessage() {
     oldPhone = $("#phone").val();
     var isDef = $("#phone").attr("readonly") == 'readonly' ? true : false;
-    alert("ISDEF" + isDef);
     if (!verify(oldPhone)) {
         return;
     }
@@ -29,7 +28,6 @@ function sendMessage() {
                 if (time == 60 && flag) {
                     flag = false;
                     $.getJSON("/_api/sendMessage", {"phone": oldPhone, "isDef": isDef}, function (data) {
-                        alert(typeof data);
                         if (!data) {
                             alert("该手机号已经绑定账号，请核对");
                             flag = true;

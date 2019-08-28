@@ -1,8 +1,10 @@
 package cn.hsf.hsf.controller;
 
+import cn.hsf.hsf.commons.ImageURL;
 import cn.hsf.hsf.commons.WxConstants;
 import cn.hsf.hsf.pojo.Result;
 import cn.hsf.hsf.pojo.menu.*;
+import cn.hsf.hsf.pojo.menu.Button;
 import cn.hsf.hsf.pojo.user.Distribution;
 import cn.hsf.hsf.pojo.user.User;
 import cn.hsf.hsf.pojo.user.UserDetail;
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.awt.*;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -86,7 +89,8 @@ public class GoController {
      * @return
      */
     @RequestMapping("/goMyEWN")
-    public String goMyEWN() {
+    public String goMyEWN(Model model, HttpSession session) {
+        model.addAttribute("ewm", ImageURL.GET_USER_EWM_URL + session.getAttribute("uid") + ".jpg");
         return "myewm";
     }
 

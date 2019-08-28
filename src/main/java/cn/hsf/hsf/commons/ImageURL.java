@@ -28,5 +28,8 @@ public class ImageURL {
      */
     public static final String POSTERS_URL = "D:\\software\\Tomcat\\imageTomcat\\webapps\\images\\posters\\";
 
+    /**
+     *  海报读取路径
+     */
     public static final String GET_POSTERS_URL = "http://java.86blue.cn/images/posters/";
 }

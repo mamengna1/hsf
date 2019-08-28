@@ -28,4 +28,20 @@ public interface DistributionMapper {
      */
     Distribution selOrderById(Integer id);
 
+    /**
+     *  判断是否接过单
+     * @param releaseId
+     * @return
+     */
+    int selReleaseById(Integer releaseId);
+
+    /**
+     *  接过单后修改信息
+     * @param distribution
+     * @return
+     */
+    int updDistribution(Distribution distribution);
+
+
+
 }

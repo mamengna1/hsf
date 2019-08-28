@@ -9,5 +9,12 @@ public interface UserReleaseMapper {
     //插入
     int insertUserRelease(UserRelease userRelease);
 
+    /**
+     *  师傅接单修改状态
+     * @param userRelease
+     * @return
+     */
+    int updUserRelease(UserRelease userRelease);
+
 
 }

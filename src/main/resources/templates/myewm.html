@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
     <title>我的二维码</title>
@@ -16,15 +16,6 @@
     <script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
 
     <script type="text/javascript">
-        /*// 二维码
-        $(function () {
-            var url = "/_api/getEWM";
-            $.get(url, function (ewm) {
-                $("img").attr("src", ewm.message + ".jpg");
-            });
-        });*/
-
-
         $(document).ready(function () {
 
             var url = location.href.split('#')[0];
@@ -78,7 +69,7 @@
         function savePosters(btn) {
             var path = $(btn).attr("src");
             $.getJSON("/_api/savePoster_2", {"path": path}, function (res) {
-                $("src").attr("src", res);
+                $("#ewm").attr("src", res.message);
             })
         }
     </script>
@@ -90,8 +81,7 @@
 <h1>海报生成</h1>
 <button type="button" id="poster">手机图片上传方式（不推荐）</button>
 <div>
-    <img onclick="savePosters(this)" width="100px" src="http://java.86blue.cn/images/background/background_1.jpg"/>
-    <img onclick="savePosters(this)" width="100px" src="http://java.86blue.cn/images/background/background_2.jpg"/>
+    <img onclick="savePosters(this)" width="100px" src="http://java.86blue.cn/images/background/background_1.jpg"/><img onclick="savePosters(this)" width="100px" src="http://java.86blue.cn/images/background/background_2.jpg"/>
 </div>
 
 <div class="myewm">
@@ -100,7 +90,7 @@
 
 
 <div class="myewm">
-    <span><img width="150px" height="150px" src="images/headimg.jpg"></span>
+    <span><img width="150px" height="150px" id="ewm" th:src="${ewm}"></span>
     <p>&nbsp;</p>
     <p>功能需求：</p>
     <p>

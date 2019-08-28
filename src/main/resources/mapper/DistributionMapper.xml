@@ -29,6 +29,33 @@
         WHERE `id` = #{id}
     </select>
 
+<!--    Distribution selReleaseById(Integer releaseId); -->
+    <select id="selReleaseById" resultType="int">
+        SELECT COUNT(1)
+        FROM `tb_distribution`
+        WHERE `releaseId` = #{releaseId} AND (statusId = 2 OR statusId = 4 OR statusId = 6)
+    </select>
 
-
+    <!--     int updDistribution(Distribution distribution); -->
+    <update id="updDistribution">
+        UPDATE `tb_distribution`
+        <set>
+            <if test="statusId != null and statusId != ''">
+                statusId = #{statusId},
+            </if>
+            <if test="refusedMessage != null and refusedMessage != ''">
+                refusedMessage = #{refusedMessage},
+            </if>
+            <if test="orderId != null and orderId != ''">
+                orderId = #{orderId},
+            </if>
+            updateTime = NOW()
+        </set>
+        <where>
+            statusId = 1
+            <if test="id != null and id != ''">
+                and id = #{id}
+            </if>
+        </where>
+    </update>
 </mapper>

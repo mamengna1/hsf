@@ -81,6 +81,7 @@ public class SendMessageController {
         String oldPhone = (String) session.getAttribute("phone");
         String oldCode = (String) session.getAttribute("code");
         System.out.println("code" + code + " oldCode" + oldCode);
+
         if (oldCode == null || oldPhone == null) {
             return new Result("请先获取验证码", false);
         } else if (!oldPhone.equals(phone)) {

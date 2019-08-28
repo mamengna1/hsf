@@ -20,6 +20,13 @@ public class Distribution {
     private DistributionStatus status;
     private UserOrder userOrder;
 
+    public Distribution() {
+    }
+
+    public Distribution(Integer statusId) {
+        this.statusId = statusId;
+    }
+
     @Override
     public String toString() {
         return "Distribution{" +

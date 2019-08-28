@@ -39,6 +39,12 @@ public class    UserRelease {
         this.userId = userId;
     }
 
+    public UserRelease(Integer id, Integer state, Integer receiveId) {
+        this.id = id;
+        this.state = state;
+        this.receiveId = receiveId;
+    }
+
     @Override
     public String toString() {
         return "UserRelease{" +

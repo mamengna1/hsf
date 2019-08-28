@@ -14,6 +14,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -77,11 +78,13 @@ public class ImageController {
         System.out.println("海报保存路径： " + file);
         return file;
     }
+
+    @ResponseBody
     @RequestMapping("/savePoster_2")
-    public String savePoster_2(String path, HttpSession session){
+    public Result savePoster_2(String path, HttpSession session){
         User user = userService.selUserByOpenId((String) session.getAttribute("openId"));
         String file = ImageURL.GET_POSTERS_URL + ImageUtil.saveImage(path, ImageURL.GET_USER_EWM_URL + session.getAttribute("uid") + ".jpg", user.getId() + ".jpg", user.getNickName());
         System.out.println("海报保存路径： " + file);
-        return file;
+        return new Result(file);
     }
 }

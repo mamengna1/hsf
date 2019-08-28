@@ -7,17 +7,20 @@
           content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="description" content="">
     <meta name="keywords" content="">
-    <link rel="stylesheet" href="css/CSS.css?0" type="text/css"/>
-    <link rel="stylesheet" href="css/swiper.min.css" type="text/css"/>
-    <link rel="stylesheet" href="css/iconfont.css">
-    <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
-    <script type="text/javascript" src="js/swiper.min.js"></script>
-
+    <link rel="stylesheet" href="/_api/css/CSS.css?0" type="text/css"/>
+    <link rel="stylesheet" href="/_api/css/swiper.min.css" type="text/css"/>
+    <link rel="stylesheet" href="/_api/css/iconfont.css">
+    <script type="text/javascript" src="/_api/js/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="/_api/js/swiper.min.js"></script>
+    <script type="text/javascript" src="/_api/js/hsf/ordershow.js"></script>
 </head>
 
 
 <body>
 <div class="ordershow">
+    <input type="hidden" id="releaseId" th:value="${order.userRelease.id}"/>
+    <input type="hidden" id="id" th:value="${order.id}"/>
+    <input type="hidden" id="sfId" th:value="${order.sfId}"/>
     <ul>
         <li><label>雇佣标题：</label>[[${order.userRelease.title}]]</li>
         <li><label>发布时间：</label>[[${#dates.format(order.createTime, 'yyyy-MM-dd')}]]</li>
@@ -32,13 +35,14 @@
 </div>
 
 <div class="orderstate" th:if="${order.statusId == 1}">
-    <label><input type="button" name="" class="btn_sbt br3" value="接单"></label>
+    <label><input type="button" name="" onclick="receiving()" class="btn_sbt br3" value="接单"></label>
     <label><input type="button" name="" class="btn_sbt br3 red" value="拒单"></label>
+
 </div>
 
-<div class="orderstate" th:if="${order.statusId == 2 || order.statusId == 3}">
-    <label><input type="button" name="" class="btn_sbt br3 gray" value="已拒单" disabled="disabled"></label>
-    <label><input type="button" name="" class="btn_sbt br3 gray" value="已取消" disabled="disabled"></label>
+<div class="orderstate">
+    <label th:if="${order.statusId == 2}"><input type="button" name="" class="btn_sbt br3 blue" value="已接单" disabled="disabled"></label>
+    <label th:if="${order.statusId == 3}"><input type="button" name="" class="btn_sbt br3 gray" value="已拒单" disabled="disabled"></label>
 </div>
 
 <div class="orderstate" th:if="${order.statusId == 4}">

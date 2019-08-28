@@ -3,6 +3,7 @@ package cn.hsf.hsf.service.user;
 
 import cn.hsf.hsf.pojo.user.Distribution;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 public interface DistributionService {
@@ -21,5 +22,19 @@ public interface DistributionService {
      */
     Distribution selOrderById(Integer id);
 
+    /**
+     *  判断是否接过单
+     * @param releaseId
+     * @return
+     */
+    int selReleaseById(Integer releaseId);
+
+    /**
+     *  开启事务接单
+     * @param distribution
+     * @param session
+     * @return
+     */
+    boolean receiving(Distribution distribution, HttpSession session)throws Exception ;
 
 }

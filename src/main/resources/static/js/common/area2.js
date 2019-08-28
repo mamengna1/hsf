@@ -794,8 +794,12 @@ for (var i = 0; i < provinceList.length; i++) {
     var province = provinceList[i];
     var provinceName = province.name;
     provinceArray[i] = provinceName;
-    provinceTag.add(new Option(provinceName, i));
-    workProvinceTag.add(new Option(provinceName, i));
+    if (provinceTag != null){
+        provinceTag.add(new Option(provinceName,i));
+    }
+    if (workProvinceTag != null){
+        workProvinceTag.add(new Option(provinceName,i));
+    }
 }
 
 /**

@@ -10,10 +10,18 @@
         insert into `tb_user_release`(`title`,`nickName`,`phone`,`serviceProvince`,`serviceCity`,`serviceArea`,`serverDetail`,`appointTime`,`demand`,`createDate`,`state`,`receiveId`,`userId`)
         values(#{title},#{nickName},#{phone},#{serviceProvince},#{serviceCity},#{serviceArea},#{serverDetail},#{appointTime},#{demand},now(),0,#{receiveId},#{userId})
     </insert>
+
     <select id="selReleaseById" resultType="cn.hsf.hsf.pojo.user.UserRelease">
         select *
         from tb_user_release
         where id = #{id}
     </select>
+
+    <!--     int updUserRelease(UserRelease userRelease); -->
+    <update id="updUserRelease" >
+        UPDATE `tb_user_release`
+        SET `state` = #{state}, `receiveId` = #{receiveId}
+        WHERE `id` = #{id} AND state = 1
+    </update>
 
 </mapper>

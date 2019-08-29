@@ -46,6 +46,11 @@ public interface DistributionMapper {
 
     Distribution sel(UserRelease userRelease);
 
+    /**
+     *  增加派单（直接找师傅）
+     * @return
+     */
+    int insOrder(Distribution distribution);
 
 
 

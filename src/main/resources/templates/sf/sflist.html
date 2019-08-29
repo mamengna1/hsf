@@ -16,9 +16,9 @@
 <body>
 
 <div class="kwbox">
-        <input type="hidden" id="skills" th:value="${skill}"/>
-        <input type="search" autocomplete="off" name="skey" id="skey" placeholder="搜索师傅"
-               onblur="search();"/>
+    <input type="hidden" id="skills" th:value="${skill}"/>
+    <input type="search" autocomplete="off" name="skey" id="skey" placeholder="搜索师傅"
+           onblur="search();"/>
 </div>
 <div id="SFList">
 
@@ -32,6 +32,7 @@
     $(function () {
         search();
     })
+
     function search() {
         var skill = $("#skills").val();
         var name = $("#skey").val();
@@ -42,8 +43,8 @@
                 for (var j = 0; j < res[i].skillList.length; j++) {
                     lab += "<label>" + res[i].skillList[j].skillName + "</label>";
                 }
-                var addr = showProvince(res[i].placeProvince, res[i].placeCity, res[i].placeArea).replace("/","") + res[i].address;
-                $("#SFList").append("<a href=\"#\">\n" +
+                var addr = showProvince(res[i].placeProvince, res[i].placeCity, res[i].placeArea).replace("/", "") + res[i].address;
+                $("#SFList").append("<a href=\"/_api/goSFHone?id=" + res[i].id + "\">\n" +
                     "\t<div class=\"sflist\">\n" +
                     "\t\t<p class=\"headimg1\"><img src=\"images/headimg.jpg\" width='50px' height='50px' class=\"br50\"></p>\n" +
                     "\t\t<p class=\"sfname1\">" + res[i].name + "师傅</p>\n" +

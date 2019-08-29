@@ -47,14 +47,17 @@ function jujue() {
 function callOff() {
 
     if (confirm("您确定要取消订单吗?")){
-        var id = $("#id").val();
-        var releaseId = $("#releaseId").val();
-        $.getJSON("/_api/callOf", {"id": id, "releaseId": releaseId, "statusId": 5}, function (res) {
-            if (res){
-                alert("已取消");
-                location.href = "/_api/goOrderShow?id=" + parseInt(id);
-            }
-        })
+        var mes = prompt("取消订单原因（选填，点击确定执行下一步）");
+        if (mes) {
+            var id = $("#id").val();
+            var releaseId = $("#releaseId").val();
+            $.getJSON("/_api/callOf", {"id": id, "releaseId": releaseId, "statusId": 5, "mes" : mes}, function (res) {
+                if (res){
+                    alert("已取消");
+                    location.href = "/_api/goOrderShow?id=" + parseInt(id);
+                }
+            })
+        }
     }
 
 }

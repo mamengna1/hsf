@@ -98,5 +98,10 @@ public class UserServiceImpl implements UserService {
         return userMapper.selById(id);
     }
 
+    @Override
+    public User selByDetailId(Integer detailId) {
+        return userMapper.selByDetailId(detailId);
+    }
+
 
 }

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<body>
+<input type="hidden" id="id" th:value="${id}"/>
+<input type="hidden" id="path" th:value="${path}"/>
+
+</body>
+<script type="text/javascript" src="/_api/js/jquery-3.4.1.min.js"></script>
+<script type="text/javascript">
+    var id = $("#id").val();
+    alert(id);
+    var path = $("#path").val();
+    id = id == '' ? -1 : id;
+    alert(id);
+    var AppId = "wx8bf85bd98eaddb86";
+    window.location.href = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + AppId + "&redirect_uri=http://java.86blue.cn/_api/getOpenId/" + path + "/" + id + "&response_type=code&scope=snsapi_base&state=1#wechat_redirect"
+</script>
+</html>

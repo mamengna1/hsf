@@ -102,10 +102,13 @@
         FROM `tb_user_detail`
         <where>
             <if test="skills != null and skills != ''">
-                and skills like concat('%', #{skill}, '%')
+                OR skills like concat('%', #{skills}, '%')
+            </if>
+            <if test="skills == null or skills == ''">
+                OR skills like concat('%', #{name}, '%')
             </if>
             <if test="name != null and name != ''">
-                and `name` = #{name}
+                OR `name` like concat('%', #{name}, '%')
             </if>
         </where>
     </select>

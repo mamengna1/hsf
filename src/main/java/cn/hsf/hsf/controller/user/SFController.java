@@ -30,8 +30,10 @@ public class SFController {
     @RequestMapping("/selSFList")
     public List<UserDetail> selSFList(UserDetail userDetail){
         System.out.println(userDetail);
+        // 根据技能查询所有师傅
         List<UserDetail> userDetails = userDetailService.selBySkill(userDetail);
         for (UserDetail u : userDetails){
+            // 师傅的技能列表
             u.setSkillList(userDetailService.selSkillById(Arrays.asList(u.getSkills().split(","))));
         }
         return userDetails;

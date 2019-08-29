@@ -16,7 +16,6 @@ import java.util.Map;
 public class MessageServiceImpl implements MessageService {
     /**
      * 订单支付模板
-     *
      * @param map
      */
     @Override
@@ -62,7 +61,6 @@ public class MessageServiceImpl implements MessageService {
 
     /**
      * 新用户添加提醒
-     *
      * @param user
      */
     @Override
@@ -103,7 +101,6 @@ public class MessageServiceImpl implements MessageService {
 
     /**
      * 关联用户消费  得积分
-     *
      * @param map
      */
     @Override
@@ -147,7 +144,6 @@ public class MessageServiceImpl implements MessageService {
 
     /**
      * 找师傅
-     *
      * @param map
      */
     @Override
@@ -156,7 +152,7 @@ public class MessageServiceImpl implements MessageService {
         String url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=" + at;
         String data = "{\n" +
                 "           \"touser\":\"" + map.get("openId") + "\",\n" +
-                "           \"template_id\":\"" + map.get("template_id") + "\",\n" +
+                "           \"template_id\":\"TF2-OgTgYB6EYKzmno0NjbZobdCadK7U0d0E9O9ZogA\",\n" +
                 "           \"url\":\"" + map.get("url") + "\",\n" +
                 "           \"data\":{\n" +
                 "                   \"first\": {\n" +
@@ -188,6 +184,42 @@ public class MessageServiceImpl implements MessageService {
         String result = Send.post(url, data);
         System.out.println(result);
     }
-
+    public static void sendZhaoSf2(String ... date) {
+        String at = WxUtil.getAccessToken();
+        String url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=" + at;
+        String data = "{\n" +
+                "           \"touser\":\"" + date[0] + "\",\n" +
+                "           \"template_id\":\"TF2-OgTgYB6EYKzmno0NjbZobdCadK7U0d0E9O9ZogA\",\n" +
+                "           \"url\":\"" + date[1] + "\",\n" +
+                "           \"data\":{\n" +
+                "                   \"first\": {\n" +
+                "                       \"value\":\"" + date[2] + "\",\n" +
+                "                       \"color\":\"#173177\"\n" +
+                "                   },\n" +
+                "                   \"keyword1\":{\n" +
+                "                       \"value\":\"" + date[3] + "\",\n" +
+                "                       \"color\":\"#173177\"\n" +
+                "                   },\n" +
+                "                   \"keyword2\":{\n" +
+                "                       \"value\":\"" + date[4] + "\",\n" +
+                "                       \"color\":\"#173177\"\n" +
+                "                   },\n" +
+                "                   \"keyword3\":{\n" +
+                "                       \"value\":\"" + date[5] + "\",\n" +
+                "                       \"color\":\"#173177\"\n" +
+                "                   },\n" +
+                "                   \"keyword4\": {\n" +
+                "                       \"value\":\"" + WxUtil.tranfDate(System.currentTimeMillis()) + "\",\n" +
+                "                       \"color\":\"#173177\"\n" +
+                "                   },\n" +
+                "                   \"remark\":{\n" +
+                "                       \"value\":\"" + date[6] + "\",\n" +
+                "                       \"color\":\"#173177\"\n" +
+                "                   }\n" +
+                "           }\n" +
+                "       }";
+        String result = Send.post(url, data);
+        System.out.println(result);
+    }
 
 }

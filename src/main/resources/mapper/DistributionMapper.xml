@@ -94,4 +94,10 @@
         WHERE releaseId = #{id} AND sfId = #{receiveId}
     </select>
 
+    <!--     int insOrder(Distribution distribution); -->
+    <insert id="insOrder" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `tb_distribution`(`id`, `releaseId`, `statusId`, `createTime`, `sfId`)
+        VALUES(DEFAULT, #{releaseId}, #{statusId}, NOW(), #{sfId})
+    </insert>
+
 </mapper>

@@ -20,4 +20,6 @@ public interface UserMapper {
     List<User> selMyWorkmate(String openId);
 
     User selById(Integer id);
+
+    User selByDetailId(Integer detailId);
 }

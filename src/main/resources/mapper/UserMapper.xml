@@ -89,5 +89,12 @@
         FROM `tb_user`
         WHERE id = #{id}
     </select>
-    
+
+    <!--  User selByDetailId(Integer detailId); -->
+    <select id="selByDetailId" resultMap="selUserDetail">
+        SELECT `id`, `nickName`, `openId`, `sex`, `headPic`, `country`, `province`, `city`, `phone`, `isSub`, `memberType`, `sourceType`, `totalMoney`, `balanceMoney`, `totalScore`, `balanceScore`, `userParent`, `createDate`, `lastLoginTime`, `detailId`
+        FROM `tb_user`
+        WHERE detailId = #{detailId}
+    </select>
+
 </mapper>

@@ -66,5 +66,7 @@ public interface UserService {
 
     User selById(Integer id);
 
+    User selByDetailId(Integer detailId);
+
 
 }

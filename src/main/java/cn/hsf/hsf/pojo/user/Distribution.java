@@ -23,7 +23,11 @@ public class Distribution {
     public Distribution() {
     }
 
-
+    public Distribution(Integer releaseId, Integer statusId, Integer sfId) {
+        this.releaseId = releaseId;
+        this.statusId = statusId;
+        this.sfId = sfId;
+    }
 
     public Distribution(Integer releaseId, Integer statusId) {
         this.releaseId = releaseId;

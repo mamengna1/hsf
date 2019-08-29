@@ -14,6 +14,7 @@ import com.alibaba.fastjson.JSON;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -39,10 +40,34 @@ public class CommonController {
         System.out.println("CODE : " + code);
         String url = WxConstants.GET_ACCESS_TOKEN_URL.replace("APPID", WxConstants.APPID).replace("SECRET", WxConstants.APPSECRET).replace("CODE", code);
         String result = Send.get(url);
+        // TODO 申请成为师傅  后 返回注册页报openid没找到
         String openid = JSONObject.fromObject(result).getString("openid");
-        session.setAttribute("openId", openid);
 
-        return userService.selUserByOpenId(openid);
+        User user = userService.selUserByOpenId(openid);
+        session.setAttribute("openId", openid);
+//        session.setAttribute(user.getId() + "", openid);
+        return user;
+    }
+
+
+    @RequestMapping("/getOpenId/{path}/{id}")
+    public void getOpenId(HttpServletRequest req, @PathVariable String path, @PathVariable Integer id, HttpServletResponse resp) {
+        System.out.println("PATH : " + path + "   id" + id);
+        App app = appMapper.selapp();
+        String code = req.getParameter("code");
+        System.out.println("CODE :" + code);
+        String url = WxConstants.GET_ACCESS_TOKEN_URL.replace("APPID", app.getAppId()).replace("SECRET", app.getAppSecret()).replace("CODE", code);
+        String result = Send.get(url);
+        String openid = JSONObject.fromObject(result).getString("openid");
+        User user = userService.selUserByOpenId(openid);
+        req.getSession().setAttribute("uid", user.getId());
+        req.getSession().setAttribute("openId", openid);
+//        String ids = id == -1 ? "" : "?id=" + id;
+        try {
+            resp.sendRedirect("/_api/" + path + "?id=" + id);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -73,6 +98,7 @@ public class CommonController {
         Map res = JSON.parseObject(result);
         res.put("isSub", 1);
 
+        // TODO 主键生成
         User user = userService.selUserByOpenId(openid);
         if (user == null) {
             user = new User((String) res.get("nickname"), openid, (Integer) res.get("sex"), (String) res.get("headimgurl"), (String) res.get("country"),
@@ -83,6 +109,7 @@ public class CommonController {
         }
 
         try {
+//            req.getSession().setAttribute(user.getId() + "", openid);
             req.getSession().setAttribute("openId", openid);
             req.getSession().setAttribute("timestacp", System.currentTimeMillis());
             req.getSession().setAttribute("uid", user.getId());

@@ -52,7 +52,7 @@
 </div>
 <div class="clear1"></div>
 <div class="gybtn" th:if="${flag == '1'}"><a href="/_api/goMyDynamic">发布动态</a></div>
-<div class="gybtn" th:if="${flag == '2'}"><a href="">直接雇佣TA</a></div>
+<div class="gybtn" th:if="${flag == '2'}"><a th:href="@{/zsf/goZsfView(id=${userDetail.id})}">直接雇佣TA</a></div>
 
 <div class="clear1"></div>
 <div class="dttitle">[[${userDetail.name}]]的动态</div>

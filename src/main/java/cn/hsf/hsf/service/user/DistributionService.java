@@ -57,4 +57,11 @@ public interface DistributionService {
 
     int comple(Distribution distribution);
 
+    /**
+     *  增加派单（直接找师傅的情况）
+     * @param distribution
+     * @return
+     */
+    int insOrder(Distribution distribution);
+
 }

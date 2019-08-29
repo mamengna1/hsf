@@ -140,6 +140,7 @@ public class GoController {
         return "myDynamic";
     }
 
+
     @RequestMapping("/goMyWorkmate")
     public String goMyWorkmate(Model model, HttpSession session) {
         List<User> list = userService.selMyWorkmate((String) session.getAttribute("openId"));
@@ -150,17 +151,41 @@ public class GoController {
 
     /**
      * 去到师傅个人主页
-     *
+     * @param model
+     * @param id      师傅ID
+     * @param session
      * @return
      */
     @RequestMapping("/goSFHone")
-    public String goSFHone(Model model, HttpSession session) {
-        User user = userService.selUserByOpenId((String) session.getAttribute("openId"));
+    public String goSFHone(Model model, Integer id, HttpSession session) {
+
+        String sesOpenId = (String) session.getAttribute("openId");
+        if (sesOpenId == null) {
+            model.addAttribute("id", id);
+            model.addAttribute("path", "goSFHone");
+            // 先去静默授权获取openId
+            return "common/getOpenId";
+        }
+        String openId = (String) session.getAttribute("openId");
+        // 根据师傅的ID查询师傅信息
+        if (id != null) {
+            openId = userService.selByDetailId(id).getOpenId();
+        }
+
+        // TODO 如果是用户进入  是没有师傅的openId的   可以改成传递师傅的id  来获取openId
+        User user = userService.selUserByOpenId(openId);
         model.addAttribute("user", user);
         model.addAttribute("userDetail", user.getUserDetail());
-        model.addAttribute("flag", "1");
+        // TODO 这里还一个问题  如果师傅点击的自己的页面 需要显示 发布动态
+        // 1 为师傅进入  2 为用户进入   师傅可以发布动态    用户显示  直接雇佣他
+        model.addAttribute("flag", "2");
+        // 师傅自己
+        if (openId.equals(sesOpenId)) {
+            model.addAttribute("flag", "1");
+        }
         model.addAttribute("skills", userDetailService.selSkillById(Arrays.asList(user.getUserDetail().getSkills().split(","))));
-        model.addAttribute("infos", userDetailService.selInfoByOpenId((String) session.getAttribute("openId")));
+        // 师傅的动态
+        model.addAttribute("infos", userDetailService.selInfoByOpenId(openId));
         return "sf/sfhome";
     }
 
@@ -174,6 +199,7 @@ public class GoController {
      */
     @RequestMapping("/goOrderList")
     public String goOrderList(Model model, HttpSession session) {
+        // TODO 空指针  目前还没找到原因   在测试的时候报 的    可能因为 没有进入过个人中心或者注册页 没有openId   但是好像没有模板跳这个接口  有待检查
         Integer userDetailId = userService.selUserByOpenId((String) session.getAttribute("openId")).getDetailId();
         // 师傅的订单
         if (userDetailId != null && userDetailId != 0) {
@@ -186,14 +212,37 @@ public class GoController {
         }
     }
 
+
+    /**
+     *  派单ID
+     * @param id
+     * @param model
+     * @param session
+     * @return
+     */
     @RequestMapping("/goOrderShow")
     public String goOrderShow(Integer id, Model model, HttpSession session) {
+        System.out.println("进来了  啊啊 啊啊啊");
+        String openId = (String) session.getAttribute("openId");
+
+        if (openId == null) {
+            model.addAttribute("id", id);
+            model.addAttribute("path", "goOrderShow");
+            // 先去静默授权获取openId
+            return "common/getOpenId";
+        }
         System.out.println("派单ID ： " + id);
         model.addAttribute("order", distributionService.selOrderById(id));
-        model.addAttribute("user", userService.selUserByOpenId((String) session.getAttribute("openId")));
+        model.addAttribute("user", userService.selUserByOpenId(openId));
         return "user/ordershow";
     }
 
+    /**
+     *  下单ID
+     * @param id
+     * @param model
+     * @return
+     */
     @RequestMapping("/goUserOrderDetail")
     public String goUserOrderDetail(Integer id, Model model) {
         UserRelease userRelease = userReleaseService.selReleaseById(id);
@@ -203,8 +252,9 @@ public class GoController {
             model.addAttribute("userOrder", userReleaseService.selReleaseById(id));
             return "user/usershow";
         } else {
-            Distribution sf = distributionService.sel(userRelease);
-            return "redirect:/goOrderShow?id=" + sf.getId();
+            // 传递 派单ID
+            Distribution paidan = distributionService.sel(userRelease);
+            return "redirect:/goOrderShow?id=" + paidan.getId();
         }
     }
 
@@ -227,7 +277,7 @@ public class GoController {
         // 创建第三个一级菜单
         SubButton sb = new SubButton("订单");
         // 为第三个一级菜单增加子菜单
-        sb.getSub_button().add(new ViewButton("订单查看", "http://java.86blue.cn/_api/goTemp"));
+        sb.getSub_button().add(new ViewButton("首页", "http://java.86blue.cn/_api/goSFList"));
         sb.getSub_button().add(new PhotoOrAlbumButton("传图", "31"));
         sb.getSub_button().add(new ClickButton("点击", "32"));
         sb.getSub_button().add(new ViewButton("网易新闻", "http://java.86blue.cn/_api/goRegister"));

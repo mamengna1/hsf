@@ -194,7 +194,6 @@ public class GoController {
 
     /**
      * 去到 师傅订单列表
-     *
      * @return
      */
     @RequestMapping("/goOrderList")
@@ -238,7 +237,7 @@ public class GoController {
     }
 
     /**
-     *  下单ID
+     *  传入的是下单ID
      * @param id
      * @param model
      * @return

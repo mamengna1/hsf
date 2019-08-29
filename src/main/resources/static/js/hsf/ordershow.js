@@ -64,7 +64,7 @@ function callOff() {
 function comple() {
     var id = $("#id").val();
     var releaseId = $("#releaseId").val();
-    $.getJSON("/_api/callOf", {"id": id, "releaseId": releaseId, "statusId": 7}, function (res) {
+    $.getJSON("/_api/comple", {"id": id, "releaseId": releaseId, "statusId": 7}, function (res) {
         if (res){
             alert("已申请");
             location.href = "/_api/goOrderShow?id=" + parseInt(id);

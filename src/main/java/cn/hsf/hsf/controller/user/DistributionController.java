@@ -55,7 +55,6 @@ public class DistributionController {
 
     /**
      * 拒单
-     *
      * @param distribution
      * @return
      */
@@ -71,10 +70,10 @@ public class DistributionController {
         User user = userService.selById(userRelease.getUserId());
         System.out.println(user);
 
+        // TODO 需要处理一下  没有url的问题
         // 师傅拒单 发送给用户
         Map map2 = new HashMap();
         map2.put("openId", user.getOpenId());
-        map2.put("url", "http://java.86blue.cn/_api/goUserOrderDetail?id=" + distribution.getId());
         map2.put("title", ud.getUserDetail().getName() + "师傅拒绝了您的雇佣。请等待平台给您另外安排师傅。");
         map2.put("serviceType", userRelease.getTitle());
         map2.put("orderNo", System.currentTimeMillis() + "");
@@ -85,7 +84,6 @@ public class DistributionController {
 
         // 发送给平台
         map2.put("openId", "o5uJY1sfH745I9vnaw06RuhMDRdc");
-        map2.put("url", "http://java.86blue.cn/_api/goUserOrderDetail?id=" + distribution.getId());
         map2.put("title", "订单被师傅拒接，请管理员尽快另行派单。");
         map2.put("serviceType", userRelease.getTitle());
         map2.put("orderNo", System.currentTimeMillis() + "");
@@ -113,17 +111,16 @@ public class DistributionController {
         Integer releaseId = distribution.getReleaseId();
         UserRelease userRelease = userReleaseService.selReleaseById(releaseId);
         User user = userService.selById(userRelease.getUserId());
-
+        // TODO 处理 url没有的问题
         Map map2 = new HashMap();
         map2.put("openId", user.getOpenId());
-        map2.put("url", "http://java.86blue.cn/_api/goUserOrderDetail?id=" + releaseId);
         map2.put("title", "订单已被师傅取消，请等待平台给您另外安排师傅。");
         map2.put("serviceType", userRelease.getTitle());
         map2.put("orderNo", System.currentTimeMillis() + "");
         map2.put("orderState", "已取消");
         map2.put("end", "师傅信息：" + ud.getUserDetail().getName() + " : " + ud.getPhone() + " 取消原因：" + (mes == null ? "尚未填写取消原因" : mes));
         messageService.sendZhaoSf(map2);
-
+        // TODO  取消订单的  原因没有存储
         return distributionService.callOff(distribution) > 0;
     }
 
@@ -149,7 +146,7 @@ public class DistributionController {
         Map map = new HashMap();
         map.put("openId", user.getOpenId());
         map.put("template_id", "TF2-OgTgYB6EYKzmno0NjbZobdCadK7U0d0E9O9ZogA");
-        map.put("url", "http://java.86blue.cn/_api/goUserOrderDetail?id=" + distribution.getId());
+        map.put("url", "http://java.86blue.cn/_api/goUserOrderDetail?id=" + releaseId);
         map.put("title", ud.getUserDetail().getName() + "师傅申请服务完工，请您点击查看详情确认。");
         map.put("serviceType", userRelease.getTitle());
         map.put("orderNo", System.currentTimeMillis() + "");
@@ -158,7 +155,7 @@ public class DistributionController {
         messageService.sendZhaoSf(map);
 
         map.put("openId", "o5uJY1sfH745I9vnaw06RuhMDRdc");
-        map.put("url", "http://java.86blue.cn/_api/goUserOrderDetail?id=" + distribution.getId());
+        map.put("url", "http://java.86blue.cn/_api/goUserOrderDetail?id=" + releaseId);
         map.put("title", "张三师傅申请服务完工，请平台工作人员处理。");
         map.put("serviceType", userRelease.getTitle());
         map.put("orderNo", System.currentTimeMillis() + "");

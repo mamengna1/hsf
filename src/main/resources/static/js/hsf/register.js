@@ -86,6 +86,10 @@ function getOpenId(code) {
         } else if (data.detailId != 0 && (data.userDetail.status == 0 || data.userDetail.status == 3) && (data.userDetail.message == null || data.userDetail.message == '')) {
             location.href = "/_api/goAwait";
         } else {
+            chooseProvince2(23);
+            $("#workProvince").val(23);
+            chooseCity2(13);
+            $("#workCity").val(13);
             $("#phone").val(data.phone);
             if ($("#phone").val() != '' && $("#phone").val() != undefined && $("#phone").val() != null) {
                 $("#phone").attr("readonly", "true");
@@ -141,6 +145,9 @@ function checkForm() {
                 flag = false;
             } else {
                 bindCount++;
+                // 让页面可以提交 工作区数据
+                $("#workProvince").removeAttr("disabled");
+                $("#workCity").removeAttr("disabled");
                 flag = true;
             }
         });

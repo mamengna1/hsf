@@ -94,7 +94,6 @@ public class GoController {
 
     /**
      * 去 二维码页面
-     *
      * @return
      */
     @RequestMapping("/goMyEWN")
@@ -105,7 +104,6 @@ public class GoController {
 
     /**
      * 根据openId查出  佣金和 可体现金额  去到  佣金页
-     *
      * @param session
      * @return
      */
@@ -132,7 +130,6 @@ public class GoController {
 
     /**
      * 去到发布动态
-     *
      * @return
      */
     @RequestMapping("/goMyDynamic")
@@ -176,10 +173,9 @@ public class GoController {
         User user = userService.selUserByOpenId(openId);
         model.addAttribute("user", user);
         model.addAttribute("userDetail", user.getUserDetail());
-        // TODO 这里还一个问题  如果师傅点击的自己的页面 需要显示 发布动态
         // 1 为师傅进入  2 为用户进入   师傅可以发布动态    用户显示  直接雇佣他
         model.addAttribute("flag", "2");
-        // 师傅自己
+        // 师傅自己   进去首页  显示发布动态
         if (openId.equals(sesOpenId)) {
             model.addAttribute("flag", "1");
         }
@@ -199,7 +195,14 @@ public class GoController {
     @RequestMapping("/goOrderList")
     public String goOrderList(Model model, HttpSession session) {
         // TODO 空指针  目前还没找到原因   在测试的时候报 的    可能因为 没有进入过个人中心或者注册页 没有openId   但是好像没有模板跳这个接口  有待检查
-        Integer userDetailId = userService.selUserByOpenId((String) session.getAttribute("openId")).getDetailId();
+        String openId = (String) session.getAttribute("openId");
+        if (openId == null) {
+            model.addAttribute("id", -1);
+            model.addAttribute("path", "goSFHone");
+            // 先去静默授权获取openId
+            return "common/getOpenId";
+        }
+        Integer userDetailId = userService.selUserByOpenId(openId).getDetailId();
         // 师傅的订单
         if (userDetailId != null && userDetailId != 0) {
             List<Distribution> uid = distributionService.selAllOrderBySfId(userDetailId);
@@ -211,9 +214,23 @@ public class GoController {
         }
     }
 
+    @RequestMapping("/goSfYuYue")
+    public String goSfYuYue(Model model, HttpSession session) {
+        String openId = (String) session.getAttribute("openId");
+        if (openId == null) {
+            model.addAttribute("id", -1);
+            model.addAttribute("path", "goSFHone");
+            // 先去静默授权获取openId
+            return "common/getOpenId";
+        }
+        model.addAttribute("orders", userReleaseService.selAllByUserId((Integer) session.getAttribute("uid")));
+        return "user/orderlist";
+    }
+
 
     /**
-     *  派单ID
+     * 派单ID
+     *
      * @param id
      * @param model
      * @param session
@@ -237,7 +254,7 @@ public class GoController {
     }
 
     /**
-     *  传入的是下单ID
+     * 传入的是下单ID
      * @param id
      * @param model
      * @return

@@ -1,8 +1,5 @@
 package cn.hsf.hsf.pojo.user;
 
-
-import cn.hsf.hsf.controller.user.UserOrder;
-
 import java.util.Date;
 
 public class Distribution {
@@ -22,6 +19,7 @@ public class Distribution {
 
     public Distribution() {
     }
+
 
     public Distribution(Integer releaseId, Integer statusId, Integer sfId) {
         this.releaseId = releaseId;

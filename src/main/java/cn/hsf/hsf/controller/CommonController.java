@@ -34,6 +34,7 @@ public class CommonController {
     @Autowired
     private AppMapper appMapper;
 
+    // TODO 需要加判断如果用户没有关注公众号不能成为师傅
     @ResponseBody
     @RequestMapping("/getUserInfo")
     public User getOpenId(String code, HttpSession session) {
@@ -62,9 +63,10 @@ public class CommonController {
         User user = userService.selUserByOpenId(openid);
         req.getSession().setAttribute("uid", user.getId());
         req.getSession().setAttribute("openId", openid);
-//        String ids = id == -1 ? "" : "?id=" + id;
+        String ids = id == -1 ? "" : "?id=" + id;
+        System.out.println("IDS : " + ids);
         try {
-            resp.sendRedirect("/_api/" + path + "?id=" + id);
+            resp.sendRedirect("/_api/" + path + ids);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -109,7 +111,6 @@ public class CommonController {
         }
 
         try {
-//            req.getSession().setAttribute(user.getId() + "", openid);
             req.getSession().setAttribute("openId", openid);
             req.getSession().setAttribute("timestacp", System.currentTimeMillis());
             req.getSession().setAttribute("uid", user.getId());

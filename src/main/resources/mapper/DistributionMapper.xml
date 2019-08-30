@@ -13,8 +13,10 @@
         <id property="id" column="id"/>
         <result property="statusId" column="statusId"/>
         <result property="releaseId" column="releaseId"/>
+        <result property="orderId" column="orderId"/>
         <association property="status" column="statusId" select="cn.hsf.hsf.mapper.user.DistributionMapper.selStatusById"/>
         <association property="userRelease" column="releaseId" select="cn.hsf.hsf.mapper.user.UserReleaseMapper.selReleaseById"/>
+        <association property="userOrder" column="orderId" select="cn.hsf.hsf.mapper.user.UserOrderMapper.selById"/>
     </resultMap>
 
     <select id="selAllOrderBySfId" resultMap="selOrderStatus">
@@ -22,7 +24,7 @@
         FROM `tb_distribution`
         WHERE `sfId` = #{sfId}
     </select>
-    
+
     <select id="selOrderById" resultMap="selOrderStatus">
         SELECT `id`, `releaseId`, `statusId`, `refusedMessage`, `createTime`, `updateTime`, `sfId`, `orderId`
         FROM `tb_distribution`
@@ -40,55 +42,31 @@
     <update id="updDistribution">
         UPDATE `tb_distribution`
         <set>
-            <if test="statusId != null and statusId != ''">
-                statusId = #{statusId},
+            <if test="dis.statusId != null and dis.statusId != ''">
+                statusId = #{dis.statusId},
             </if>
-            <if test="refusedMessage != null and refusedMessage != ''">
-                refusedMessage = #{refusedMessage},
+            <if test="dis.refusedMessage != null and dis.refusedMessage != ''">
+                refusedMessage = #{dis.refusedMessage},
             </if>
-            <if test="orderId != null and orderId != ''">
-                orderId = #{orderId},
-            </if>
-            updateTime = NOW()
-        </set>
-        <where>
-             statusId = 1
-            <if test="id != null and id != ''">
-                and id = #{id}
-            </if>
-            <if test="releaseId != null and releaseId != ''">
-                and releaseId = #{releaseId}
-            </if>
-        </where>
-    </update>
-
-    <update id="updDistribution2">
-        UPDATE `tb_distribution`
-        <set>
-            <if test="statusId != null and statusId != ''">
-                statusId = #{statusId},
-            </if>
-            <if test="refusedMessage != null and refusedMessage != ''">
-                refusedMessage = #{refusedMessage},
-            </if>
-            <if test="orderId != null and orderId != ''">
-                orderId = #{orderId},
+            <if test="dis.orderId != null and dis.orderId != ''">
+                orderId = #{dis.orderId},
             </if>
             updateTime = NOW()
         </set>
         <where>
-            statusId = 2
-            <if test="id != null and id != ''">
-                and id = #{id}
+             statusId = #{oldStatus}
+            <if test="dis.id != null and dis.id != ''">
+                and id = #{dis.id}
             </if>
-            <if test="releaseId != null and releaseId != ''">
-                and releaseId = #{releaseId}
+            <if test="dis.releaseId != null and dis.releaseId != ''">
+                and releaseId = #{dis.releaseId}
             </if>
         </where>
     </update>
 
     <!--   Distribution sel(UserRelease userRelease); -->
-    <select id="sel" resultType="cn.hsf.hsf.pojo.user.Distribution">
+<!--    <select id="sel" resultType="cn.hsf.hsf.pojo.user.Distribution">-->
+    <select id="sel" resultMap="selOrderStatus">
         SELECT `id`, `releaseId`, `statusId`, `refusedMessage`, `createTime`, `updateTime`, `sfId`, `orderId`
         FROM `tb_distribution`
         WHERE releaseId = #{id} AND sfId = #{receiveId}

@@ -20,15 +20,19 @@
     <script type="text/javascript" src="/_api/js/swiper.min.js"></script>
     <script type="text/javascript" src="/_api/js/hsf/ordershow.js"></script>
 </head>
-
-
 <body>
 <div class="ordershow">
+    <!-- 用户下单ID -->
     <input type="hidden" id="releaseId" th:value="${order.userRelease.id}"/>
-
+    <!-- 师傅接单ID -->
     <input type="hidden" id="id" th:value="${order.id}"/>
-
+    <!-- 师傅ID -->
     <input type="hidden" id="sfId" th:value="${order.sfId}"/>
+
+    <div th:if="${order.userOrder ne null}">
+        <input type="hidden" id="userOrderId" th:value="${order.userOrder.id}"/>
+    </div>
+
     <ul>
         <li><label>雇佣标题：</label>[[${order.userRelease.title}]]</li>
         <li><label>发布时间：</label>[[${#dates.format(order.createTime, 'yyyy-MM-dd')}]]</li>
@@ -37,12 +41,17 @@
             <label>联系方式：</label><a href="tel:18657463227">[[${order.userRelease.phone}]] <span><i class="iconfont icon-mobilephone"></i>拨打电话</span></a>
         </li>
         <li>
-            <label>服务地址：</label>浙江省宁波市鄞州区诚信路955号九五九电商园B幢202室<a href="#"><span><i class="iconfont icon-coordinates"></i>地图导航</span></a>
+            <input type="hidden" id="address"
+                   th:value="${order.userRelease.serviceProvince}+','+${order.userRelease.serviceCity}+','+${order.userRelease.serviceArea}+','+${order.userRelease.serverDetail}"/>
+            <p id="address2">所在位置：</p>
+            <label>服务地址：</label><span id="addrDetail"></span><a href="#"><span><i class="iconfont icon-coordinates"></i>地图导航</span></a>
         </li>
         <li><label>预约时间：</label>[[${#dates.format(order.userRelease.createDate, 'yyyy-MM-dd')}]]</li>
         <li><label>备注信息：</label>[[${order.userRelease.demand}]]</li>
     </ul>
 </div>
+
+
 <!-- 师傅 -->
 <div class="orderstate" th:if="${user.detailId ne 0 && user.userDetail.status == 1}">
     <label th:if="${order.statusId == 1}"><input type="button" name="" onclick="receiving()" class="btn_sbt br3" value="接单"></label>
@@ -54,10 +63,13 @@
     <label th:if="${order.statusId == 2}"><input type="button" name="" onclick="comple()"  class="btn_sbt br3 blue" value="申请完工"></label>
     <label th:if="${order.statusId == 7}"><input type="button" name="" class="btn_sbt br3" value="服务进行中"></label>
     <label th:if="${order.statusId == 7}"><input type="button" name="" class="btn_sbt br3 blue" value="已申请完工"></label>
+
+
 </div>
 
 <div class="orderstate" th:if="${order.statusId == 6}">
-    <label><input type="button" name="" class="btn_sbt br3 blue" value="已完工"></label>
+    <label><input type="button" name="" class="btn_sbt br3" value="已完工"></label>
+    <p th:text="${order.userOrder.comments}"></p>
 </div>
 
 
@@ -65,11 +77,21 @@
     <label th:if="${order.statusId == 3}"><input type="button" name="" class="btn_sbt br3 gray" value="已拒单" disabled="disabled"></label>
     <label th:if="${order.statusId == 5}"><input type="button" name="" class="btn_sbt br3 gray" value="已取消" disabled="disabled"></label>
     <label th:if="${order.statusId == 2}"><input type="button" name="" class="btn_sbt br3" value="服务进行中"></label>
-    <label th:if="${order.statusId == 7}"><input type="button" name="" class="btn_sbt br3" value="服务进行中"></label>
-    <label th:if="${order.statusId == 7}"><input type="button" name=""  class="btn_sbt br3 blue" value="评论"></label>
+    <div th:if="${order.statusId == 7}">
+        <label><input type="button" name="" class="btn_sbt br3" value="服务进行中"></label>
+        <input type="text" id="comments" value="" placeholder="请填写对本次服务的满意度"/>
+        <label><input type="button" name="" onclick="comment()"  class="btn_sbt br3 blue" value="评论"></label>
+    </div>
 </div>
 
 <div class="clear1"></div>
-
+<script type="text/javascript" src="/_api/js/common/area2.js"></script>
+<script type="text/javascript">
+    $(function () {
+        var address = $("#address").val().split(",");
+        var addr = showProvince(address[0], address[1], address[2]);
+        $("#addrDetail").html(addr.replace(new RegExp('/','gm'), "") + " : " + address[3]);
+    });
+</script>
 </body>
 </html>

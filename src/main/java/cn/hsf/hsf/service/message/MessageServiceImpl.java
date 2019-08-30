@@ -148,12 +148,13 @@ public class MessageServiceImpl implements MessageService {
      */
     @Override
     public void sendZhaoSf(Map<String, String> map) {
+        map.put("url", map.get("url") == null ? "" :  "           \"url\":\"" + map.get("url") + "\",\n");
         String at = WxUtil.getAccessToken();
         String url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=" + at;
         String data = "{\n" +
                 "           \"touser\":\"" + map.get("openId") + "\",\n" +
                 "           \"template_id\":\"TF2-OgTgYB6EYKzmno0NjbZobdCadK7U0d0E9O9ZogA\",\n" +
-                "           \"url\":\"" + map.get("url") + "\",\n" +
+                            map.get("url") +
                 "           \"data\":{\n" +
                 "                   \"first\": {\n" +
                 "                       \"value\":\"" + map.get("title") + "\",\n" +

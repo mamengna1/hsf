@@ -2,7 +2,7 @@ package cn.hsf.hsf.service.user;
 
 
 import cn.hsf.hsf.pojo.user.Distribution;
-import cn.hsf.hsf.pojo.user.User;
+import cn.hsf.hsf.pojo.user.UserOrder;
 import cn.hsf.hsf.pojo.user.UserRelease;
 
 import javax.servlet.http.HttpSession;
@@ -55,6 +55,11 @@ public interface DistributionService {
      */
     int callOff(Distribution distribution);
 
+    /**
+     *  申请完成
+     * @param distribution
+     * @return
+     */
     int comple(Distribution distribution);
 
     /**
@@ -63,5 +68,19 @@ public interface DistributionService {
      * @return
      */
     int insOrder(Distribution distribution);
+
+    /**
+     *  添加订单的评论和 星级
+     * @param userOrder
+     * @return
+     */
+    int comment(UserOrder userOrder);
+
+    /**
+     *  修改下单信息
+     * @param distribution
+     * @return
+     */
+    int updDistribution(Distribution distribution, Integer oldStatus);
 
 }

@@ -10,7 +10,12 @@ function receiving() {
             var id = $("#id").val();
             var sfId = $("#sfId").val();
             alert(id);
-            $.getJSON("/_api/receiving", {"id": id, "releaseId": releaseId, "statusId": 2, "sfId":sfId}, function (result) {
+            $.getJSON("/_api/receiving", {
+                "id": id,
+                "releaseId": releaseId,
+                "statusId": 2,
+                "sfId": sfId
+            }, function (result) {
                 // 订单已近被人接了
                 if (!result) {
                     alert("订单已不存在");
@@ -27,13 +32,19 @@ function receiving() {
     })
     $.ajaxSettings.async = true;
 }
+
 function jujue() {
     var message = prompt("请输入拒单原因");
-    if (message){
+    if (message) {
         var releaseId = $("#releaseId").val();
         var id = $("#id").val();
-        $.getJSON("/_api/turnDown", {"id": id, "releaseId": releaseId, "statusId": 3, "refusedMessage" : message}, function (res) {
-            if (res){
+        $.getJSON("/_api/turnDown", {
+            "id": id,
+            "releaseId": releaseId,
+            "statusId": 3,
+            "refusedMessage": message
+        }, function (res) {
+            if (res) {
                 alert("已拒单");
                 location.href = "/_api/goOrderShow?id=" + parseInt(id);
             }
@@ -46,13 +57,18 @@ function jujue() {
  */
 function callOff() {
 
-    if (confirm("您确定要取消订单吗?")){
-        var mes = prompt("取消订单原因（选填，点击确定执行下一步）");
-        if (mes) {
+    if (confirm("您确定要取消订单吗?")) {
+        var refusedMessage = prompt("取消订单原因（选填，点击确定执行下一步）");
+        if (refusedMessage) {
             var id = $("#id").val();
             var releaseId = $("#releaseId").val();
-            $.getJSON("/_api/callOf", {"id": id, "releaseId": releaseId, "statusId": 5, "mes" : mes}, function (res) {
-                if (res){
+            $.getJSON("/_api/callOf", {
+                "id": id,
+                "releaseId": releaseId,
+                "statusId": 5,
+                "refusedMessage": refusedMessage
+            }, function (res) {
+                if (res) {
                     alert("已取消");
                     location.href = "/_api/goOrderShow?id=" + parseInt(id);
                 }
@@ -61,12 +77,36 @@ function callOff() {
     }
 
 }
+
 function comple() {
     var id = $("#id").val();
     var releaseId = $("#releaseId").val();
     $.getJSON("/_api/comple", {"id": id, "releaseId": releaseId, "statusId": 7}, function (res) {
-        if (res){
+        if (res) {
             alert("已申请");
+            location.href = "/_api/goOrderShow?id=" + parseInt(id);
+        }
+    })
+}
+
+/**
+ *  用户评论
+ */
+function comment() {
+    var releaseId = $("#releaseId").val();
+    var comments = $("#comments").val();
+    var userOrderId = $("#userOrderId").val();
+    var id = $("#id").val();
+
+    $.getJSON("/_api/comment", {
+        "releaseId": releaseId,
+        "comments": comments,
+        "id": userOrderId,
+        "statusId": 6,
+        "disId": id
+    }, function (res) {
+        if (res) {
+            alert("已完工");
             location.href = "/_api/goOrderShow?id=" + parseInt(id);
         }
     })

@@ -3,6 +3,7 @@ package cn.hsf.hsf.mapper.user;
 import cn.hsf.hsf.pojo.user.Distribution;
 import cn.hsf.hsf.pojo.user.DistributionStatus;
 import cn.hsf.hsf.pojo.user.UserRelease;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -41,8 +42,7 @@ public interface DistributionMapper {
      * @param distribution
      * @return
      */
-    int updDistribution(Distribution distribution);
-    int updDistribution2(Distribution distribution);
+    int updDistribution(@Param("dis") Distribution distribution, @Param("oldStatus") Integer oldStatus);
 
     Distribution sel(UserRelease userRelease);
 

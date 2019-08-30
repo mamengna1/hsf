@@ -81,7 +81,7 @@
         var address = $("#address").val().split(",");
         var addr = showProvince(address[0], address[1], address[2]);
         $("#area").html(addr.substr(addr.lastIndexOf("/") + 1));
-        $("#address2").html(addr.replace("/", "") + " : " + address[3]);
+        $("#address2").html(addr.replace(new RegExp('/','gm'), "") + " : " + address[3]);
     });
 
 </script>

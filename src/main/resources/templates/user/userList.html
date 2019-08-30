@@ -12,7 +12,27 @@
     <link rel="stylesheet" href="/_api/css/iconfont.css">
     <script type="text/javascript" src="/_api/js/jquery-3.4.1.min.js"></script>
     <script type="text/javascript" src="/_api/js/swiper.min.js"></script>
-
+    <style>
+        .state_1{background-color: limegreen;}
+        .state_2{background-color: dodgerblue;}
+        .state_3{background-color: gray;}
+    </style>
+    <script type="text/javascript">
+        window.onload = function() {
+            var url = window.location.href;
+            var ps = url.split("#");
+            try {
+                if (ps[1] != 1) {
+                    url += "#1";
+                } else {
+                    window.location = ps[0];
+                }
+            } catch (ex) {
+                url += "#1";
+            }
+            window.location.replace(url);
+        }
+    </script>
 </head>
 <body>
 <div class="orderlist">
@@ -20,7 +40,7 @@
         <!-- order.id = release表中的主键 -->
         <a th:each="order : ${orders}" th:href="@{/goUserOrderDetail(id=${order.id})}">
             <li>[[${order.title}]]
-                <p><label>[[${#dates.format(order.createDate, 'yyyy-MM-dd')}]]</label><span class="bggreen">[[${order.state == 1 ? '接单中' : order.state == 2 ? '已接单' : '预约失败'}]]</span></p>
+                <p><label>[[${#dates.format(order.createDate, 'yyyy-MM-dd')}]]</label><span th:class="state_+${order.state}">[[${order.state == 1 ? '接单中' : order.state == 2 ? '已接单' : '预约失败'}]]</span></p>
             </li>
         </a>
     </ul>

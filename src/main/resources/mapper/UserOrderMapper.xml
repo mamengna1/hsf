@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--namespace:映射命名空间-->
+<mapper namespace="cn.hsf.hsf.mapper.user.UserOrderMapper">
+
+    <!--  UserOrder selById(Integer id);-->
+    <select id="selById" resultType="cn.hsf.hsf.pojo.user.UserOrder">
+        SELECT `id`, `comments`, `starLevel`, `commentTypeId`, `commentTime`
+        FROM `tb_user_order`
+        WHERE id = #{id}
+    </select>
+
+    <!--int insUserOrder(UserOrder userOrder);-->
+    <insert id="insUserOrder" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO  `tb_user_order`(`id`, `commentTypeId`) VALUES(DEFAULT, 1)
+    </insert>
+
+    <!--     int updUserOrder(UserOrder userOrder); -->
+    <update id="updUserOrder">
+        UPDATE `tb_user_order`
+        <set>
+            <if test="comments != null and comments !=''">
+                comments = #{comments},
+            </if>
+            <if test="starLevel != null">
+                starLevel = #{starLevel},
+            </if>
+            commentTime = NOW()
+        </set>
+        WHERE id = #{id}
+    </update>
+
+</mapper>

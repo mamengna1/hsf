@@ -1,5 +1,12 @@
 $(function () {
-    var skills = new Array();
+
+
+    var skills = $("#skills").val();
+    if (skills == undefined || skills == ''){
+        skills = new Array();
+    } else {
+        skills = $("#skills").val().split(',');
+    }
     $(".skills").click(function () {
         var len = $(".skills").filter(":checked").length;
         if (len > 3) {
@@ -13,6 +20,7 @@ $(function () {
             skills.splice(jQuery.inArray($(this).attr("sid"), skills), 1);
         }
         $("#skills").val(skills.join());
+        alert(skills.join());
     })
 });
 
@@ -48,10 +56,12 @@ function getOpenId(code) {
             $("#address").val(data.userDetail.address);
 
             var skills = (data.userDetail.skills).split(",");
+            alert("SKILLS : " + skills);
             for (var i = 0; i < skills.length; i++) {
                 $("#skill" + skills[i]).prop("checked", "checked");
             }
             $("#skills").val(skills.join());
+            alert("传递回来的值 ： " + $("#skills").val());
             $("#yearWorkId").val(data.userDetail.yearWorkId);
 
             $("#card1").attr("src", data.userDetail.cardOne);
@@ -111,7 +121,8 @@ function checkForm() {
         return false;
     }
     var city = $("#placeCity").val();
-    if (city == -1) {
+    var area = $("#placeArea").val();
+    if (city == -1 || area == -1) {
         alert("请选择完整的常住地址");
         return false;
     }
@@ -130,6 +141,18 @@ function checkForm() {
     var education = $("#education").val();
     if (education == -1) {
         alert("选中从业年限");
+        return false;
+    }
+
+    var card1 = $("#card1").attr("src");
+    var card2 = $("#card2").attr("src");
+    alert(card1 + "  :  " + card2);
+    if (card1 === "http://java.86blue.cn/images/card1.png"){
+        alert("请上传身份证正面照");
+        return false;
+    }
+    if (card2 ==="http://java.86blue.cn/images/card2.png"){
+        alert("请上传身份证反面照");
         return false;
     }
 

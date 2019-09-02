@@ -3,15 +3,15 @@ package cn.hsf.hsf.pojo.user;
 /**
  * @author kaituozhe
  */
-public class UserSkill {
+public class UserSkills {
 
     private Integer id;
     private String skillName;
 
-    public UserSkill() {
+    public UserSkills() {
     }
 
-    public UserSkill(Integer id, String skillName) {
+    public UserSkills(Integer id, String skillName) {
         this.id = id;
         this.skillName = skillName;
     }

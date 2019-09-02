@@ -23,6 +23,8 @@ public class    UserRelease {
     private Integer receiveId;   //接单师傅id
     private Integer userId;
 
+    private DistributionStatus status;
+
     public UserRelease() {
     }
 
@@ -67,7 +69,16 @@ public class    UserRelease {
                 ", state=" + state +
                 ", receiveId=" + receiveId +
                 ", userId=" + userId +
+                ", status=" + status +
                 '}';
+    }
+
+    public DistributionStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(DistributionStatus status) {
+        this.status = status;
     }
 
     public Integer getUserId() {

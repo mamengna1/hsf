@@ -12,6 +12,8 @@ public class UserOrder {
     private Integer starLevel;
     private Integer commentTypeId;
     private Date commentTime;
+    private Integer userId;
+    private Integer sfId;
 
     @Override
     public String toString() {
@@ -21,7 +23,25 @@ public class UserOrder {
                 ", starLevel=" + starLevel +
                 ", commentTypeId=" + commentTypeId +
                 ", commentTime=" + commentTime +
+                ", userId=" + userId +
+                ", sfId=" + sfId +
                 '}';
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+    public Integer getSfId() {
+        return sfId;
+    }
+
+    public void setSfId(Integer sfId) {
+        this.sfId = sfId;
     }
 
     public Integer getId() {

@@ -7,12 +7,25 @@
 <mapper namespace="cn.hsf.hsf.mapper.user.UserSkillMapper">
 
     <!--  List<UserSkill> selAll(); -->
-    <select id="selAll" resultType="cn.hsf.hsf.pojo.user.UserSkill">
-        SELECT `id`, `skillName` FROM `tb_user_skill`
+    <select id="selAll" resultType="cn.hsf.hsf.pojo.user.UserSkills">
+        SELECT `id`, `skillName`, `parentId`, `describes` FROM `tb_user_skills`
     </select>
 
-    <select id="selById" resultType="cn.hsf.hsf.pojo.user.UserSkill">
-        SELECT `id`, `skillName` FROM `tb_user_skill`
+    <!--   List<UserSkills> selByParentId(Integer id);-->
+    <select id="selByParentId" resultType="cn.hsf.hsf.pojo.user.UserSkills">
+        SELECT `id`, `skillName`, `parentId`, `describes` FROM `tb_user_skills`
+        <where>
+            <if test="parentId != null and parentId !=''">
+                parentId = #{id}
+            </if>
+            <if test="parentId == null">
+                parentId is null
+            </if>
+        </where>
+    </select>
+
+    <select id="selById" resultType="cn.hsf.hsf.pojo.user.UserSkills">
+        SELECT `id`, `skillName`, `parentId`, `describes` FROM `tb_user_skills`
         <foreach item="id" index="index" collection="ids"
                  open="WHERE id in (" separator="," close=")">
             #{id}

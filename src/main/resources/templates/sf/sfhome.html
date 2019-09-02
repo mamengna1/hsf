@@ -48,7 +48,7 @@
     <input type="hidden" id="address"
            th:value="${userDetail.placeProvince}+','+${userDetail.placeCity}+','+${userDetail.placeArea}+','+${userDetail.address}"/>
     <p id="address2">所在位置：</p>
-    <p>手机号码：<a href="tel:18657463227"><label>[[${user.phone}]]</label></a></p>
+    <p>手机号码：<a th:href="'tel:'+${user.phone}"><label>[[${user.phone}]]</label></a></p>
 </div>
 <div class="clear1"></div>
 <div class="gybtn" th:if="${flag == '1'}"><a href="/_api/goMyDynamic">发布动态</a></div>

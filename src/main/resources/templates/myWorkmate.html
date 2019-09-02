@@ -21,8 +21,8 @@
     <span>总工友数  :  [[${len}]]</span>
 
     <p th:each="work:${list}">
-        <span th:if="${work.userDetail.status == 1}">
-            <img th:src="${work.headPic}">
+        <span th:if="${work.detailId != 0 && work.userDetail.status == 1}">
+            <img th:width="50px" th:height="50px" th:src="${work.headPic}">
             <span>[[${work.userDetail.name}]]</span>
             <span>[[${work.phone}]]</span>
         </span>

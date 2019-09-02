@@ -109,7 +109,6 @@ public class DistributionController {
 
         User ud = userService.selUserByOpenId((String) session.getAttribute("openId"));
 
-        System.out.println(distribution);
         Integer releaseId = distribution.getReleaseId();
         UserRelease userRelease = userReleaseService.selReleaseById(releaseId);
         User user = userService.selById(userRelease.getUserId());
@@ -168,6 +167,13 @@ public class DistributionController {
         return distributionService.comple(distribution) > 0;
     }
 
+    /**
+     *  用户评论订单   订单完成
+     * @param userOrder
+     * @param distribution
+     * @param disId
+     * @return
+     */
     @ResponseBody
     @RequestMapping("/comment")
     public boolean comment(UserOrder userOrder, Distribution distribution, Integer disId) {
@@ -183,8 +189,12 @@ public class DistributionController {
         // 添加评论
         int count = distributionService.comment(userOrder);
         if (count > 0) {
+            // 修改派单表
             distribution.setId(disId);
             distributionService.updDistribution(distribution, 7);
+            // 修改下单表
+            userReleaseService.updReleaseStste(new UserRelease(distribution.getReleaseId(), 6),7);
+
             // 平台收到 完工模板
             Map map = new HashMap();
             map.put("openId", "o5uJY1sfH745I9vnaw06RuhMDRdc");
@@ -208,7 +218,7 @@ public class DistributionController {
             map.put("end", sf.getUserDetail().getName() + " : " + sf.getPhone());
             messageService.sendZhaoSf(map);
 
-            // 是否收到
+            // 师傅收到
             map.put("openId", sf.getOpenId());
             map.put("template_id", "TF2-OgTgYB6EYKzmno0NjbZobdCadK7U0d0E9O9ZogA");
             map.put("url", "http://java.86blue.cn/_api/goUserOrderDetail?id=" + distribution.getReleaseId());

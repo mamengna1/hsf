@@ -109,7 +109,9 @@
         if (!reg.test(phone)) {
             alert("手机格式不正确，请重新填写！")
             return false;
-        } else if (d < curDate) {
+        } else if (d.getFullYear() < curDate.getFullYear()
+            || (d.getFullYear() == curDate.getFullYear() && d.getMonth() < curDate.getMonth())
+            || (d.getFullYear() == curDate.getFullYear() && d.getMonth() == d.getMonth() && d.getDate() < curDate.getDate())) {
             alert("预约时间必须在今日之后！");
             return false;
         } else {

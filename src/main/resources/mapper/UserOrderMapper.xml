@@ -15,7 +15,7 @@
 
     <!--int insUserOrder(UserOrder userOrder);-->
     <insert id="insUserOrder" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO  `tb_user_order`(`id`, `commentTypeId`) VALUES(DEFAULT, 1)
+        INSERT INTO  `tb_user_order`(`id`) VALUES(DEFAULT)
     </insert>
 
     <!--     int updUserOrder(UserOrder userOrder); -->
@@ -28,6 +28,7 @@
             <if test="starLevel != null">
                 starLevel = #{starLevel},
             </if>
+            commentTypeId = 1,
             commentTime = NOW()
         </set>
         WHERE id = #{id}

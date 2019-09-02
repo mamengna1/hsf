@@ -67,9 +67,8 @@ public class UserReleaseController {
             Map map = new HashMap();
             User user = null; // 师傅
             System.out.println("USER " + user);
-            // 发送给师傅
+            // 发送给师傅   直接预约的师傅
             if (id != null) {
-
                 user = userService.selByDetailId(id);
                 Distribution distribution = new Distribution(userRelease.getId(), 1, id);
                 distributionService.insOrder(distribution);
@@ -110,6 +109,10 @@ public class UserReleaseController {
         return count > 0 ? true : false;
     }
 
+    /**
+     *  地图
+     * @return
+     */
     @RequestMapping("/goMapView")
     public String goMapView() {
         return "MapView";

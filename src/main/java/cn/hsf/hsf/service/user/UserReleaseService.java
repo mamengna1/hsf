@@ -12,4 +12,12 @@ public interface UserReleaseService {
     List<UserRelease> selAllByUserId(Integer userId);
 
     UserRelease selReleaseById(Integer id);
+
+    /**
+     *  修改下单状态
+     * @param userRelease
+     * @param oldState
+     * @return
+     */
+    int updReleaseStste(UserRelease userRelease, Integer oldState);
 }

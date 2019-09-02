@@ -19,6 +19,22 @@
     <script type="text/javascript" src="/_api/js/jquery-3.4.1.min.js"></script>
     <script type="text/javascript" src="/_api/js/swiper.min.js"></script>
     <script type="text/javascript" src="/_api/js/hsf/ordershow.js"></script>
+    <script type="text/javascript">
+        window.onload = function() {
+            var url = window.location.href;
+            var ps = url.split("#");
+            try {
+                if (ps[1] != 1) {
+                    url += "#1";
+                } else {
+                    window.location = ps[0];
+                }
+            } catch (ex) {
+                url += "#1";
+            }
+            window.location.replace(url);
+        }
+    </script>
 </head>
 <body>
 <div class="ordershow">
@@ -51,9 +67,8 @@
     </ul>
 </div>
 
-
 <!-- 师傅 -->
-<div class="orderstate" th:if="${user.detailId ne 0 && user.userDetail.status == 1}">
+<div class="orderstate" th:if="${order.userRelease.userId ne session.uid}">
     <label th:if="${order.statusId == 1}"><input type="button" name="" onclick="receiving()" class="btn_sbt br3" value="接单"></label>
     <label th:if="${order.statusId == 1}"><input type="button" name="" onclick="jujue()" class="btn_sbt br3 red" value="拒单"></label>
     <label th:if="${order.statusId == 3}"><input type="button" name="" class="btn_sbt br3 gray" value="已拒单" disabled="disabled"></label>
@@ -72,8 +87,8 @@
     <p th:text="${order.userOrder.comments}"></p>
 </div>
 
-
-<div class="orderstate" th:if="${user.detailId eq 0}">
+<!-- 用户 -->
+<div class="orderstate" th:if="${order.userRelease.userId eq session.uid}">
     <label th:if="${order.statusId == 3}"><input type="button" name="" class="btn_sbt br3 gray" value="已拒单" disabled="disabled"></label>
     <label th:if="${order.statusId == 5}"><input type="button" name="" class="btn_sbt br3 gray" value="已取消" disabled="disabled"></label>
     <label th:if="${order.statusId == 2}"><input type="button" name="" class="btn_sbt br3" value="服务进行中"></label>

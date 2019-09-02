@@ -2,7 +2,7 @@ package cn.hsf.hsf.service.user;
 
 import cn.hsf.hsf.pojo.user.UserDetail;
 import cn.hsf.hsf.pojo.user.UserInformation;
-import cn.hsf.hsf.pojo.user.UserSkill;
+import cn.hsf.hsf.pojo.user.UserSkills;
 import cn.hsf.hsf.pojo.user.UserYearWork;
 
 import java.util.List;
@@ -13,7 +13,8 @@ public interface UserDetailService {
 
     int insUserDetail(UserDetail userDetail);
 
-    List<UserSkill> selAll();
+    List<UserSkills> selAll();
+    List<UserSkills> selByParentId(Integer id);
 
     int updUserLineStatus(UserDetail userDetail);
 
@@ -24,7 +25,7 @@ public interface UserDetailService {
      * @param ids
      * @return
      */
-    List<UserSkill> selSkillById(List ids);
+    List<UserSkills> selSkillById(List ids);
 
     List<UserInformation> selInfoByOpenId(String openId);
 

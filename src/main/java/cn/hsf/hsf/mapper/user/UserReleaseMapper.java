@@ -1,6 +1,7 @@
 package cn.hsf.hsf.mapper.user;
 
 import cn.hsf.hsf.pojo.user.UserRelease;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -16,9 +17,8 @@ public interface UserReleaseMapper {
      * @param userRelease
      * @return
      */
-    int updUserRelease(UserRelease userRelease);
+    int updUserRelease(@Param("ur") UserRelease userRelease, @Param("oldState") Integer oldState);
 
-    int updUserRelease2(UserRelease userRelease);
 
     /**
      *  查询用户的所有订单

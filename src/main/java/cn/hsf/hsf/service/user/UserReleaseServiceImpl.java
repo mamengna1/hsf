@@ -24,12 +24,25 @@ public class UserReleaseServiceImpl implements UserReleaseService {
     }
 
     /**
-     *  用户查看订单详情
+     * 用户查看订单详情
+     *
      * @param id
      * @return
      */
     @Override
     public UserRelease selReleaseById(Integer id) {
         return userReleaseMapper.selReleaseById(id);
+    }
+
+    /**
+     * 修改下单状态
+     *
+     * @param userRelease
+     * @param oldState
+     * @return
+     */
+    @Override
+    public int updReleaseStste(UserRelease userRelease, Integer oldState) {
+        return userReleaseMapper.updUserRelease(userRelease, oldState);
     }
 }

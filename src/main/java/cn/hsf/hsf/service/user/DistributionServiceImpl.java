@@ -59,7 +59,7 @@ public class DistributionServiceImpl implements DistributionService {
         // 订单还没有被接单
         if (userRelease.getReceiveId() == null) {
             // 根据下单ID  状态ID  师傅ID 去让这个师傅接单      修改的时候  订单状态必须为1：接单中才能修改成功
-            int count = userReleaseMapper.updUserRelease(new UserRelease(distribution.getReleaseId(), distribution.getStatusId(), distribution.getSfId()));
+            int count = userReleaseMapper.updUserRelease(new UserRelease(distribution.getReleaseId(), distribution.getStatusId(), distribution.getSfId()), 1);
             if (count > 0) {
                 UserOrder userOrder = new UserOrder();
                 userOrderMapper.insUserOrder(userOrder);
@@ -122,18 +122,28 @@ public class DistributionServiceImpl implements DistributionService {
         int count = distributionMapper.updDistribution(distribution, 2);
         if (count > 0) {
             // 用户下单表  状态改为 接单中
-            return userReleaseMapper.updUserRelease2(new UserRelease(distribution.getReleaseId(), 1));
+            return userReleaseMapper.updUserRelease(new UserRelease(distribution.getReleaseId(), 1),2);
         }
         return 0;
     }
 
+    /**
+     * 申请完成
+     * @param distribution
+     * @return
+     */
     @Override
     public int comple(Distribution distribution) {
-        return distributionMapper.updDistribution(distribution, 2);
+        int count = distributionMapper.updDistribution(distribution, 2);
+        if (count > 0) {
+            UserRelease userRelease = userReleaseMapper.selReleaseById(distribution.getReleaseId());
+            return userReleaseMapper.updUserRelease(new UserRelease(userRelease.getId(), 7, userRelease.getReceiveId()),2);
+        }
+        return 0;
     }
 
     /**
-     *  直接找师傅一对一下单
+     *  直接找师傅一对一下单    如果是一对一下单  那么订单取消应该是直接显示预约失败  而不是接单中
      * @param distribution
      * @return
      */
@@ -143,12 +153,14 @@ public class DistributionServiceImpl implements DistributionService {
     }
 
     /**
-     *  添加订单的评论和 星级
+     *  添加订单的评论和 星级  订单完成
      * @param userOrder
      * @return
      */
     @Override
     public int comment(UserOrder userOrder) {
+        int count = userOrderMapper.updUserOrder(userOrder);
+
         return userOrderMapper.updUserOrder(userOrder);
     }
 

@@ -148,7 +148,17 @@
             </li>
             <li style="height: auto; padding-left:2%;">
                 <input type="hidden" id="skills" name="skills" value="" />
-                <label th:each="skill : ${skills}"><input type="checkbox" th:id="'skill' + ${skill.id}" th:attr="sid=${skill.id}" class="skills"><i>[[${skill.skillName}]]</i></label>
+                <table style="table-layout: fixed;">
+                    <tr th:each="skillKsy : ${skills}">
+                        <td style="width: 30%;">
+                            <input type="hidden" class="skills"><strong>[[${skillKsy.key.skillName}]]：</strong>
+                        </td>
+                        <td style="word-wrap: break-word;">
+                            <label th:each="skillValue : ${skillKsy.value}"><input type="checkbox" th:id="'skill' + ${skillValue.id}" th:attr="sid=${skillValue.id}" class="skills"><i>[[${skillValue.skillName}]]</i></label>
+                        </td>
+                    </tr>
+                    <hr/>
+                </table>
             </li>
             <li>
                 <p>从业年限：</p>
@@ -156,6 +166,8 @@
             <li style="height:45px;">
                 <select name="yearWorkId" id="yearWorkId" class="priceinput" style=" background:#fff;">
                     <option value="-1">选择您的从业年限</option>
+                    <option th:each="year : ${yearWorks}" th:value="${year.id}" th:text="${year.yearName}"></option>
+
                     <option th:each="year : ${yearWorks}" th:value="${year.id}" th:text="${year.yearName}"></option>
                 </select>
             </li>

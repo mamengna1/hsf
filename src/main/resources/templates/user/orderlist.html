@@ -41,8 +41,10 @@
 </head>
 <body>
 <div class="orderlist">
-    <button type="button" class="btn_sbt br3" onclick="javascript:location.href= '/_api/goOrderList';">接单中心</button>
-    <button type="button" class="btn_sbt br3 gray" onclick="javascript:location.href= '/_api/goSfYuYue';">订单中心</button>
+    <div th:if="${isSf == 1}">
+        <button type="button" style="width:45%;" class="btn_sbt br3" onclick="javascript:location.href= '/_api/goOrderList';">接单中心</button>
+        <button type="button" style="width:45%;" class="btn_sbt br3 gray" onclick="javascript:location.href= '/_api/goSfYuYue';">订单中心</button>
+    </div>
     <ul>
         <!-- order.id=派单表的主键 -->
         <a th:each="order : ${list}" th:href="@{/goOrderShow(id=${order.id})}">
@@ -56,8 +58,7 @@
         <!-- order.id = release表中的主键 -->
         <a th:each="order : ${orders}" th:href="@{/goUserOrderDetail(id=${order.id})}">
             <li>[[${order.title}]]
-                <p><label>[[${#dates.format(order.createDate, 'yyyy-MM-dd')}]]</label><span th:class="state_+${order.state}">[[${order.state == 1 ? '接单中' : order.state == 2 ? '已接单' : '预约失败'}]]</span>
-                </p>
+                <p><label>[[${#dates.format(order.createDate, 'yyyy-MM-dd')}]]</label><span th:class="state_+${order.state}">[[${order.status.statusName}]]</span></p>
             </li>
         </a>
     </ul>

@@ -6,12 +6,18 @@
 <!--namespace:映射命名空间-->
 <mapper namespace="cn.hsf.hsf.mapper.user.UserReleaseMapper">
 
+    <resultMap id="selOrderStatus" type="cn.hsf.hsf.pojo.user.UserRelease">
+        <id property="id" column="id"/>
+        <result property="state" column="state"/>
+        <association property="status" column="state" select="cn.hsf.hsf.mapper.user.DistributionMapper.selStatusById"/>
+    </resultMap>
+
     <insert id="insertUserRelease" parameterType="cn.hsf.hsf.pojo.user.UserRelease" useGeneratedKeys="true" keyProperty="id">
         insert into `tb_user_release`(`title`,`nickName`,`phone`,`serviceProvince`,`serviceCity`,`serviceArea`,`serverDetail`,`appointTime`,`demand`,`createDate`,`state`,`receiveId`,`userId`)
         values(#{title},#{nickName},#{phone},#{serviceProvince},#{serviceCity},#{serviceArea},#{serverDetail},#{appointTime},#{demand},now(),1,#{receiveId},#{userId})
     </insert>
 
-    <select id="selReleaseById" resultType="cn.hsf.hsf.pojo.user.UserRelease">
+    <select id="selReleaseById" resultMap="selOrderStatus">
         select *
         from tb_user_release
         where id = #{id}
@@ -20,18 +26,19 @@
     <!--     int updUserRelease(UserRelease userRelease); -->
     <update id="updUserRelease" >
         UPDATE `tb_user_release`
-        SET `state` = #{state}, `receiveId` = #{receiveId}
-        WHERE `id` = #{id} AND state = 1
-    </update>
-
-    <update id="updUserRelease2" >
-        UPDATE `tb_user_release`
-        SET `state` = #{state}, `receiveId` = #{receiveId}
-        WHERE `id` = #{id} AND state = 2
+        <set>
+            <if test="ur.state != null and ur.state != ''">
+                state = #{ur.state},
+            </if>
+            <if test="ur.receiveId != null and ur.receiveId != ''">
+                receiveId = #{ur.receiveId}
+            </if>
+        </set>
+        WHERE `id` = #{ur.id} AND state = #{oldState}
     </update>
 
     <!--  List<UserRelease>  selAllByUserId(Integer id); -->
-    <select id="selAllByUserId" resultType="cn.hsf.hsf.pojo.user.UserRelease">
+    <select id="selAllByUserId" resultMap="selOrderStatus">
         select *
         from tb_user_release
         where userId = #{userId}

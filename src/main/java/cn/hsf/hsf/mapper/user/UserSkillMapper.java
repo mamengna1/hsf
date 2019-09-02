@@ -1,6 +1,6 @@
 package cn.hsf.hsf.mapper.user;
 
-import cn.hsf.hsf.pojo.user.UserSkill;
+import cn.hsf.hsf.pojo.user.UserSkills;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -10,8 +10,10 @@ import java.util.List;
  */
 public interface UserSkillMapper {
 
-    List<UserSkill> selAll();
+    List<UserSkills> selAll();
 
-    List<UserSkill> selById(@Param("ids") List<Integer> ids);
+    List<UserSkills> selByParentId(Integer id);
+
+    List<UserSkills> selById(@Param("ids") List<Integer> ids);
 
 }

@@ -22,12 +22,15 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.net.ssl.HttpsURLConnection;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.awt.*;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author kaituozhe
@@ -74,7 +77,13 @@ public class GoController {
     @RequestMapping("/goRegister")
     public String goRegister(Model model, Integer flag) {
         System.out.println("FLAG : " + flag);
-        model.addAttribute("skills", userDetailService.selAll());
+
+        Map<UserSkills, List<UserSkills>> skills = new HashMap<>();
+        List<UserSkills> parentSkill = userDetailService.selByParentId(null);
+        for (UserSkills skill : parentSkill) {
+            skills.put(skill, userDetailService.selByParentId(skill.getId()));
+        }
+        model.addAttribute("skills",skills);
         model.addAttribute("yearWorks", userDetailService.selYearAll());
         model.addAttribute("flag", flag);
         return "register";
@@ -94,6 +103,7 @@ public class GoController {
 
     /**
      * 去 二维码页面
+     *
      * @return
      */
     @RequestMapping("/goMyEWN")
@@ -104,12 +114,19 @@ public class GoController {
 
     /**
      * 根据openId查出  佣金和 可体现金额  去到  佣金页
+     *
      * @param session
      * @return
      */
     @RequestMapping("/goYongJin")
     public String backMoney(HttpSession session, Model model) {
         String openId = (String) session.getAttribute("openId");
+        if (openId == null) {
+            model.addAttribute("id", -1);
+            model.addAttribute("path", "goYongJin");
+            // 先去静默授权获取openId
+            return "common/getOpenId";
+        }
         User user = userService.selUserByOpenId(openId);
         model.addAttribute("totalScore", user.getTotalScore());
         model.addAttribute("balanceScore", user.getBalanceScore());
@@ -130,6 +147,7 @@ public class GoController {
 
     /**
      * 去到发布动态
+     *
      * @return
      */
     @RequestMapping("/goMyDynamic")
@@ -148,6 +166,7 @@ public class GoController {
 
     /**
      * 去到师傅个人主页
+     *
      * @param model
      * @param id      师傅ID
      * @param session
@@ -202,27 +221,25 @@ public class GoController {
             // 先去静默授权获取openId
             return "common/getOpenId";
         }
-        Integer userDetailId = userService.selUserByOpenId(openId).getDetailId();
+        User user = userService.selUserByOpenId(openId);
         // 师傅的订单
-        if (userDetailId != null && userDetailId != 0) {
-            List<Distribution> uid = distributionService.selAllOrderBySfId(userDetailId);
+        if (user.getDetailId() != null && user.getDetailId() != 0 && user.getUserDetail().getStatus() == 1) {
+            List<Distribution> uid = distributionService.selAllOrderBySfId(user.getDetailId());
             model.addAttribute("list", uid);
+            // 1 代表师傅
+            model.addAttribute("isSf", 1);
             return "user/orderlist";
         } else { // 用户的订单
             model.addAttribute("orders", userReleaseService.selAllByUserId((Integer) session.getAttribute("uid")));
-            return "user/userList";
+            // 2 代表用户
+            model.addAttribute("isSf", 2);
+            return "user/orderlist";
         }
     }
 
     @RequestMapping("/goSfYuYue")
     public String goSfYuYue(Model model, HttpSession session) {
-        String openId = (String) session.getAttribute("openId");
-        if (openId == null) {
-            model.addAttribute("id", -1);
-            model.addAttribute("path", "goSFHone");
-            // 先去静默授权获取openId
-            return "common/getOpenId";
-        }
+        model.addAttribute("isSf", 1);
         model.addAttribute("orders", userReleaseService.selAllByUserId((Integer) session.getAttribute("uid")));
         return "user/orderlist";
     }
@@ -230,7 +247,6 @@ public class GoController {
 
     /**
      * 派单ID
-     *
      * @param id
      * @param model
      * @param session
@@ -240,7 +256,7 @@ public class GoController {
     public String goOrderShow(Integer id, Model model, HttpSession session) {
         System.out.println("进来了  啊啊 啊啊啊");
         String openId = (String) session.getAttribute("openId");
-
+//        openId = openId == null ? backOpenId(session, id, "goOrderShow", model) : openId;
         if (openId == null) {
             model.addAttribute("id", id);
             model.addAttribute("path", "goOrderShow");
@@ -272,6 +288,15 @@ public class GoController {
             Distribution paidan = distributionService.sel(userRelease);
             return "redirect:/goOrderShow?id=" + paidan.getId();
         }
+    }
+
+    @RequestMapping("/backOpenId")
+    public String backOpenId(HttpSession session, Integer id, String path, Model model) {
+        String openId = (String) session.getAttribute("openId");
+        model.addAttribute("id", id);
+        model.addAttribute("path", path);
+        // 先去静默授权获取openId
+        return "common/getOpenId";
     }
 
 

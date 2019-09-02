@@ -7,12 +7,15 @@ import cn.hsf.hsf.mapper.user.UserScoreSourceMapper;
 import cn.hsf.hsf.pojo.user.User;
 import cn.hsf.hsf.pojo.user.UserInformation;
 import cn.hsf.hsf.pojo.user.UserScoreSource;
+import cn.hsf.hsf.service.message.MessageService;
 import cn.hsf.hsf.utils.Send;
 import cn.hsf.hsf.utils.WxUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author kaituozhe
@@ -26,6 +29,10 @@ public class UserServiceImpl implements UserService {
     private UserScoreSourceMapper userScoreSourceMapper;
     @Autowired
     private UserInformationMapper userInformationMapper;
+    @Autowired
+    private MessageService messageService;
+    @Autowired
+    private UserService userService;
 
     @Override
     public String getUserInfo(String openId) {
@@ -40,11 +47,25 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int updUser(User user) {
-        return userMapper.updUser(user);
+        int count = userMapper.updUser(user);
+        if (count > 0) {
+            User ud = userMapper.selByDetailId(user.getDetailId());
+            // 发送给平台
+            Map map = new HashMap();
+            map.put("openId", "o5uJY1sfH745I9vnaw06RuhMDRdc");
+            map.put("title", "用户" + ud.getNickName() + "申请注册成为师傅，请尽快审核");
+            map.put("serviceType", "注册成为师傅");
+            map.put("orderNo", System.currentTimeMillis() + "");
+            map.put("orderState", "待审核");
+            map.put("end", "师傅信息：" + ud.getUserDetail().getName() + ":" + user.getPhone());
+            messageService.sendZhaoSf(map);
+        }
+        return count;
     }
 
     /**
-     *  查询用户信息
+     * 查询用户信息
+     *
      * @param openId
      * @return
      */
@@ -54,7 +75,8 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     *  用户所有积分的来源
+     * 用户所有积分的来源
+     *
      * @param openId
      * @return
      */
@@ -64,7 +86,8 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     *  添加积分来源
+     * 添加积分来源
+     *
      * @param userScoreSource
      * @return
      */
@@ -74,7 +97,8 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     *  查询我的直系下线
+     * 查询我的直系下线
+     *
      * @param openId
      * @return
      */
@@ -84,7 +108,8 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     *  添加资讯
+     * 添加资讯
+     *
      * @param userInformation
      * @return
      */

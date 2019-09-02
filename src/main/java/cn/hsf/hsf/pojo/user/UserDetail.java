@@ -25,7 +25,7 @@ public class UserDetail {
     private Integer yearWorkId;
     private UserYearWork userYearWork;
 
-    private List<UserSkill> skillList;
+    private List<UserSkills> skillList;
 
     @Override
     public String toString() {
@@ -51,11 +51,11 @@ public class UserDetail {
                 '}';
     }
 
-    public List<UserSkill> getSkillList() {
+    public List<UserSkills> getSkillList() {
         return skillList;
     }
 
-    public void setSkillList(List<UserSkill> skillList) {
+    public void setSkillList(List<UserSkills> skillList) {
         this.skillList = skillList;
     }
 

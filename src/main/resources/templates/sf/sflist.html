@@ -17,6 +17,7 @@
 
 <div class="kwbox">
     <input type="hidden" id="skills" th:value="${skill}"/>
+
     <input type="search" autocomplete="off" name="skey" id="skey" placeholder="搜索师傅"
            onblur="search();"/>
 </div>
@@ -31,11 +32,12 @@
 <script type="text/javascript">
     $(function () {
         search();
-    })
+    });
 
     function search() {
         var skill = $("#skills").val();
         var name = $("#skey").val();
+        alert("skill" + skill + "    name" + name);
         $.getJSON("/_api/selSFList", {"skills": skill, "name": name}, function (res) {
             $("#SFList").html("");
             for (var i = 0; i < res.length; i++) {
@@ -43,13 +45,14 @@
                 for (var j = 0; j < res[i].skillList.length; j++) {
                     lab += "<label>" + res[i].skillList[j].skillName + "</label>";
                 }
+                var jiedan = res[i].totalOrder == 0 ? '100' : ((res[i].totalOrder - res[i].totalRefuse) / res[i].totalOrder * 100).toFixed(2) ;
                 var addr = showProvince(res[i].placeProvince, res[i].placeCity, res[i].placeArea).replace("/", "") + res[i].address;
                 $("#SFList").append("<a href=\"/_api/goSFHone?id=" + res[i].id + "\">\n" +
                     "\t<div class=\"sflist\">\n" +
                     "\t\t<p class=\"headimg1\"><img src=\"images/headimg.jpg\" width='50px' height='50px' class=\"br50\"></p>\n" +
                     "\t\t<p class=\"sfname1\">" + res[i].name + "师傅</p>\n" +
                     "\t\t<p class=\"tips1\">\n" +
-                    "\t\t\t<em><i class=\"iconfont icon-praise\"></i>接单率100%</em>\n" +
+                    "\t\t\t<em><i class=\"iconfont icon-praise\"></i>接单率" + jiedan + "%</em>\n" +
                     "\t\t\t<em><i class=\"iconfont icon-coordinates\"></i>宁波</em>\n" +
                     "\t\t\t<em><i class=\"iconfont icon-success\"></i>实名认证</em>\n" +
                     "\t\t</p>\n" +

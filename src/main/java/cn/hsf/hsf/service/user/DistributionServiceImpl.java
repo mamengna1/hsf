@@ -1,12 +1,10 @@
 package cn.hsf.hsf.service.user;
 
 import cn.hsf.hsf.mapper.user.DistributionMapper;
+import cn.hsf.hsf.mapper.user.UserDetailMapper;
 import cn.hsf.hsf.mapper.user.UserOrderMapper;
 import cn.hsf.hsf.mapper.user.UserReleaseMapper;
-import cn.hsf.hsf.pojo.user.Distribution;
-import cn.hsf.hsf.pojo.user.User;
-import cn.hsf.hsf.pojo.user.UserOrder;
-import cn.hsf.hsf.pojo.user.UserRelease;
+import cn.hsf.hsf.pojo.user.*;
 import cn.hsf.hsf.service.message.MessageServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,6 +24,8 @@ public class DistributionServiceImpl implements DistributionService {
     private UserService userService;
     @Autowired
     private UserOrderMapper userOrderMapper;
+    @Autowired
+    private UserDetailMapper userDetailMapper;
 
     @Override
     public List<Distribution> selAllOrderBySfId(Integer sfId) {
@@ -61,12 +61,15 @@ public class DistributionServiceImpl implements DistributionService {
             // 根据下单ID  状态ID  师傅ID 去让这个师傅接单      修改的时候  订单状态必须为1：接单中才能修改成功
             int count = userReleaseMapper.updUserRelease(new UserRelease(distribution.getReleaseId(), distribution.getStatusId(), distribution.getSfId()), 1);
             if (count > 0) {
-                UserOrder userOrder = new UserOrder();
+                UserOrder userOrder = new UserOrder(userRelease.getUserId(), distribution.getSfId());
+
                 userOrderMapper.insUserOrder(userOrder);
                 distribution.setOrderId(userOrder.getId());
                 System.out.println("接单数据 ：" + distribution);
                 // 修改派单表信息   修改的时候   派单信息的状态必须为1 ：接单中
                 int count2 = distributionMapper.updDistribution(distribution, 1);
+                // 修改用户接单量
+                userDetailMapper.updUserTotalOrder(new UserDetail(distribution.getSfId(),1, null));
                 if (count2 > 0) {
 
                     // 只要师傅成功接单  就把该订单的 其他派单记录状态修改
@@ -80,8 +83,8 @@ public class DistributionServiceImpl implements DistributionService {
                                 "http://java.86blue.cn/_api/goUserOrderDetail?id=" + userR.getId(),
                                 sf.getUserDetail().getName() + "师傅接受了您的雇佣，请等待师傅上门服务。",
                                 userR.getTitle(),
-                                System.currentTimeMillis() + "", "已接单",
-                                "师傅信息：" + sf.getUserDetail().getName() + " : " + sf.getPhone() + "如有疑问请直接联系师傅手机或平台客服。");
+                                userOrder.getId() + "", "已接单",
+                                "师傅信息：" + sf.getUserDetail().getName() + " : " + sf.getPhone() + "\\n如有疑问请直接联系师傅手机或平台客服。");
                     }).start();
                     return true;
                 } else {
@@ -109,6 +112,7 @@ public class DistributionServiceImpl implements DistributionService {
      */
     @Override
     public int turnDown(Distribution distribution) {
+        userDetailMapper.updUserTotalOrder(new UserDetail(distribution.getSfId(), null, 1));
         return distributionMapper.updDistribution(distribution, 1);
     }
 
@@ -119,10 +123,13 @@ public class DistributionServiceImpl implements DistributionService {
      */
     @Override
     public int callOff(Distribution distribution) {
+        System.out.println("取消订单  ======");
         int count = distributionMapper.updDistribution(distribution, 2);
         if (count > 0) {
+            System.out.println("取消订单 ===== ： " + distribution.getSfId());
+            userDetailMapper.updUserTotalOrder(new UserDetail(distribution.getSfId(),null, 1));
             // 用户下单表  状态改为 接单中
-            return userReleaseMapper.updUserRelease(new UserRelease(distribution.getReleaseId(), 1),2);
+            return userReleaseMapper.updUserRelease(new UserRelease(distribution.getReleaseId(), 1, null),2);
         }
         return 0;
     }

@@ -30,9 +30,7 @@
             <if test="ur.state != null and ur.state != ''">
                 state = #{ur.state},
             </if>
-            <if test="ur.receiveId != null and ur.receiveId != ''">
-                receiveId = #{ur.receiveId}
-            </if>
+            receiveId = #{ur.receiveId}
         </set>
         WHERE `id` = #{ur.id} AND state = #{oldState}
     </update>

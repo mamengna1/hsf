@@ -99,17 +99,16 @@
 						[[${user.id}]]</span></p>
         <p class="user_p3">会员身份：
 
-            <em style="padding-left:8px; padding-right:8px; background:#e7141b; color:#fff;border-radius:15px; line-height:23px; display:inline-block;">[[${user.detailId
-                != 0 && user.userDetail.status == 1 ? '师傅' : '普通用户'}]]</em>&nbsp;&nbsp; &nbsp;&nbsp;
+            <em style="padding-left:8px; padding-right:8px; background:#e7141b; color:#fff;border-radius:15px; line-height:23px; display:inline-block;">[[${user.detailId != 0 && user.userDetail.status == 1 ? '师傅' : '普通用户'}]]</em>&nbsp;&nbsp; &nbsp;&nbsp;
             <label th:if="${user.detailId ne 0 && user.userDetail.status == 1 && user.userDetail.lineStatus == 1}">
                 <input type="checkbox" name="checkbox" checked="checked"/><i>正在接单中</i>
             </label>
             <label th:if="${user.detailId ne 0 && user.userDetail.status == 1 && user.userDetail.lineStatus == 0}">
                 <input type="checkbox" name="checkbox"/><i>已停止接单</i>
             </label>
-            <label th:if="${user.detailId ne 0 && user.userDetail.status == 1}">
-                <a th:href="@{/goSFHone(sfId=${user.detailId})}">个人主页</a>
-            </label>
+            <!--<label th:if="${user.detailId ne 0 && user.userDetail.status == 1}">
+                <a th:href="@{/goSFHone(id=${user.detailId})}">个人主页</a>
+            </label>-->
         </p>
         <p class="more_act"><a href="/myewm"><i class="fa fa-qrcode" style="color:#666;"></i> </a>　<a
                 href="my_info.html"><i
@@ -147,7 +146,8 @@
         </li>
         <li>
             <a href="/_api/goRegister?flag=2"><em><i class="iconfont icon-setup"></i></em>
-                <p>修改资料</p>
+                <p th:if="${user.detailId ne 0 && user.userDetail.status == 1}">修改资料</p>
+                <p th:if="${user.detailId eq 0 || user.userDetail.status ne 1}">成为师傅</p>
             </a>
         </li>
         <li>
@@ -161,8 +161,8 @@
             </a>
         </li>
         <li th:if="${user.detailId !=0 && user.userDetail.status == 1}">
-            <a href="/_api/goMyDynamic"><em><i class="iconfont icon-message"></i></em>
-                <p>发布案例</p>
+            <a th:href="@{/goSFHone(id=${user.detailId})}"><em><i class="iconfont icon-message"></i></em>
+                <p>个人主页</p>
             </a>
         </li>
     </ul>

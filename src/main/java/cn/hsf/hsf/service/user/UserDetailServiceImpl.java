@@ -30,18 +30,17 @@ public class UserDetailServiceImpl implements UserDetailService {
 
     /**
      * 师傅注册添加
-     *
      * @param userDetail
      * @return
      */
     @Override
     public int insUserDetail(UserDetail userDetail) {
+        System.out.println("添加师傅");
         return userDetailMapper.insUserDetail(userDetail);
     }
 
     /**
      * 查询所有技能
-     *
      * @return
      */
     @Override
@@ -59,7 +58,6 @@ public class UserDetailServiceImpl implements UserDetailService {
 
     /**
      * 修改师傅在线状态
-     *
      * @param userDetail
      * @return
      */
@@ -70,7 +68,6 @@ public class UserDetailServiceImpl implements UserDetailService {
 
     /**
      * 查询所有工作年限
-     *
      * @return
      */
     @Override
@@ -85,7 +82,6 @@ public class UserDetailServiceImpl implements UserDetailService {
 
     /**
      * 查看师傅对应的所有动态
-     *
      * @param openId
      * @return
      */

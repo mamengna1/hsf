@@ -37,17 +37,8 @@ public class CommonController {
     // TODO 需要加判断如果用户没有关注公众号不能成为师傅
     @ResponseBody
     @RequestMapping("/getUserInfo")
-    public User getOpenId(String code, HttpSession session) {
-        System.out.println("CODE : " + code);
-        String url = WxConstants.GET_ACCESS_TOKEN_URL.replace("APPID", WxConstants.APPID).replace("SECRET", WxConstants.APPSECRET).replace("CODE", code);
-        String result = Send.get(url);
-        // TODO 申请成为师傅  后 返回注册页报openid没找到
-        String openid = JSONObject.fromObject(result).getString("openid");
-
-        User user = userService.selUserByOpenId(openid);
-        session.setAttribute("openId", openid);
-//        session.setAttribute(user.getId() + "", openid);
-        return user;
+    public User getOpenId(HttpSession session) {
+        return userService.selUserByOpenId((String) session.getAttribute("openId"));
     }
 
 
@@ -56,15 +47,16 @@ public class CommonController {
         System.out.println("PATH : " + path + "   id" + id);
         App app = appMapper.selapp();
         String code = req.getParameter("code");
-        System.out.println("CODE :" + code);
+
         String url = WxConstants.GET_ACCESS_TOKEN_URL.replace("APPID", app.getAppId()).replace("SECRET", app.getAppSecret()).replace("CODE", code);
         String result = Send.get(url);
+
         String openid = JSONObject.fromObject(result).getString("openid");
+
         User user = userService.selUserByOpenId(openid);
         req.getSession().setAttribute("uid", user.getId());
         req.getSession().setAttribute("openId", openid);
         String ids = id == -1 ? "" : "?id=" + id;
-        System.out.println("IDS : " + ids);
         try {
             resp.sendRedirect("/_api/" + path + ids);
         } catch (IOException e) {
@@ -74,15 +66,12 @@ public class CommonController {
 
     /**
      * 获取用户信息
-     *
      * @param req
      * @param resp
      */
     @RequestMapping("/GetUserInfoController")
-    public void getUserInfo(HttpServletRequest req, HttpServletResponse resp) {
-
+    public void getUserInfo(HttpServletRequest req, HttpServletResponse resp, String path) {
         App app = appMapper.selapp();
-
         // 获取code
         String code = req.getParameter("code");
         System.out.println("CODE:" + code);
@@ -115,7 +104,7 @@ public class CommonController {
             req.getSession().setAttribute("timestacp", System.currentTimeMillis());
             req.getSession().setAttribute("uid", user.getId());
             req.getSession().setAttribute("detailId", user.getDetailId());
-            resp.sendRedirect("/_api/goIndex");
+            resp.sendRedirect("/_api/" + path);
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -71,6 +71,10 @@ public class User {
         this.balanceScore = balanceScore;
     }
 
+    public User(String openId) {
+        this.openId = openId;
+    }
+
     @Override
     public String toString() {
         return "User{" +

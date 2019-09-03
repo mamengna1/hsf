@@ -14,11 +14,22 @@
     <script type="text/javascript" src="/_api/js/swiper.min.js"></script>
 </head>
 <script type="text/javascript">
+
+    $(function () {
+        search();
+    })
+
+    /**
+     *  根据技能找师傅
+     * @param btn
+     */
     function goList(btn) {
         var skill = $(btn).attr("skill");
         alert(skill);
         location.href = "/_api/goSFList?skills=" + skill;
     }
+
+
 
     function delInfo(id) {
         if (window.confirm("确定要删除吗")) {
@@ -57,20 +68,24 @@
 <div class="clear1"></div>
 <div class="dttitle">[[${userDetail.name}]]的动态</div>
 
+
 <div th:each="info : ${infos}">
     <div class="tdshow">
-        <p><em><img src="images/headimg.jpg" width=30 height=30 class="br50"></em><label>[[${#dates.format(info.createDate,
-            'yyyy年MM月dd日')}]]</label><span
-                th:if="${flag eq '1'}"><a th:onclick="'javascript:delInfo(\''+${info.id}+'\')'" href="javascript:void(0);">删除</a></span></p>
+        <p>
+            <em><img src="images/headimg.jpg" width=30 height=30 class="br50"></em>
+            <label>[[${#dates.format(info.createDate, 'yyyy年MM月dd日')}]]</label>
+            <span th:if="${flag eq '1'}"><a th:onclick="'javascript:delInfo(\''+${info.id}+'\')'" href="javascript:void(0);">删除</a></span>
+        </p>
         <p th:text="${info.content}"></p>
         <div class="dt_img">
             <ul>
-                <li th:each="infoimg : ${info.images.split(',')}"><img th:src="${infoimg}"></li>
+                <li th:each="infoimg : ${info.images.split(',')}" th:if="${infoimg != null && infoimg.trim() != ''}"><img th:src="${infoimg}"></li>
             </ul>
         </div>
     </div>
     <div class="clear1"></div>
 </div>
+
 
 
 <div style="height:80px;"></div>

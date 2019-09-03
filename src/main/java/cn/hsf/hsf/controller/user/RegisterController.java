@@ -22,6 +22,7 @@ public class RegisterController {
 
     @RequestMapping("/insUserDetail")
     public String insUserDetail(UserDetail userDetail, String phone, HttpSession session) {
+        System.out.println("=================添加=====================");
         System.out.println("师傅信息" + userDetail);
 //        userDetail.setAddress(provinceName + cityName + areaName + userDetail.getAddress());
         if (userDetail.getStatus() == 2) {

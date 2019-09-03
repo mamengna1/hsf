@@ -79,6 +79,7 @@ public class GoController {
         System.out.println("FLAG : " + flag);
 
         Map<UserSkills, List<UserSkills>> skills = new HashMap<>();
+
         List<UserSkills> parentSkill = userDetailService.selByParentId(null);
         for (UserSkills skill : parentSkill) {
             skills.put(skill, userDetailService.selByParentId(skill.getId()));
@@ -175,6 +176,7 @@ public class GoController {
     @RequestMapping("/goSFHone")
     public String goSFHone(Model model, Integer id, HttpSession session) {
 
+        // session中的openId
         String sesOpenId = (String) session.getAttribute("openId");
         if (sesOpenId == null) {
             model.addAttribute("id", id);
@@ -182,13 +184,14 @@ public class GoController {
             // 先去静默授权获取openId
             return "common/getOpenId";
         }
+        // 师傅的openId
         String openId = (String) session.getAttribute("openId");
         // 根据师傅的ID查询师傅信息
         if (id != null) {
             openId = userService.selByDetailId(id).getOpenId();
         }
 
-        // TODO 如果是用户进入  是没有师傅的openId的   可以改成传递师傅的id  来获取openId
+        // 如果是用户进入  是没有师傅的openId的   可以改成传递师傅的id  来获取openId  √
         User user = userService.selUserByOpenId(openId);
         model.addAttribute("user", user);
         model.addAttribute("userDetail", user.getUserDetail());
@@ -198,6 +201,7 @@ public class GoController {
         if (openId.equals(sesOpenId)) {
             model.addAttribute("flag", "1");
         }
+        // 技能
         model.addAttribute("skills", userDetailService.selSkillById(Arrays.asList(user.getUserDetail().getSkills().split(","))));
         // 师傅的动态
         model.addAttribute("infos", userDetailService.selInfoByOpenId(openId));
@@ -256,7 +260,7 @@ public class GoController {
     public String goOrderShow(Integer id, Model model, HttpSession session) {
         System.out.println("进来了  啊啊 啊啊啊");
         String openId = (String) session.getAttribute("openId");
-//        openId = openId == null ? backOpenId(session, id, "goOrderShow", model) : openId;
+
         if (openId == null) {
             model.addAttribute("id", id);
             model.addAttribute("path", "goOrderShow");
@@ -312,9 +316,9 @@ public class GoController {
         // 菜单对象
         Button btn = new Button();
         // 第一个一级菜单
-        btn.getButton().add(new ViewButton("成为师傅", "http://java.86blue.cn/_api/goRegister"));
+        btn.getButton().add(new ViewButton("成为师傅", "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx8bf85bd98eaddb86&redirect_uri=http://java.86blue.cn/_api/GetUserInfoController?path=goRegister&response_type=code&scope=snsapi_userinfo#wechat_redirect"));
         // 第二个一级菜单
-        btn.getButton().add(new ViewButton("个人中心", "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx8bf85bd98eaddb86&redirect_uri=http://java.86blue.cn/_api/GetUserInfoController&response_type=code&scope=snsapi_userinfo#wechat_redirect"));
+        btn.getButton().add(new ViewButton("个人中心", "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx8bf85bd98eaddb86&redirect_uri=http://java.86blue.cn/_api/GetUserInfoController?path=goIndex&response_type=code&scope=snsapi_userinfo#wechat_redirect"));
         // 创建第三个一级菜单
         SubButton sb = new SubButton("订单");
         // 为第三个一级菜单增加子菜单

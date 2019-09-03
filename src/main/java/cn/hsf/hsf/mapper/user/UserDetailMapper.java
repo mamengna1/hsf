@@ -18,4 +18,11 @@ public interface UserDetailMapper {
     UserYearWork selYearById(Integer id);
 
     List<UserDetail> selBySkill(UserDetail userDetail);
+
+    /**
+     *  修改用户接单数  和拒单数
+     * @param userDetail
+     * @return
+     */
+    int updUserTotalOrder(UserDetail userDetail);
 }

@@ -54,6 +54,7 @@
             </li>
         </a>
     </ul>
+
     <ul>
         <!-- order.id = release表中的主键 -->
         <a th:each="order : ${orders}" th:href="@{/goUserOrderDetail(id=${order.id})}">

@@ -15,7 +15,7 @@
 
     <!--int insUserOrder(UserOrder userOrder);-->
     <insert id="insUserOrder" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO  `tb_user_order`(`id`) VALUES(DEFAULT)
+        INSERT INTO  `tb_user_order`(`id`,`userId`, `sfId`) VALUES(DEFAULT, #{userId}, #{sfId})
     </insert>
 
     <!--     int updUserOrder(UserOrder userOrder); -->

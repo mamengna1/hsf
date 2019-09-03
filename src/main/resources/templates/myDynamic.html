@@ -51,10 +51,12 @@
                                     serverIds = res.serverId;
                                     $.getJSON("/_api/saveImage", {"url": serverIds}, function (res) {
                                         if (res.flag) {
-                                            $("#imgs_pre").append("<li><img src=\"" + res.message + "\">\n" +
-                                                "                <span class=\"br50\" onclick='del_img(this)' >X</span></li>");
-                                            imgs.push(res.message);
-                                            $("#imgs").val(imgs.join());
+                                            if (res.message != null && res.message != ''){
+                                                $("#imgs_pre").append("<li><img src=\"" + res.message + "\">\n" +
+                                                    "                <span class=\"br50\" onclick='del_img(this)' >X</span></li>");
+                                                imgs.push(res.message);
+                                                $("#imgs").val(imgs.join());
+                                            }
                                         } else {
                                             alert("获取图片失败");
                                         }
@@ -77,13 +79,25 @@
             imgs.splice(jQuery.inArray($(imgbtn).prev().attr("src"), imgs), 1);
             $(imgbtn).parent().remove();
         }
+        
+        function checkData() {
+            var content = $("#textarea").val();
+            var imgs = $("#imgs_pre").html();
+            alert("CONTENT : " + content + "    IMGS : " + imgs);
+            if (content == null || content.trim() == ''
+                || imgs == null || imgs == ''){
+                alert("发布内容不能为空");
+                return false;
+            }
+            return true;
+        }
 
     </script>
 
 </head>
 
 <body>
-<form action="/_api/insInformation" method="post">
+<form action="/_api/insInformation" method="post" onsubmit="return checkData()">
     <input type="hidden" id="imgs" name="images"/>
     <section class="dt_form">
         <div class="clear1"></div>

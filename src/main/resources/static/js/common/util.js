@@ -34,7 +34,9 @@ function sendMessage() {
                             time = 60;
                             clearInterval(timer);
                             return;
-                        }
+                        }/*else {
+                            alert("验证码已发送注意查收");
+                        }*/
                         count++;
                         // 验证码
                         code = data;

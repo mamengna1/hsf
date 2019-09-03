@@ -27,7 +27,7 @@
 
     <!--  User selUserByOpenId(String openId); -->
     <select id="selById" resultMap="selY">
-        SELECT `id`, `name`, `card`, `placeProvince`, `placeCity`, `placeArea`, `address`, `cardOne`, `cardTwo`, `skills`, `workProvince`, `workCity`, `workArea`, `status`, `lineStatus`, `yearWorkId`
+        SELECT `id`, `name`, `card`, `placeProvince`, `placeCity`, `placeArea`, `address`, `cardOne`, `cardTwo`, `skills`, `workProvince`, `workCity`, `workArea`, `status`, `lineStatus`, `yearWorkId`, `totalOrder`, `totalRefuse`
         FROM `tb_user_detail`
         WHERE id = #{id}
     </select>
@@ -36,8 +36,8 @@
 
     <!--  int insUserDetail(UserDetail userDetail); -->
     <insert id="insUserDetail" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO `tb_user_detail`(`id`, `name`, `card`, `placeProvince`, `placeCity`, `placeArea`, `address`, `cardOne`, `cardTwo`, `skills`, `workProvince`, `workCity`, `workArea`, `status`, lineStatus,`yearWorkId`)
-        VALUES(DEFAULT, #{name}, #{card},#{placeProvince}, #{placeCity}, #{placeArea}, #{address}, #{cardOne}, #{cardTwo}, #{skills}, #{workProvince}, #{workCity}, #{workArea}, 0, 1, #{yearWorkId})
+        INSERT INTO `tb_user_detail`(`id`, `name`, `card`, `placeProvince`, `placeCity`, `placeArea`, `address`, `cardOne`, `cardTwo`, `skills`, `workProvince`, `workCity`, `workArea`, `status`, lineStatus,`yearWorkId`, `totalOrder`, `totalRefuse`)
+        VALUES(DEFAULT, #{name}, #{card},#{placeProvince}, #{placeCity}, #{placeArea}, #{address}, #{cardOne}, #{cardTwo}, #{skills}, #{workProvince}, #{workCity}, #{workArea}, 0, 1, #{yearWorkId}, 0, 0)
     </insert>
 
     <!--    int updUserLineStatus(UserDetail userDetail); -->
@@ -83,7 +83,9 @@
             <if test="status != null and status != ''">
                 `status` = #{status},
             </if>
-              `lineStatus` = #{lineStatus}
+            <if test="lineStatus != null">
+                `lineStatus` = #{lineStatus}
+            </if>
         </set>
         WHERE id = #{id}
     </update>
@@ -98,7 +100,7 @@
     </select>
 
     <select id="selBySkill" resultType="cn.hsf.hsf.pojo.user.UserDetail">
-        SELECT `id`, `name`, `card`, `placeProvince`, `placeCity`, `placeArea`, `address`, `cardOne`, `cardTwo`, `skills`, `workProvince`, `workCity`, `workArea`, `status`, `lineStatus`, `yearWorkId`
+        SELECT `id`, `name`, `card`, `placeProvince`, `placeCity`, `placeArea`, `address`, `cardOne`, `cardTwo`, `skills`, `workProvince`, `workCity`, `workArea`, `status`, `lineStatus`, `yearWorkId`, `totalOrder`, `totalRefuse`
         FROM `tb_user_detail`
         <where>
             <if test="skills != null and skills != ''">
@@ -108,9 +110,26 @@
                 OR skills like concat('%', #{name}, '%')
             </if>
             <if test="name != null and name != ''">
-                OR `name` like concat('%', #{name}, '%')
+                OR skills IN (SELECT id
+                FROM `tb_user_skills`
+                WHERE skillName LIKE concat('%', #{name}, '%'))
+                AND status = 1
             </if>
         </where>
     </select>
+
+    <!--     int updUserTotalOrder(UserDetail userDetail);-->
+    <update id="updUserTotalOrder">
+        UPDATE `tb_user_detail`
+        <set>
+            <if test="totalOrder != null">
+                totalOrder = totalOrder + #{totalOrder},
+            </if>
+            <if test="totalRefuse != null">
+                totalRefuse = totalRefuse + #{totalRefuse},
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
 
 </mapper>

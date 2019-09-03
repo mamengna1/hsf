@@ -80,6 +80,7 @@ public class SendMessageController {
     public Result isCode(String phone, String code, HttpSession session){
         String oldPhone = (String) session.getAttribute("phone");
         String oldCode = (String) session.getAttribute("code");
+
         System.out.println("code" + code + " oldCode" + oldCode);
 
         if (oldCode == null || oldPhone == null) {

@@ -1,6 +1,4 @@
 $(function () {
-
-
     var skills = $("#skills").val();
     if (skills == undefined || skills == ''){
         skills = new Array();
@@ -8,6 +6,7 @@ $(function () {
         skills = $("#skills").val().split(',');
     }
     $(".skills").click(function () {
+
         var len = $(".skills").filter(":checked").length;
         if (len > 3) {
             if ($(this).prop('checked')) {
@@ -20,7 +19,6 @@ $(function () {
             skills.splice(jQuery.inArray($(this).attr("sid"), skills), 1);
         }
         $("#skills").val(skills.join());
-        alert(skills.join());
     })
 });
 
@@ -44,7 +42,7 @@ function getUrlParam(name) {
  */
 function getOpenId(code) {
     var flag = $("#flag").val();
-    $.getJSON("/_api/getUserInfo", {"code": code}, function (data) {
+    $.getJSON("/_api/getUserInfo", function (data) {
         alert(flag);
         if (data.detailId != 0 && (data.userDetail.status == 1 && flag != 2)) {
             location.href = "/_api/goComment";
@@ -94,8 +92,10 @@ function getOpenId(code) {
                 $("#card2").attr("disabled", true).css("pointer-events", "none");
             }
         } else if (data.detailId != 0 && (data.userDetail.status == 0 || data.userDetail.status == 3) && (data.userDetail.message == null || data.userDetail.message == '')) {
+            alert("等待审核");
             location.href = "/_api/goAwait";
         } else {
+            alert("111111");
             chooseProvince2(23);
             $("#workProvince").val(23);
             chooseCity2(13);
@@ -171,6 +171,7 @@ function checkForm() {
                 // 让页面可以提交 工作区数据
                 $("#workProvince").removeAttr("disabled");
                 $("#workCity").removeAttr("disabled");
+                // 表单提交    去到首页
                 flag = true;
             }
         });

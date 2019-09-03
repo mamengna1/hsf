@@ -15,6 +15,14 @@ public class UserOrder {
     private Integer userId;
     private Integer sfId;
 
+    public UserOrder() {
+    }
+
+    public UserOrder(Integer userId, Integer sfId) {
+        this.userId = userId;
+        this.sfId = sfId;
+    }
+
     @Override
     public String toString() {
         return "UserOrder{" +

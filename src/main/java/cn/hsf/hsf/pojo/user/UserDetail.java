@@ -25,7 +25,19 @@ public class UserDetail {
     private Integer yearWorkId;
     private UserYearWork userYearWork;
 
+    private Integer totalOrder;
+    private Integer totalRefuse;
+
     private List<UserSkills> skillList;
+
+    public UserDetail() {
+    }
+
+    public UserDetail(Integer id, Integer totalOrder, Integer totalRefuse) {
+        this.id = id;
+        this.totalOrder = totalOrder;
+        this.totalRefuse = totalRefuse;
+    }
 
     @Override
     public String toString() {
@@ -47,8 +59,26 @@ public class UserDetail {
                 ", lineStatus=" + lineStatus +
                 ", yearWorkId=" + yearWorkId +
                 ", userYearWork=" + userYearWork +
+                ", totalOrder=" + totalOrder +
+                ", totalRefuse=" + totalRefuse +
                 ", skillList=" + skillList +
                 '}';
+    }
+
+    public Integer getTotalOrder() {
+        return totalOrder;
+    }
+
+    public void setTotalOrder(Integer totalOrder) {
+        this.totalOrder = totalOrder;
+    }
+
+    public Integer getTotalRefuse() {
+        return totalRefuse;
+    }
+
+    public void setTotalRefuse(Integer totalRefuse) {
+        this.totalRefuse = totalRefuse;
     }
 
     public List<UserSkills> getSkillList() {

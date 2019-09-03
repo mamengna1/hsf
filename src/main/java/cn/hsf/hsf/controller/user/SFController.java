@@ -44,10 +44,10 @@ public class SFController {
         return userDetails;
     }
 
+    @ResponseBody
     @RequestMapping("/delDynamic")
-    public String delDynamic(Integer id) {
-        userDetailService.delDynamic(id);
-        return "redirect:/goSFHone";
+    public boolean delDynamic(Integer id) {
+        return userDetailService.delDynamic(id) > 0;
     }
 
     /**

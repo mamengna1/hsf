@@ -15,9 +15,6 @@
 </head>
 <script type="text/javascript">
 
-    $(function () {
-        search();
-    })
 
     /**
      *  根据技能找师傅
@@ -29,17 +26,22 @@
         location.href = "/_api/goSFList?skills=" + skill;
     }
 
-
-
     function delInfo(id) {
         if (window.confirm("确定要删除吗")) {
-            location.href = "/_api/delDynamic?id=" + id
+            $.getJSON("/_api/delDynamic", {"id": id}, function (res) {
+                if (res) {
+                    search();
+                }
+            })
         }
     }
 </script>
 <body>
 <div class="sf_info">
-    <p class="headimg"><img src="images/headimg.jpg" th:src="${user.headPic}" class="br50"></p>
+    <!-- 师傅ID -->
+    <input type="hidden" th:value="${userDetail.id}" id="id"/>
+    <input type="hidden" th:value="${flag}" id="flag"/>
+    <p class="headimg"><img src="images/headimg.jpg" id="headPic" th:src="${user.headPic}" class="br50"></p>
     <p class="sfname" th:text="${userDetail.name}"></p>
     <p>
         <label th:if="${userDetail.lineStatus == 1}"><i class="iconfont icon-time"></i> 正在接单</label>
@@ -69,23 +71,9 @@
 <div class="dttitle">[[${userDetail.name}]]的动态</div>
 
 
-<div th:each="info : ${infos}">
-    <div class="tdshow">
-        <p>
-            <em><img src="images/headimg.jpg" width=30 height=30 class="br50"></em>
-            <label>[[${#dates.format(info.createDate, 'yyyy年MM月dd日')}]]</label>
-            <span th:if="${flag eq '1'}"><a th:onclick="'javascript:delInfo(\''+${info.id}+'\')'" href="javascript:void(0);">删除</a></span>
-        </p>
-        <p th:text="${info.content}"></p>
-        <div class="dt_img">
-            <ul>
-                <li th:each="infoimg : ${info.images.split(',')}" th:if="${infoimg != null && infoimg.trim() != ''}"><img th:src="${infoimg}"></li>
-            </ul>
-        </div>
-    </div>
-    <div class="clear1"></div>
-</div>
+<div id="infos">
 
+</div>
 
 
 <div style="height:80px;"></div>
@@ -96,8 +84,45 @@
         var address = $("#address").val().split(",");
         var addr = showProvince(address[0], address[1], address[2]);
         $("#area").html(addr.substr(addr.lastIndexOf("/") + 1));
-        $("#address2").html(addr.replace(new RegExp('/','gm'), "") + " : " + address[3]);
+        $("#address2").html(addr.replace(new RegExp('/', 'gm'), "") + " : " + address[3]);
+
+        search();
     });
+
+    function search() {
+        var id = $("#id").val();
+        var headPic = $("#headPic").attr("src");
+        var flag = $("#flag").val();
+        $.getJSON("/_api/searchSfInfo", {"id": id}, function (infos) {
+            $("#infos").html("");
+            for (var i = 0; i < infos.length; i++) {
+                var infoImgs = '';
+                if (infos[i].images != null && infos[i].images != '') {
+                    var imgs = infos[i].images.split(',');
+                    for (var j = 0; j < imgs.length; j++) {
+                        infoImgs += "<li><img src=\"" + imgs[j] + "\"></li>";
+                    }
+                }
+                alert(infoImgs);
+                var delBtn = flag == '1' ? "<span><a onclick='delInfo(" + infos[i].id + ")' href=\"javascript:void(0);\">删除</a></span>" : "";
+                $("#infos").append("" +
+                    "<div class=\"tdshow\">\n" +
+                    "        <p>\n" +
+                    "            <em><img src=\"" + headPic + "\" width=30 height=30 class=\"br50\"></em>\n" +
+                    "            <label>" + infos[i].createDate + "</label>\n" +
+                    delBtn +
+                    "        </p>\n" +
+                    "        <p>" + infos[i].content + "</p>\n" +
+                    "        <div class=\"dt_img\">\n" +
+                    "            <ul>\n" +
+                    infoImgs +
+                    "            </ul>\n" +
+                    "        </div>\n" +
+                    "</div>\n" +
+                    "<div class=\"clear1\"></div>")
+            }
+        })
+    }
 
 </script>
 </html>

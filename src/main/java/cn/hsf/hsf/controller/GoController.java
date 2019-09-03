@@ -204,7 +204,7 @@ public class GoController {
         // 技能
         model.addAttribute("skills", userDetailService.selSkillById(Arrays.asList(user.getUserDetail().getSkills().split(","))));
         // 师傅的动态
-        model.addAttribute("infos", userDetailService.selInfoByOpenId(openId));
+        // model.addAttribute("infos", userDetailService.selInfoByOpenId(openId));
         return "sf/sfhome";
     }
 
